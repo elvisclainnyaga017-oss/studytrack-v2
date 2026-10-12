@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    ```
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="StudyTrack helps you organise your goals, build productive habits, manage tasks, and focus on what matters.">
+
+    <meta name="theme-color" content="#004225">
+
+    <title>Dashboard | StudyTrack</title>
+
+    <link rel="stylesheet" href="css/dashboard.css">
+
+    <script src="js/dashboard.js" defer></script>
+    ```
+
+</head>
+
+<body>
+
+    ```
+    <!-- =====================================================
+         APPLICATION LAYOUT
+         ===================================================== -->
+
+    <div class="app-layout">
+
+        <!-- =================================================
+             SIDEBAR
+             ================================================= -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <a href="/dashboard.html"
+               class="brand"
+               aria-label="StudyTrack dashboard">
+
+                <span class="brand-mark">S</span>
+
+                <span class="brand-name">
+                    StudyTrack
+                    <small>YOUR PRODUCTIVITY SPACE</small>
+                </span>
+
+            </a>
+
+
+            <div class="sidebar-section-label">
+                WORKSPACE
+            </div>
+
+
+            <nav class="sidebar-navigation" aria-label="Main navigation">
+
+                <a href="/dashboard.html"
+                   class="nav-link active"
+                   aria-current="page"
+                   data-tooltip="Dashboard">
+
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+
+                <a href="/goals.html"
+                   class="nav-link"
+                   data-tooltip="My Goals">
+
+                    <span class="nav-icon" aria-hidden="true">◎</span>
+
+                    <span>My Goals</span>
+
+                </a>
+
+
+                <a href="/habits.html"
+                   class="nav-link"
+                   data-tooltip="Habits">
+
+                    <span class="nav-icon" aria-hidden="true">↻</span>
+
+                    <span>Habits</span>
+
+                </a>
+
+
+                <a href="/tasks.html"
+                   class="nav-link"
+                   data-tooltip="Tasks">
+
+                    <span class="nav-icon" aria-hidden="true">☷</span>
+
+                    <span>Tasks</span>
+
+                </a>
+
+
+                <a href="/reminders.html"
+                   class="nav-link"
+                   data-tooltip="Reminders">
+
+                    <span class="nav-icon" aria-hidden="true">♧</span>
+
+                    <span>Reminders</span>
+
+                </a>
+
+
+                <a href="/focus.html"
+                   class="nav-link"
+                   data-tooltip="Focus Timer">
+
+                    <span class="nav-icon" aria-hidden="true">◷</span>
+
+                    <span>Focus Timer</span>
+
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-tip">
+
+                    <span class="tip-icon" aria-hidden="true">✦</span>
+
+                    <p class="tip-heading">A little reminder</p>
+
+                    <p class="tip-text">
+                        Small, consistent steps lead to meaningful progress.
+                    </p>
+
+                </div>
+
+
+                <a href="/profile.html"
+                   class="profile-shortcut"
+                   data-tooltip="View your profile">
+
+                    <span class="profile-avatar" id="sidebarAvatar">
+                        S
+                    </span>
+
+                    <span class="profile-shortcut-text">
+
+                        <strong id="sidebarUserName">
+                            Loading...
+                        </strong>
+
+                        <small>View your profile</small>
+
+                    </span>
+
+                    <span class="profile-arrow" aria-hidden="true">›</span>
+
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             MAIN APPLICATION AREA
+             ================================================= -->
+
+        <div class="main-area">
+
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button type="button"
+                            class="menu-button"
+                            id="menuButton"
+                            aria-label="Toggle navigation"
+                            aria-controls="sidebar"
+                            aria-expanded="true">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </button>
+
+
+                    <div class="breadcrumb">
+
+                        <span>Workspace</span>
+
+                        <span class="breadcrumb-divider">/</span>
+
+                        <strong>Dashboard</strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="date-display">
+
+                        <span class="date-icon" aria-hidden="true">▦</span>
+
+                        <span id="currentDate">
+                            Loading date...
+                        </span>
+
+                    </div>
+
+
+                    <!-- DAY / NIGHT THEME SELECTOR -->
+
+                    <div class="theme-switcher"
+                         role="group"
+                         aria-label="Appearance">
+
+                        <button type="button"
+                                class="theme-option"
+                                id="dayThemeButton"
+                                data-theme-choice="day"
+                                aria-pressed="true">
+
+                            <span aria-hidden="true">☀</span>
+                            <span>Day</span>
+
+                        </button>
+
+
+                        <button type="button"
+                                class="theme-option"
+                                id="nightThemeButton"
+                                data-theme-choice="night"
+                                aria-pressed="false">
+
+                            <span aria-hidden="true">☾</span>
+                            <span>Night</span>
+
+                        </button>
+
+                    </div>
+
+
+                    <!--
+                        TEMPORARY LOGOUT BUTTON
+
+                        This remains here until the Profile page
+                        is ready to receive the logout functionality.
+                    -->
+
+                    <button type="button"
+                            class="logout-button"
+                            id="logoutButton">
+
+                        Log out
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+                 ================================================= -->
+
+            <main class="dashboard-content">
+
+                <!-- WELCOME SECTION -->
+
+                <section class="welcome-section">
+
+                    <div class="welcome-copy">
+
+                        <p class="eyebrow">
+                            YOUR PERSONAL WORKSPACE
+                        </p>
+
+                        <h1>
+                            Welcome back,
+                            <span id="dashboardUserName">there</span>.
+                        </h1>
+
+                        <p class="welcome-description">
+                            Make today count. Focus on your priorities,
+                            build good habits, and keep moving towards
+                            your goals.
+                        </p>
+
+                    </div>
+
+
+                    <div class="welcome-decoration" aria-hidden="true">
+
+                        <div class="decoration-circle decoration-circle-one"></div>
+
+                        <div class="decoration-circle decoration-circle-two"></div>
+
+                        <div class="decoration-symbol">✦</div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- SESSION STATUS -->
+
+                <div class="status-message"
+                     id="dashboardMessage"
+                     role="status"
+                     aria-live="polite"
+                     hidden></div>
+
+
+                <!-- QUICK OVERVIEW -->
+
+                <section class="overview-section"
+                         aria-labelledby="overviewHeading">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <p class="eyebrow">YOUR PROGRESS</p>
+
+                            <h2 id="overviewHeading">
+                                Your overview
+                            </h2>
+
+                        </div>
+
+                        <p class="section-description">
+                            Your productivity at a glance.
+                        </p>
+
+                    </div>
+
+
+                    <div class="overview-grid">
+
+                        <!-- GOALS CARD -->
+
+                        <article class="overview-card">
+
+                            <div class="overview-card-top">
+
+                                <span class="overview-icon goals-icon"
+                                      aria-hidden="true">◎</span>
+
+                                <span class="card-label">
+                                    PERSONAL GROWTH
+                                </span>
+
+                            </div>
+
+                            <h3>My Goals</h3>
+
+                            <p class="card-description">
+                                Define what you want to achieve and track your progress.
+                            </p>
+
+                            <a href="/goals.html" class="card-link">
+                                Explore goals <span aria-hidden="true">→</span>
+                            </a>
+
+                        </article>
+
+
+                        <!-- HABITS CARD -->
+
+                        <article class="overview-card">
+
+                            <div class="overview-card-top">
+
+                                <span class="overview-icon habits-icon"
+                                      aria-hidden="true">↻</span>
+
+                                <span class="card-label">
+                                    DAILY ROUTINE
+                                </span>
+
+                            </div>
+
+                            <h3>Habits</h3>
+
+                            <p class="card-description">
+                                Build consistent routines through small daily actions.
+                            </p>
+
+                            <a href="/habits.html" class="card-link">
+                                View habits <span aria-hidden="true">→</span>
+                            </a>
+
+                        </article>
+
+
+                        <!-- TASKS CARD -->
+
+                        <article class="overview-card">
+
+                            <div class="overview-card-top">
+
+                                <span class="overview-icon tasks-icon"
+                                      aria-hidden="true">☷</span>
+
+                                <span class="card-label">
+                                    STAY ORGANISED
+                                </span>
+
+                            </div>
+
+                            <h3>Tasks</h3>
+
+                            <p class="card-description">
+                                Organise your responsibilities and identify your next steps.
+                            </p>
+
+                            <a href="/tasks.html" class="card-link">
+                                Manage tasks <span aria-hidden="true">→</span>
+                            </a>
+
+                        </article>
+
+
+                        <!-- FOCUS CARD -->
+
+                        <article class="overview-card">
+
+                            <div class="overview-card-top">
+
+                                <span class="overview-icon focus-icon"
+                                      aria-hidden="true">◷</span>
+
+                                <span class="card-label">
+                                    DEEP WORK
+                                </span>
+
+                            </div>
+
+                            <h3>Focus Time</h3>
+
+                            <p class="card-description">
+                                Protect your attention and make time for meaningful work.
+                            </p>
+
+                            <a href="/focus.html" class="card-link">
+                                Start focusing <span aria-hidden="true">→</span>
+                            </a>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+
+                <!-- GETTING STARTED -->
+
+                <section class="getting-started-section">
+
+                    <div class="getting-started-card">
+
+                        <div class="getting-started-icon"
+                             aria-hidden="true">✦</div>
+
+
+                        <div class="getting-started-copy">
+
+                            <p class="eyebrow">
+                                YOUR NEXT STEP
+                            </p>
+
+                            <h2>Start with one meaningful action.</h2>
+
+                            <p>
+                                Progress doesn't have to happen all at once.
+                                Choose one priority, give it your attention,
+                                and build momentum from there.
+                            </p>
+
+                        </div>
+
+
+                        <a href="/goals.html" class="primary-button">
+                            Explore your goals
+                            <span aria-hidden="true">→</span>
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ACCOUNT INFORMATION -->
+
+                <section class="account-section">
+
+                    <div class="account-information">
+
+                        <div class="account-information-heading">
+
+                            <span class="account-icon"
+                                  aria-hidden="true">◉</span>
+
+                            <div>
+
+                                <h2>Your account</h2>
+
+                                <p>
+                                    You are signed in to StudyTrack.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-detail">
+
+                            <span>Full name</span>
+
+                            <strong id="accountFullName">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-detail">
+
+                            <span>Email address</span>
+
+                            <strong id="dashboardUserEmail">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+
+                        <a href="/profile.html" class="account-profile-link">
+                            View profile <span aria-hidden="true">→</span>
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- FOOTER -->
+
+                <footer class="dashboard-footer">
+
+                    <p>
+                        <span class="footer-brand">StudyTrack</span>
+                        <span aria-hidden="true">·</span>
+                        Build better routines, one day at a time.
+                    </p>
+
+                    <p>
+                        Your progress starts with today.
+                    </p>
+
+                </footer>
+
+            </main>
+
+        </div>
+
+    </div>
+    ```
+
+</body>
+
+</html>

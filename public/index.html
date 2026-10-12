@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Sign in to StudyTrack and take control of your goals, habits, and productivity.">
+
+    <title>Sign In | StudyTrack</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/auth.js" defer></script>
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-layout">
+
+        <!-- Brand Section -->
+        <section class="auth-brand">
+
+            <a href="index.html" class="brand-logo">
+                <span class="brand-icon">S</span>
+                <span>StudyTrack</span>
+            </a>
+
+            <div class="brand-content">
+
+                <span class="eyebrow">YOUR PERSONAL PRODUCTIVITY SPACE</span>
+
+                <h1>Make your goals<br>happen.</h1>
+
+                <p>
+                    Turn your ambitions into achievable goals.
+                    Build better habits, stay focused, and make
+                    meaningful progress every day.
+                </p>
+
+                <div class="brand-highlight">
+                    <span class="highlight-dot"></span>
+                    <span>Your progress starts with one step.</span>
+                </div>
+
+            </div>
+
+            <p class="brand-footer">
+                Small steps. Consistent progress. Better results.
+            </p>
+
+        </section>
+
+
+        <!-- Login Form Section -->
+        <section class="auth-form-section">
+
+            <div class="auth-form-container">
+
+                <div class="mobile-brand">
+                    <span class="brand-icon">S</span>
+                    <span>StudyTrack</span>
+                </div>
+
+                <div class="form-heading">
+
+                    <span class="eyebrow">WELCOME BACK</span>
+
+                    <h2>Sign in to your account</h2>
+
+                    <p>
+                        Continue working towards your goals.
+                    </p>
+
+                </div>
+
+
+                <form id="loginForm" novalidate>
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            Email address
+                        </label>
+
+                        <input type="email"
+                               id="loginEmail"
+                               name="email"
+                               placeholder="you@example.com"
+                               autocomplete="email"
+                               maxlength="255"
+                               required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <div class="label-row">
+
+                            <label for="loginPassword">
+                                Password
+                            </label>
+
+                        </div>
+
+                        <input type="password"
+                               id="loginPassword"
+                               name="password"
+                               placeholder="Enter your password"
+                               autocomplete="current-password"
+                               required>
+
+                    </div>
+
+
+                    <div id="loginMessage"
+                         class="form-message"
+                         role="status"
+                         aria-live="polite"></div>
+
+
+                    <button type="submit"
+                            id="loginButton"
+                            class="auth-button">
+                        Sign In
+                        <span aria-hidden="true">&rarr;</span>
+                    </button>
+
+                </form>
+
+
+                <div class="auth-divider">
+                    <span>YOUR PRODUCTIVITY JOURNEY</span>
+                </div>
+
+
+                <p class="auth-switch">
+                    New to StudyTrack?
+                    <a href="register.html">Create an account</a>
+                </p>
+
+
+                <p class="form-legal">
+                    By signing in, you agree to use StudyTrack
+                    responsibly to manage your personal goals.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>

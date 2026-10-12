@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Manage your goals, track progress, and stay productive with StudyTrack.">
+
+    <title>My Goals | StudyTrack V2</title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/goals.css">
+
+    <script src="/js/sidebar-tooltips.js" defer></script>
+    <script src="/js/goals.js" defer></script>
+</head>
+
+<body class="goals-document">
+
+    <div class="app-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+
+            <a href="/dashboard.html"
+               class="brand"
+               aria-label="StudyTrack dashboard">
+
+                <span class="brand-mark" aria-hidden="true">S</span>
+
+                <span class="brand-name brand-copy">
+                    StudyTrack
+                    <small>YOUR PRODUCTIVITY SPACE</small>
+                </span>
+
+            </a>
+
+            <div class="sidebar-section-label">WORKSPACE</div>
+
+            <nav class="sidebar-navigation" aria-label="Main navigation">
+
+                <a href="/dashboard.html"
+                   class="nav-link"
+                   data-tooltip="Dashboard">
+
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+                    <span>Dashboard</span>
+
+                </a>
+
+                <a href="/goals.html"
+                   class="nav-link active"
+                   aria-current="page"
+                   data-tooltip="My Goals">
+
+                    <span class="nav-icon" aria-hidden="true">◎</span>
+                    <span>My Goals</span>
+
+                </a>
+
+                <a href="/habits.html"
+                   class="nav-link"
+                   data-tooltip="Habits">
+
+                    <span class="nav-icon" aria-hidden="true">↻</span>
+                    <span>Habits</span>
+
+                </a>
+
+                <a href="/tasks.html"
+                   class="nav-link"
+                   data-tooltip="Tasks">
+
+                    <span class="nav-icon" aria-hidden="true">☷</span>
+                    <span>Tasks</span>
+
+                </a>
+
+                <a href="/reminders.html"
+                   class="nav-link"
+                   data-tooltip="Reminders">
+
+                    <span class="nav-icon" aria-hidden="true">♧</span>
+                    <span>Reminders</span>
+
+                </a>
+
+                <a href="/focus.html"
+                   class="nav-link"
+                   data-tooltip="Focus Timer">
+
+                    <span class="nav-icon" aria-hidden="true">◷</span>
+                    <span>Focus Timer</span>
+
+                </a>
+
+            </nav>
+
+            <!-- SIDEBAR BOTTOM -->
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-tip">
+
+                    <span class="tip-icon" aria-hidden="true">✦</span>
+
+                    <p class="tip-heading">A little reminder</p>
+
+                    <p class="tip-text">
+                        Small, consistent steps lead to meaningful progress.
+                    </p>
+
+                </div>
+
+                <a href="/profile.html"
+                   class="profile-shortcut"
+                   data-tooltip="View your profile">
+
+                    <span class="profile-avatar" id="sidebarAvatar">S</span>
+
+                    <span class="profile-shortcut-text profile-shortcut-copy">
+
+                        <strong id="sidebarUserName">Loading...</strong>
+
+                        <small>View your profile</small>
+
+                    </span>
+
+                    <span class="profile-arrow" aria-hidden="true">›</span>
+
+                </a>
+
+                <button type="button"
+                        class="logout-button sidebar-logout"
+                        id="logoutButton">
+
+                    <span aria-hidden="true">↪</span>
+                    <span>Sign out</span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN AREA -->
+        <main class="main-area">
+
+            <!-- TOP HEADER -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button type="button"
+                            class="menu-button"
+                            id="menuButton"
+                            aria-label="Toggle navigation"
+                            aria-controls="sidebar"
+                            aria-expanded="true">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </button>
+
+                    <div class="breadcrumb">
+                        <span>Workspace</span>
+                        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+                        <strong>My Goals</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <div class="date-display">
+                        <span class="date-icon" aria-hidden="true">◷</span>
+                        <span id="currentDate"></span>
+                    </div>
+
+                    <div class="theme-switcher theme-controls"
+                         role="group"
+                         aria-label="Appearance">
+
+                        <button type="button"
+                                id="dayThemeButton"
+                                class="theme-option theme-button"
+                                data-theme-choice="day"
+                                aria-label="Use day theme"
+                                aria-pressed="true"
+                                title="Day theme">
+
+                            <span aria-hidden="true">☀</span>
+                            <span>Day</span>
+
+                        </button>
+
+                        <button type="button"
+                                id="nightThemeButton"
+                                class="theme-option theme-button"
+                                data-theme-choice="night"
+                                aria-label="Use night theme"
+                                aria-pressed="false"
+                                title="Night theme">
+
+                            <span aria-hidden="true">☾</span>
+                            <span>Night</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- GOALS PAGE CONTENT -->
+            <section class="goals-page">
+
+                <!-- WELCOME -->
+                <div class="goals-welcome">
+
+                    <div>
+
+                        <p class="section-kicker">
+                            SMALL STEPS. BIG RESULTS.
+                        </p>
+
+                        <h2>Turn your plans into progress.</h2>
+
+                        <p class="welcome-description">
+                            Set meaningful goals, keep track of your progress,
+                            and celebrate every milestone along the way.
+                        </p>
+
+                    </div>
+
+                    <button type="button"
+                            class="primary-button"
+                            id="openGoalFormButton">
+
+                        <span aria-hidden="true">＋</span>
+                        Create a goal
+
+                    </button>
+
+                </div>
+
+
+                <!-- FEEDBACK MESSAGE -->
+                <div id="goalsMessage"
+                     class="goals-message"
+                     role="status"
+                     aria-live="polite"
+                     hidden></div>
+
+
+                <!-- SUMMARY CARDS -->
+                <section class="goal-summary"
+                         aria-label="Goal statistics">
+
+                    <article class="summary-card">
+
+                        <div class="summary-card-top">
+                            <span class="summary-label">Total goals</span>
+                            <span class="summary-icon" aria-hidden="true">◎</span>
+                        </div>
+
+                        <strong class="summary-number"
+                                id="totalGoalsCount">0</strong>
+
+                        <span class="summary-footnote">All your goals</span>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-card-top">
+                            <span class="summary-label">In progress</span>
+                            <span class="summary-icon" aria-hidden="true">↗</span>
+                        </div>
+
+                        <strong class="summary-number"
+                                id="activeGoalsCount">0</strong>
+
+                        <span class="summary-footnote">
+                            Goals you're working on
+                        </span>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-card-top">
+                            <span class="summary-label">Completed</span>
+                            <span class="summary-icon" aria-hidden="true">✓</span>
+                        </div>
+
+                        <strong class="summary-number"
+                                id="completedGoalsCount">0</strong>
+
+                        <span class="summary-footnote">
+                            Goals you've achieved
+                        </span>
+
+                    </article>
+
+
+                    <article class="summary-card">
+
+                        <div class="summary-card-top">
+                            <span class="summary-label">Overall progress</span>
+                            <span class="summary-icon" aria-hidden="true">◷</span>
+                        </div>
+
+                        <strong class="summary-number"
+                                id="overallProgressCount">0%</strong>
+
+                        <div class="summary-progress-track"
+                             role="progressbar"
+                             id="overallProgressBar"
+                             aria-label="Overall goal progress"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             aria-valuenow="0">
+
+                            <span id="overallProgressFill"></span>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+                <!-- CREATE / EDIT GOAL FORM -->
+                <section class="goal-form-card"
+                         id="goalFormCard"
+                         aria-labelledby="goalFormHeading"
+                         hidden>
+
+                    <div class="goal-form-heading">
+
+                        <div>
+
+                            <p class="section-kicker">MAKE IT HAPPEN</p>
+
+                            <h2 id="goalFormHeading">Create a new goal</h2>
+
+                            <p class="form-introduction">
+                                Give your goal a clear title and a realistic target.
+                            </p>
+
+                        </div>
+
+                        <button type="button"
+                                class="icon-button"
+                                id="closeGoalFormButton"
+                                aria-label="Close goal form">
+
+                            ×
+
+                        </button>
+
+                    </div>
+
+
+                    <form id="goalForm">
+
+                        <input type="hidden" id="editingGoalId">
+
+                        <div class="form-field">
+
+                            <label for="goalTitle">
+                                Goal title <span aria-hidden="true">*</span>
+                            </label>
+
+                            <input type="text"
+                                   id="goalTitle"
+                                   name="title"
+                                   maxlength="150"
+                                   placeholder="e.g. Complete my programming project"
+                                   required>
+
+                            <small>
+                                Keep your goal specific and meaningful.
+                            </small>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label for="goalDescription">Description</label>
+
+                            <textarea id="goalDescription"
+                                      name="description"
+                                      rows="4"
+                                      maxlength="10000"
+                                      placeholder="What do you want to achieve, and why?"></textarea>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-field">
+
+                                <label for="goalTargetDate">Target date</label>
+
+                                <input type="date"
+                                       id="goalTargetDate"
+                                       name="targetDate">
+
+                                <small>Optional deadline.</small>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="goalProgress">Progress</label>
+
+                                <select id="goalProgress" name="progress">
+
+                                    <option value="0">0% — Not started</option>
+                                    <option value="10">10%</option>
+                                    <option value="20">20%</option>
+                                    <option value="30">30%</option>
+                                    <option value="40">40%</option>
+                                    <option value="50">50% — Halfway there</option>
+                                    <option value="60">60%</option>
+                                    <option value="70">70%</option>
+                                    <option value="80">80%</option>
+                                    <option value="90">90%</option>
+                                    <option value="100">100% — Completed</option>
+
+                                </select>
+
+                                <small>
+                                    Update this as you make progress.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-actions">
+
+                            <button type="button"
+                                    class="secondary-button"
+                                    id="cancelGoalFormButton">
+
+                                Cancel
+
+                            </button>
+
+                            <button type="submit"
+                                    class="primary-button"
+                                    id="saveGoalButton">
+
+                                Save goal
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- GOAL LIST -->
+                <section class="goal-list-section"
+                         aria-labelledby="goalListHeading">
+
+                    <div class="goal-list-heading">
+
+                        <div>
+
+                            <p class="section-kicker">YOUR JOURNEY</p>
+
+                            <h2 id="goalListHeading">Your goals</h2>
+
+                            <p class="goal-list-description">
+                                Every completed step brings you closer.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SEARCH AND FILTERS -->
+                    <div class="goal-toolbar">
+
+                        <div class="goal-search">
+
+                            <label for="goalSearch" class="visually-hidden">
+                                Search goals
+                            </label>
+
+                            <span aria-hidden="true">⌕</span>
+
+                            <input type="search"
+                                   id="goalSearch"
+                                   placeholder="Search your goals..."
+                                   autocomplete="off">
+
+                        </div>
+
+
+                        <div class="goal-filters"
+                             role="group"
+                             aria-label="Filter goals">
+
+                            <button type="button"
+                                    class="filter-button active"
+                                    data-filter="all"
+                                    aria-pressed="true">
+
+                                All goals
+
+                            </button>
+
+                            <button type="button"
+                                    class="filter-button"
+                                    data-filter="active"
+                                    aria-pressed="false">
+
+                                In progress
+
+                            </button>
+
+                            <button type="button"
+                                    class="filter-button"
+                                    data-filter="completed"
+                                    aria-pressed="false">
+
+                                Completed
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOADING STATE -->
+                    <div class="goals-loading" id="goalsLoading">
+
+                        <span class="loading-spinner" aria-hidden="true"></span>
+
+                        <p>Loading your goals...</p>
+
+                    </div>
+
+
+                    <!-- EMPTY STATE -->
+                    <div class="goals-empty" id="goalsEmpty" hidden>
+
+                        <div class="empty-icon" aria-hidden="true">◎</div>
+
+                        <h3 id="emptyStateHeading">
+                            Your next achievement starts here.
+                        </h3>
+
+                        <p id="emptyStateDescription">
+                            Create your first goal and start turning your plans into progress.
+                        </p>
+
+                        <button type="button"
+                                class="primary-button"
+                                id="emptyStateCreateButton">
+
+                            Create your first goal
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- GOALS INSERTED BY JAVASCRIPT -->
+                    <div class="goals-grid"
+                         id="goalsGrid"
+                         aria-live="polite"></div>
+
+                </section>
+
+
+                <!-- DELETE CONFIRMATION -->
+                <dialog class="confirm-dialog" id="deleteGoalDialog">
+
+                    <div class="confirm-dialog-content">
+
+                        <div class="confirm-icon" aria-hidden="true">!</div>
+
+                        <h2>Delete this goal?</h2>
+
+                        <p>
+                            This action cannot be undone. The goal will be
+                            permanently removed from your account.
+                        </p>
+
+                        <div class="confirm-actions">
+
+                            <button type="button"
+                                    class="secondary-button"
+                                    id="cancelDeleteButton">
+
+                                Keep goal
+
+                            </button>
+
+                            <button type="button"
+                                    class="danger-button"
+                                    id="confirmDeleteButton">
+
+                                Delete goal
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </dialog>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>

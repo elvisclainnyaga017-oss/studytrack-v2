@@ -1,0 +1,27 @@
+# Node.js dependencies
+
+node_modules/
+
+# Private environment variables and secrets
+
+.env
+.env.*
+!.env.example
+
+# Logs
+
+*.log
+npm-debug.log*
+
+# Uploaded profile images
+
+uploads/
+
+# Visual Studio configuration
+
+.vs/
+
+# Operating system files
+
+.DS_Store
+Thumbs.db
