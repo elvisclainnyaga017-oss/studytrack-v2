@@ -1,0 +1,1586 @@
+/*
+==================================================
+STUDYTRACK V2
+HABITS PAGE STYLESHEET
+
+File: public/css/habits.css
+
+Uses shared design tokens from dashboard.css.
+Preserves existing Habits functionality.
+==================================================
+*/
+/* ==================================================
+   1. PAGE FOUNDATION
+================================================== */
+.habits-content {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 34px 38px 26px;
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.habits-content *,
+.habits-content *::before,
+.habits-content *::after {
+    box-sizing: border-box;
+}
+
+.habits-content button,
+.habits-content input,
+.habits-content textarea,
+.habits-content select {
+    font: inherit;
+}
+
+.habits-content button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+    .habits-content button:focus-visible,
+    .habits-content a:focus-visible,
+    .habits-content input:focus-visible,
+    .habits-content textarea:focus-visible,
+    .habits-content select:focus-visible {
+        outline: 3px solid var(--green-500);
+        outline-offset: 3px;
+    }
+
+.habits-content [hidden],
+.modal-backdrop[hidden],
+#archivedHabitsContainer[hidden] {
+    display: none !important;
+}
+
+
+/* ==================================================
+   2. HEADER AND BREADCRUMB
+================================================== */
+
+.topbar {
+    gap: 12px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.menu-button {
+    display: flex;
+    flex: 0 0 39px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 39px;
+    min-width: 39px;
+    height: 39px;
+    padding: 0;
+}
+
+    .menu-button span {
+        display: block;
+        flex: 0 0 2px;
+        width: 16px;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+    }
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+    min-width: 0;
+    margin-left: 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+    .breadcrumb strong {
+        color: var(--text-primary);
+        font-weight: 700;
+    }
+
+.breadcrumb-divider {
+    color: var(--text-muted);
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
+    min-width: 0;
+    margin-left: auto;
+}
+
+.date-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.date-icon {
+    color: var(--green-700);
+}
+
+.theme-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface-soft);
+}
+
+.theme-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 35px;
+    min-height: 35px;
+    padding: 6px 9px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+    .theme-option:hover {
+        background: var(--green-100);
+        color: var(--green-700);
+    }
+
+    .theme-option:active {
+        transform: scale(0.95);
+    }
+
+    .theme-option[aria-pressed="true"] {
+        background: var(--green-800);
+        color: #ffffff;
+    }
+
+.logout-button {
+    flex-shrink: 0;
+}
+
+/* ==================================================
+   3. SIDEBAR
+================================================== */
+/*
+The shared dashboard.css stylesheet controls the sidebar's:
+- Width and background
+- Brand and logo
+- Navigation links and active states
+- Icons and labels
+- Bottom profile section
+- Expanded and collapsed layouts
+- Responsive behaviour
+- Tooltips
+
+Avoid redefining these styles in habits.css.
+*/
+.sidebar-navigation {
+    min-width: 0;
+}
+
+.sidebar-navigation .nav-link {
+    position: relative;
+}
+
+    .sidebar-navigation .nav-link > span:not(.nav-icon) {
+        min-width: 0;
+    }
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+.sidebar-tip,
+.profile-shortcut,
+.profile-shortcut-text {
+    min-width: 0;
+}
+
+    .profile-shortcut-text strong,
+    .profile-shortcut-text small {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+/* ==================================================
+   4. SIDEBAR TOOLTIP OVERRIDES
+================================================== */
+
+/*
+Intentionally no tooltip overrides here.
+
+The shared dashboard.css stylesheet should supply the
+same tooltip styling on Dashboard and Habits.
+*/
+
+/* ==================================================
+   5. PAGE INTRODUCTION
+================================================== */
+.habits-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 30px;
+}
+
+    .habits-heading > div {
+        flex: 1;
+        min-width: 0;
+    }
+
+.habits-content .eyebrow {
+    display: inline-block;
+    margin-bottom: 9px;
+    color: var(--green-600);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    line-height: 1.5;
+}
+
+.habits-heading h1 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(32px, 3vw, 40px);
+    font-weight: 750;
+    letter-spacing: -1.3px;
+    line-height: 1.2;
+}
+
+.page-description {
+    max-width: 680px;
+    margin: 13px 0 0;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+
+/* ==================================================
+   6. BUTTONS
+================================================== */
+
+.habits-content .primary-button,
+.habits-content .secondary-button,
+.habits-content .danger-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: center;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.habits-content .primary-button {
+    background: var(--green-800);
+    color: #ffffff;
+    box-shadow: 0 3px 8px rgba(0, 66, 37, 0.12);
+}
+
+    .habits-content .primary-button:hover {
+        background: var(--green-700);
+        box-shadow: 0 5px 13px rgba(0, 66, 37, 0.17);
+        transform: translateY(-1px);
+    }
+
+.habits-content .secondary-button {
+    border-color: var(--border);
+    background: var(--surface);
+    color: var(--text-primary);
+}
+
+    .habits-content .secondary-button:hover {
+        border-color: var(--border-strong);
+        background: var(--surface-soft);
+    }
+
+.habits-content .danger-button {
+    border-color: transparent;
+    background: var(--danger-background);
+    color: var(--danger);
+}
+
+    .habits-content .danger-button:hover {
+        border-color: var(--danger);
+        background: var(--danger);
+        color: #ffffff;
+    }
+
+    .habits-content .primary-button:disabled,
+    .habits-content .secondary-button:disabled,
+    .habits-content .danger-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+
+/* ==================================================
+   7. STATUS MESSAGES
+================================================== */
+
+.habits-message {
+    margin: 0 0 24px;
+    padding: 14px 17px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text-primary);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+    .habits-message.success {
+        border-color: #b9dfc6;
+        background: var(--success-background);
+        color: var(--success);
+    }
+
+    .habits-message.error {
+        border-color: #f0c4c0;
+        background: var(--danger-background);
+        color: var(--danger);
+    }
+
+
+/* ==================================================
+   8. HABIT STATISTICS
+================================================== */
+
+.habit-statistics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    position: relative;
+    min-width: 0;
+    padding: 24px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+    .stat-card:hover {
+        border-color: var(--border-strong);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+    }
+
+.stat-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.stat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: var(--green-100);
+    color: var(--green-800);
+    font-size: 21px;
+}
+
+.stat-number {
+    display: block;
+    color: var(--text-primary);
+    font-size: clamp(32px, 3vw, 39px);
+    font-weight: 750;
+    letter-spacing: -1.4px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.stat-card > p {
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* ==================================================
+   9. PROGRESS BAR
+================================================== */
+
+.progress-track {
+    position: relative;
+    width: 100%;
+    height: 9px;
+    margin-top: 16px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--green-100);
+}
+
+.progress-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--green-600);
+    transition: width 350ms ease;
+}
+
+
+/* ==================================================
+   10. HABITS PANELS
+================================================== */
+
+.habits-panel {
+    min-width: 0;
+    margin-bottom: 25px;
+    padding: 27px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-large);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+    .panel-heading h2 {
+        margin: 0;
+        color: var(--text-primary);
+        font-size: 23px;
+        font-weight: 750;
+        letter-spacing: -0.5px;
+        line-height: 1.4;
+    }
+
+    .panel-heading p {
+        margin: 6px 0 0;
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+.date-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 9px 13px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface-soft);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+
+/* ==================================================
+   11. HABIT LIST AND LOADING STATE
+================================================== */
+
+.habit-list,
+.archived-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    min-width: 0;
+}
+
+.habit-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    min-height: 175px;
+    padding: 30px 20px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+    .habit-loading p {
+        margin: 0;
+        font-size: 15px;
+    }
+
+.loading-spinner {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--border);
+    border-top-color: var(--green-600);
+    border-radius: 50%;
+    animation: habits-spinner 750ms linear infinite;
+}
+
+@keyframes habits-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ==================================================
+   12. HABIT CARDS
+================================================== */
+
+.habit-card {
+    min-width: 0;
+    padding: 21px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-medium);
+    background: var(--surface);
+    transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+}
+
+    .habit-card:hover {
+        border-color: var(--border-strong);
+        box-shadow: 0 5px 16px rgba(20, 48, 30, 0.045);
+    }
+
+.habit-card-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+}
+
+.habit-card-content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.habit-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+    .habit-title.completed-title {
+        color: var(--text-muted);
+        text-decoration: line-through;
+        text-decoration-thickness: 1.5px;
+    }
+
+.habit-description {
+    margin: 7px 0 13px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+
+.habit-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.frequency-badge,
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface-soft);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+    .status-badge.archived-badge {
+        border-color: var(--border);
+        background: var(--surface-soft);
+        color: var(--text-muted);
+    }
+
+
+/* ==================================================
+   13. COMPLETION BUTTON
+================================================== */
+
+.habit-complete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    margin-top: 1px;
+    padding: 0;
+    border: 2px solid var(--border-strong);
+    border-radius: 9px;
+    background: var(--surface);
+    color: #ffffff;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+    .habit-complete-button:hover {
+        border-color: var(--green-600);
+        background: var(--green-100);
+    }
+
+    .habit-complete-button:active {
+        transform: scale(0.92);
+    }
+
+    .habit-complete-button.completed {
+        border-color: var(--green-700);
+        background: var(--green-700);
+    }
+
+    .habit-complete-button span {
+        font-size: 17px;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+
+/* ==================================================
+   14. HABIT ACTIONS
+================================================== */
+
+.habit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 100%;
+    margin-left: auto;
+}
+
+    .habit-actions .primary-button,
+    .habit-actions .secondary-button,
+    .habit-actions .danger-button,
+    .habit-actions .icon-button {
+        min-height: 38px;
+        padding: 8px 12px;
+        border-radius: 9px;
+        font-size: 13px;
+    }
+
+.habits-content .icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 7px 11px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+    .habits-content .icon-button:hover {
+        border-color: var(--border-strong);
+        background: var(--surface-soft);
+        color: var(--text-primary);
+    }
+
+
+/* ==================================================
+   15. EMPTY STATES
+================================================== */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 44px 24px;
+    text-align: center;
+}
+
+.empty-state-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    margin-bottom: 18px;
+    border-radius: 18px;
+    background: var(--green-100);
+    color: var(--green-800);
+    font-size: 31px;
+}
+
+.empty-state h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 21px;
+    font-weight: 750;
+    line-height: 1.5;
+}
+
+.empty-state p {
+    max-width: 470px;
+    margin: 11px 0 21px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.archived-empty {
+    margin: 20px 0 5px;
+    padding: 21px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    text-align: center;
+}
+
+
+/* ==================================================
+   16. ARCHIVED HABITS SECTION
+================================================== */
+
+.archived-panel {
+    padding: 0;
+    overflow: hidden;
+}
+
+.section-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    min-height: 88px;
+    padding: 21px 27px;
+    border: 0;
+    background: transparent;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+    .section-toggle:hover {
+        background: var(--surface-soft);
+    }
+
+    .section-toggle > span:first-child {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        min-width: 0;
+    }
+
+    .section-toggle strong {
+        font-size: 17px;
+        font-weight: 750;
+    }
+
+    .section-toggle small {
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+.toggle-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-size: 21px;
+    transition: transform var(--transition);
+}
+
+.section-toggle[aria-expanded="true"] .toggle-arrow {
+    transform: rotate(180deg);
+}
+
+#archivedHabitsContainer {
+    padding: 0 27px 27px;
+}
+
+
+/* ==================================================
+   17. MODAL BACKDROP
+================================================== */
+
+.modal-backdrop {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-y: auto;
+    background: rgba(5, 20, 12, 0.58);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    animation: habits-backdrop-in 160ms ease-out;
+}
+
+@keyframes habits-backdrop-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+
+/* ==================================================
+   18. MODAL WINDOWS
+================================================== */
+
+.habit-modal {
+    width: 100%;
+    max-width: 570px;
+    max-height: calc(100vh - 48px);
+    padding: 29px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface);
+    color: var(--text-primary);
+    box-shadow: 0 24px 75px rgba(0, 0, 0, 0.23);
+    animation: habits-modal-in 180ms ease-out;
+}
+
+@keyframes habits-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.99);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+    .modal-heading > div {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .modal-heading h2 {
+        margin: 0;
+        color: var(--text-primary);
+        font-size: 25px;
+        font-weight: 750;
+        letter-spacing: -0.6px;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    .modal-heading p {
+        margin: 8px 0 0;
+        color: var(--text-secondary);
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    .modal-heading .eyebrow {
+        margin-bottom: 8px;
+    }
+
+    .modal-heading .icon-button {
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        padding: 0;
+        font-size: 25px;
+    }
+
+
+/* ==================================================
+   19. FORM FIELDS
+================================================== */
+
+#habitForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+    .form-field label {
+        color: var(--text-primary);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.5;
+    }
+
+        .form-field label span {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+    .form-field input,
+    .form-field textarea,
+    .form-field select {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        min-height: 48px;
+        padding: 12px 14px;
+        border: 1px solid var(--border-strong);
+        border-radius: 10px;
+        outline: none;
+        background: var(--surface);
+        color: var(--text-primary);
+        font-size: 15px;
+        line-height: 1.5;
+        transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+
+    .form-field textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+        .form-field input::placeholder,
+        .form-field textarea::placeholder {
+            color: var(--text-muted);
+            opacity: 0.85;
+        }
+
+        .form-field input:hover,
+        .form-field textarea:hover,
+        .form-field select:hover {
+            border-color: var(--green-600);
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus,
+        .form-field select:focus {
+            border-color: var(--green-600);
+            box-shadow: 0 0 0 3px rgba(47, 138, 91, 0.12);
+        }
+
+    .form-field small {
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .form-field [hidden] {
+        display: none !important;
+    }
+
+.form-error {
+    padding: 12px 14px;
+    border: 1px solid #f0c4c0;
+    border-radius: 10px;
+    background: var(--danger-background);
+    color: var(--danger);
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+
+/* ==================================================
+   20. MODAL ACTIONS
+================================================== */
+
+.modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 11px;
+    margin-top: 8px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+    .modal-actions button {
+        min-width: 120px;
+    }
+
+.confirm-modal {
+    max-width: 460px;
+}
+
+    .confirm-modal .modal-heading {
+        margin-bottom: 28px;
+    }
+
+
+/* ==================================================
+   21. HISTORY MODAL
+================================================== */
+
+.history-modal {
+    max-width: 620px;
+}
+
+.history-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+    margin-bottom: 25px;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.history-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: var(--surface-soft);
+}
+
+    .history-stat strong {
+        color: var(--green-700);
+        font-size: 25px;
+        font-weight: 750;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    .history-stat span {
+        color: var(--text-secondary);
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+.history-calendar > h3 {
+    margin: 0 0 14px;
+    color: var(--text-primary);
+    font-size: 17px;
+    font-weight: 750;
+}
+
+.history-record-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.history-record {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--surface);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.history-record-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 29px;
+    height: 29px;
+    border-radius: 9px;
+    background: var(--green-100);
+    color: var(--green-800);
+    font-weight: 800;
+}
+
+.history-record span:last-child {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   22. PAGE FOOTER
+================================================== */
+
+.habits-footer {
+    padding: 11px 0 5px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+    .habits-footer p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+
+/* ==================================================
+   23. NIGHT THEME
+================================================== */
+
+:root[data-theme="night"] .habits-content .eyebrow {
+    color: #83c9a0;
+}
+
+:root[data-theme="night"] .habits-content .primary-button {
+    background: #23754b;
+    color: #ffffff;
+}
+
+    :root[data-theme="night"] .habits-content .primary-button:hover {
+        background: #2d8a59;
+    }
+
+:root[data-theme="night"] .habits-content .stat-icon,
+:root[data-theme="night"] .empty-state-icon,
+:root[data-theme="night"] .history-record-check {
+    background: rgba(71, 157, 105, 0.18);
+    color: #9ddbb3;
+}
+
+:root[data-theme="night"] .progress-track {
+    background: #243a2d;
+}
+
+:root[data-theme="night"] .progress-fill {
+    background: #54a978;
+}
+
+:root[data-theme="night"] .habit-complete-button.completed {
+    border-color: #39865b;
+    background: #39865b;
+}
+
+:root[data-theme="night"] .habits-message.success {
+    border-color: #315b42;
+}
+
+:root[data-theme="night"] .habits-message.error,
+:root[data-theme="night"] .form-error {
+    border-color: #713a36;
+}
+
+:root[data-theme="night"] .theme-button.is-active {
+    background: #286d48;
+    color: #ffffff;
+}
+
+
+/* ==================================================
+   24. RESPONSIVE LAYOUT
+================================================== */
+
+@media (max-width: 1250px) {
+    .habits-content {
+        padding-right: 28px;
+        padding-left: 28px;
+    }
+
+    .habit-statistics {
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 21px;
+    }
+
+    .habit-actions {
+        gap: 7px;
+    }
+
+        .habit-actions .secondary-button,
+        .habit-actions .danger-button,
+        .habit-actions .icon-button {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+}
+
+@media (max-width: 1000px) {
+    .habit-card-main {
+        flex-wrap: wrap;
+    }
+
+    .habit-card-content {
+        flex-basis: calc(100% - 50px);
+    }
+
+    .habit-actions {
+        flex-basis: 100%;
+        justify-content: flex-start;
+        margin-left: 45px;
+        padding-top: 4px;
+    }
+}
+
+@media (max-width: 850px) {
+    .habits-content {
+        padding: 28px 22px 22px;
+    }
+
+    .breadcrumb {
+        gap: 7px;
+        margin-left: -5px;
+        font-size: 13px;
+    }
+
+    .topbar-actions {
+        gap: 10px;
+    }
+
+    .current-date {
+        display: none;
+    }
+
+    .habit-statistics {
+        gap: 13px;
+    }
+
+    .stat-card {
+        padding: 19px;
+    }
+
+    .habits-panel {
+        padding: 23px;
+    }
+
+    .archived-panel {
+        padding: 0;
+    }
+
+    #archivedHabitsContainer {
+        padding-right: 23px;
+        padding-left: 23px;
+    }
+
+    .section-toggle {
+        padding-right: 23px;
+        padding-left: 23px;
+    }
+}
+
+@media (max-width: 650px) {
+    .habits-content {
+        padding: 24px 16px 20px;
+    }
+
+    .habits-heading {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+        .habits-heading h1 {
+            font-size: 32px;
+        }
+
+    .page-description {
+        font-size: 15px;
+    }
+
+    .habits-heading > .primary-button {
+        align-self: flex-start;
+    }
+
+    .habit-statistics {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+
+    .stat-card {
+        padding: 19px 20px;
+    }
+
+    .stat-card-top {
+        margin-bottom: 12px;
+    }
+
+    .stat-number {
+        font-size: 32px;
+    }
+
+    .habits-panel {
+        margin-bottom: 18px;
+        padding: 19px;
+        border-radius: 17px;
+    }
+
+    .archived-panel {
+        padding: 0;
+    }
+
+    .panel-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+        .panel-heading h2 {
+            font-size: 21px;
+        }
+
+    .date-badge {
+        font-size: 13px;
+    }
+
+    .habit-card {
+        padding: 16px;
+    }
+
+    .habit-card-main {
+        gap: 11px;
+    }
+
+    .habit-card-content {
+        flex-basis: calc(100% - 43px);
+    }
+
+    .habit-title {
+        font-size: 17px;
+    }
+
+    .habit-actions {
+        gap: 7px;
+        margin-left: 40px;
+    }
+
+        .habit-actions .secondary-button,
+        .habit-actions .danger-button,
+        .habit-actions .icon-button {
+            min-height: 36px;
+            font-size: 12px;
+        }
+
+    .section-toggle {
+        min-height: 80px;
+        padding: 18px;
+    }
+
+    #archivedHabitsContainer {
+        padding: 0 18px 18px;
+    }
+
+    .modal-backdrop {
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .habit-modal {
+        max-height: calc(100vh - 28px);
+        margin: auto 0;
+        padding: 23px 18px;
+        border-radius: 17px;
+    }
+
+    .modal-heading h2 {
+        font-size: 22px;
+    }
+
+    .history-summary {
+        gap: 9px;
+    }
+
+    .history-stat {
+        padding: 14px;
+    }
+}
+
+@media (max-width: 420px) {
+    .habits-content {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .habits-heading h1 {
+        font-size: 29px;
+    }
+
+    .breadcrumb {
+        gap: 5px;
+        margin-left: -7px;
+        font-size: 12px;
+    }
+
+    .topbar-actions {
+        gap: 7px;
+    }
+
+    .theme-controls {
+        gap: 2px;
+        padding: 3px;
+    }
+
+    .theme-button {
+        width: 31px;
+        height: 31px;
+    }
+
+    .habits-panel {
+        padding: 14px;
+    }
+
+    .archived-panel {
+        padding: 0;
+    }
+
+    .habit-card {
+        padding: 13px;
+    }
+
+    .habit-actions {
+        margin-left: 0;
+    }
+
+        .habit-actions .secondary-button,
+        .habit-actions .danger-button,
+        .habit-actions .icon-button {
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+
+    .modal-actions {
+        align-items: stretch;
+        flex-direction: column-reverse;
+    }
+
+        .modal-actions button {
+            width: 100%;
+        }
+
+    .history-summary {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .history-record {
+        grid-template-columns: 28px minmax(0, 1fr);
+    }
+
+        .history-record span:last-child {
+            grid-column: 2;
+        }
+}
+
+
+/* ==================================================
+   25. REDUCED MOTION ACCESSIBILITY
+================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .habits-content *,
+    .habits-content *::before,
+    .habits-content *::after,
+    .modal-backdrop,
+    .habit-modal,
+    .loading-spinner {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+

@@ -13,6 +13,7 @@ const db = require("./db");
 
 const authRoutes = require("./routes/auth");
 const goalsRoutes = require("./routes/goals");
+const habitsRoutes = require("./routes/habits");
 
 const app = express();
 
@@ -131,6 +132,7 @@ app.use("/api/auth", authRoutes);
 // ==================================================
 
 app.use("/api/goals", goalsRoutes);
+app.use("/api/habits", habitsRoutes);
 
 // ==================================================
 // HANDLE UNKNOWN API ROUTES
