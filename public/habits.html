@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/habits.css">
 
+    <script src="/js/sidebar-tooltips.js" defer></script>
     <script src="/js/habits.js" defer></script>
 </head>
 
@@ -44,6 +45,7 @@
                 WORKSPACE
             </div>
 
+            <!-- SIDEBAR NAVIGATION -->
             <nav class="sidebar-navigation" aria-label="Main navigation">
 
                 <!-- DASHBOARD -->
@@ -51,30 +53,18 @@
                    class="nav-link"
                    data-tooltip="Dashboard">
 
-                    <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M3.5 10.5 12 3.5l8.5 7"></path>
-                            <path d="M5.5 9v11h13V9"></path>
-                            <path d="M9.5 20v-6h5v6"></path>
-                        </svg>
-                    </span>
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
 
                     <span>Dashboard</span>
 
                 </a>
 
-                <!-- GOALS -->
+                <!-- MY GOALS -->
                 <a href="/goals.html"
                    class="nav-link"
                    data-tooltip="My Goals">
 
-                    <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="8.5"></circle>
-                            <circle cx="12" cy="12" r="4.5"></circle>
-                            <circle cx="12" cy="12" r="1"></circle>
-                        </svg>
-                    </span>
+                    <span class="nav-icon" aria-hidden="true">◎</span>
 
                     <span>My Goals</span>
 
@@ -86,14 +76,7 @@
                    aria-current="page"
                    data-tooltip="Habits">
 
-                    <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M20 7v5h-5"></path>
-                            <path d="M4.9 9a7.5 7.5 0 0 1 12.7-3L20 8"></path>
-                            <path d="M4 17v-5h5"></path>
-                            <path d="M19.1 15a7.5 7.5 0 0 1-12.7 3L4 16"></path>
-                        </svg>
-                    </span>
+                    <span class="nav-icon" aria-hidden="true">↻</span>
 
                     <span>Habits</span>
 
@@ -104,13 +87,7 @@
                    class="nav-link"
                    data-tooltip="Tasks">
 
-                    <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <path d="m5 12 4.5 4.5L19 7"></path>
-                            <path d="M5 5h5"></path>
-                            <path d="M5 19h14"></path>
-                        </svg>
-                    </span>
+                    <span class="nav-icon" aria-hidden="true">☷</span>
 
                     <span>Tasks</span>
 
@@ -121,11 +98,7 @@
                    class="nav-link"
                    data-tooltip="Reminders">
 
-                    <span class="nav-icon" aria-hidden="true">
-                        <circle cx="12" cy="13" r="8"></circle>
-                        <path d="M12 8v5l3 2"></path>
-                        <path d="M9 2h6"></path>
-                    </span>
+                    <span class="nav-icon" aria-hidden="true">♧</span>
 
                     <span>Reminders</span>
 
@@ -136,13 +109,7 @@
                    class="nav-link"
                    data-tooltip="Focus Timer">
 
-                    <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="9"></circle>
-                            <circle cx="12" cy="12" r="5.5"></circle>
-                            <circle cx="12" cy="12" r="2"></circle>
-                        </svg>
-                    </span>
+                    <span class="nav-icon" aria-hidden="true">◷</span>
 
                     <span>Focus Timer</span>
 
@@ -153,6 +120,7 @@
             <!-- SIDEBAR BOTTOM -->
             <div class="sidebar-bottom">
 
+                <!-- PRODUCTIVITY TIP -->
                 <div class="sidebar-tip">
 
                     <span class="tip-icon" aria-hidden="true">✦</span>
@@ -188,6 +156,13 @@
 
                 </a>
 
+                <!-- LOGOUT -->
+                <button type="button"
+                        class="logout-button sidebar-logout"
+                        id="logoutButton">
+                    ↪ Sign out
+                </button>
+
             </div>
 
         </aside>
@@ -200,6 +175,7 @@
 
                 <div class="topbar-left">
 
+                    <!-- SIDEBAR TOGGLE -->
                     <button type="button"
                             class="menu-button"
                             id="menuButton"
@@ -213,6 +189,7 @@
 
                     </button>
 
+                    <!-- BREADCRUMB -->
                     <div class="breadcrumb" aria-label="Breadcrumb">
 
                         <span>Workspace</span>
@@ -228,6 +205,7 @@
 
                 <div class="topbar-right">
 
+                    <!-- CURRENT DATE -->
                     <div class="date-display">
 
                         <span class="date-icon" aria-hidden="true">▦</span>
@@ -267,12 +245,6 @@
 
                     </div>
 
-                    <button type="button"
-                            class="logout-button"
-                            id="logoutButton">
-                        Log out
-                    </button>
-
                 </div>
 
             </header>
@@ -284,7 +256,10 @@
                 <section class="habits-heading">
 
                     <div>
-                        <p class="eyebrow">CONSISTENCY BUILDS PROGRESS</p>
+
+                        <p class="eyebrow">
+                            CONSISTENCY BUILDS PROGRESS
+                        </p>
 
                         <h1>My Habits</h1>
 
@@ -292,6 +267,7 @@
                             Small actions, repeated consistently, lead to meaningful progress.
                             Build your routines one day at a time.
                         </p>
+
                     </div>
 
                     <button class="primary-button"
@@ -316,40 +292,64 @@
                 <section class="habit-statistics"
                          aria-label="Habit statistics">
 
+                    <!-- ACTIVE HABITS -->
                     <article class="stat-card">
 
                         <div class="stat-card-top">
-                            <span class="stat-label">Active habits</span>
+
+                            <span class="stat-label">
+                                Active habits
+                            </span>
+
                             <span class="stat-icon" aria-hidden="true">↻</span>
+
                         </div>
 
-                        <strong class="stat-number" id="activeHabitsCount">0</strong>
+                        <strong class="stat-number" id="activeHabitsCount">
+                            0
+                        </strong>
 
                         <p>Routines you're building</p>
 
                     </article>
 
+                    <!-- COMPLETED TODAY -->
                     <article class="stat-card">
 
                         <div class="stat-card-top">
-                            <span class="stat-label">Completed today</span>
+
+                            <span class="stat-label">
+                                Completed today
+                            </span>
+
                             <span class="stat-icon" aria-hidden="true">✓</span>
+
                         </div>
 
-                        <strong class="stat-number" id="completedTodayCount">0</strong>
+                        <strong class="stat-number" id="completedTodayCount">
+                            0
+                        </strong>
 
                         <p>Habits checked off today</p>
 
                     </article>
 
+                    <!-- TODAY'S PROGRESS -->
                     <article class="stat-card">
 
                         <div class="stat-card-top">
-                            <span class="stat-label">Today's progress</span>
+
+                            <span class="stat-label">
+                                Today's progress
+                            </span>
+
                             <span class="stat-icon" aria-hidden="true">↗</span>
+
                         </div>
 
-                        <strong class="stat-number" id="todayProgressPercent">0%</strong>
+                        <strong class="stat-number" id="todayProgressPercent">
+                            0%
+                        </strong>
 
                         <div class="progress-track"
                              role="progressbar"
@@ -374,26 +374,41 @@
                     <div class="panel-heading">
 
                         <div>
+
                             <h2>Today's routine</h2>
-                            <p>Check off each habit as you complete it.</p>
+
+                            <p>
+                                Check off each habit as you complete it.
+                            </p>
+
                         </div>
 
                         <span class="date-badge" id="todayDateBadge"></span>
 
                     </div>
 
+                    <!-- HABIT LIST -->
                     <div class="habit-list" id="habitList">
 
                         <div class="habit-loading">
-                            <span class="loading-spinner" aria-hidden="true"></span>
+
+                            <span class="loading-spinner"
+                                  aria-hidden="true"></span>
+
                             <p>Loading your habits...</p>
+
                         </div>
 
                     </div>
 
-                    <div class="empty-state" id="emptyHabitsState" hidden>
+                    <!-- EMPTY HABITS STATE -->
+                    <div class="empty-state"
+                         id="emptyHabitsState"
+                         hidden>
 
-                        <div class="empty-state-icon" aria-hidden="true">↻</div>
+                        <div class="empty-state-icon" aria-hidden="true">
+                            ↻
+                        </div>
 
                         <h3>Your routine starts here</h3>
 
@@ -405,7 +420,9 @@
                         <button class="primary-button"
                                 id="emptyCreateHabitButton"
                                 type="button">
+
                             Create your first habit
+
                         </button>
 
                     </div>
@@ -422,8 +439,13 @@
                             aria-controls="archivedHabitsContainer">
 
                         <span>
+
                             <strong>Archived habits</strong>
-                            <small>Routines you've paused or finished</small>
+
+                            <small>
+                                Routines you've paused or finished
+                            </small>
+
                         </span>
 
                         <span class="toggle-arrow" aria-hidden="true">⌄</span>
@@ -432,12 +454,15 @@
 
                     <div id="archivedHabitsContainer" hidden>
 
-                        <div class="archived-list" id="archivedHabitList"></div>
+                        <div class="archived-list"
+                             id="archivedHabitList"></div>
 
                         <p class="archived-empty"
                            id="emptyArchivedState"
                            hidden>
+
                             You don't have any archived habits.
+
                         </p>
 
                     </div>
@@ -445,34 +470,54 @@
                 </section>
 
                 <!-- CREATE / EDIT HABIT MODAL -->
-                <div class="modal-backdrop" id="habitModal" hidden>
+                <div class="modal-backdrop"
+                     id="habitModal"
+                     hidden>
 
                     <section class="habit-modal"
                              role="dialog"
                              aria-modal="true"
                              aria-labelledby="habitModalTitle">
 
+                        <!-- MODAL HEADING -->
                         <div class="modal-heading">
 
                             <div>
-                                <span class="eyebrow">BUILD YOUR ROUTINE</span>
-                                <h2 id="habitModalTitle">Create a habit</h2>
-                                <p>Choose a habit you can work on consistently.</p>
+
+                                <span class="eyebrow">
+                                    BUILD YOUR ROUTINE
+                                </span>
+
+                                <h2 id="habitModalTitle">
+                                    Create a habit
+                                </h2>
+
+                                <p>
+                                    Choose a habit you can work on consistently.
+                                </p>
+
                             </div>
 
                             <button class="icon-button"
                                     id="closeHabitModalButton"
                                     type="button"
                                     aria-label="Close dialog">
+
                                 ×
+
                             </button>
 
                         </div>
 
+                        <!-- HABIT FORM -->
                         <form id="habitForm">
 
+                            <!-- HABIT NAME -->
                             <div class="form-field">
-                                <label for="habitTitle">Habit name</label>
+
+                                <label for="habitTitle">
+                                    Habit name
+                                </label>
 
                                 <input id="habitTitle"
                                        name="title"
@@ -481,10 +526,15 @@
                                        placeholder="e.g. Read for 20 minutes"
                                        required>
 
-                                <small>Give your habit a clear, specific name.</small>
+                                <small>
+                                    Give your habit a clear, specific name.
+                                </small>
+
                             </div>
 
+                            <!-- DESCRIPTION -->
                             <div class="form-field">
+
                                 <label for="habitDescription">
                                     Description <span>(optional)</span>
                                 </label>
@@ -493,65 +543,101 @@
                                           name="description"
                                           rows="3"
                                           placeholder="What would you like to accomplish?"></textarea>
+
                             </div>
 
+                            <!-- FREQUENCY -->
                             <div class="form-field">
-                                <label for="habitFrequency">Frequency</label>
+
+                                <label for="habitFrequency">
+                                    Frequency
+                                </label>
 
                                 <select id="habitFrequency"
                                         name="frequency"
                                         required>
 
-                                    <option value="daily">Every day</option>
-                                    <option value="weekdays">Weekdays only</option>
-                                    <option value="weekly">Weekly</option>
+                                    <option value="daily">
+                                        Every day
+                                    </option>
+
+                                    <option value="weekdays">
+                                        Weekdays only
+                                    </option>
+
+                                    <option value="weekly">
+                                        Weekly
+                                    </option>
 
                                 </select>
 
                                 <small id="frequencyHelp">
                                     Your habit will appear in your daily routine.
                                 </small>
+
                             </div>
 
+                            <!-- START DATE -->
                             <div class="form-field">
-                                <label for="habitStartDate">Start date</label>
+
+                                <label for="habitStartDate">
+                                    Start date
+                                </label>
 
                                 <input id="habitStartDate"
                                        name="startDate"
                                        type="date"
                                        required>
+
                             </div>
 
+                            <!-- STATUS -->
                             <div class="form-field"
                                  id="habitStatusField"
                                  hidden>
 
-                                <label for="habitStatus">Status</label>
+                                <label for="habitStatus">
+                                    Status
+                                </label>
 
-                                <select id="habitStatus" name="status">
-                                    <option value="active">Active</option>
-                                    <option value="archived">Archived</option>
+                                <select id="habitStatus"
+                                        name="status">
+
+                                    <option value="active">
+                                        Active
+                                    </option>
+
+                                    <option value="archived">
+                                        Archived
+                                    </option>
+
                                 </select>
 
                             </div>
 
+                            <!-- FORM ERROR -->
                             <div class="form-error"
                                  id="habitFormError"
                                  role="alert"
                                  hidden></div>
 
+                            <!-- FORM ACTIONS -->
                             <div class="modal-actions">
 
                                 <button class="secondary-button"
                                         id="cancelHabitButton"
                                         type="button">
+
                                     Cancel
+
                                 </button>
 
                                 <button class="primary-button"
                                         id="saveHabitButton"
                                         type="submit">
+
                                     Save habit
+
                                 </button>
 
                             </div>
@@ -563,45 +649,65 @@
                 </div>
 
                 <!-- HABIT HISTORY MODAL -->
-                <div class="modal-backdrop" id="historyModal" hidden>
+                <div class="modal-backdrop"
+                     id="historyModal"
+                     hidden>
 
                     <section class="habit-modal history-modal"
                              role="dialog"
                              aria-modal="true"
                              aria-labelledby="historyModalTitle">
 
+                        <!-- HISTORY HEADING -->
                         <div class="modal-heading">
 
                             <div>
-                                <span class="eyebrow">YOUR PROGRESS</span>
-                                <h2 id="historyModalTitle">Habit history</h2>
+
+                                <span class="eyebrow">
+                                    YOUR PROGRESS
+                                </span>
+
+                                <h2 id="historyModalTitle">
+                                    Habit history
+                                </h2>
 
                                 <p id="historyHabitDescription">
                                     Review your recorded completions.
                                 </p>
+
                             </div>
 
                             <button class="icon-button"
                                     id="closeHistoryModalButton"
                                     type="button"
                                     aria-label="Close history">
+
                                 ×
+
                             </button>
 
                         </div>
 
-                        <div class="history-summary" id="historySummary">
+                        <!-- HISTORY SUMMARY -->
+                        <div class="history-summary"
+                             id="historySummary">
+
                             Loading history...
+
                         </div>
 
-                        <div class="history-calendar" id="historyCalendar"></div>
+                        <!-- HISTORY CALENDAR -->
+                        <div class="history-calendar"
+                             id="historyCalendar"></div>
 
                     </section>
 
                 </div>
 
                 <!-- CONFIRMATION MODAL -->
-                <div class="modal-backdrop" id="confirmModal" hidden>
+                <div class="modal-backdrop"
+                     id="confirmModal"
+                     hidden>
 
                     <section class="habit-modal confirm-modal"
                              role="dialog"
@@ -609,15 +715,23 @@
                              aria-labelledby="confirmModalTitle">
 
                         <div class="modal-heading">
-                            <div>
-                                <span class="eyebrow">PLEASE CONFIRM</span>
 
-                                <h2 id="confirmModalTitle">Delete this habit?</h2>
+                            <div>
+
+                                <span class="eyebrow">
+                                    PLEASE CONFIRM
+                                </span>
+
+                                <h2 id="confirmModalTitle">
+                                    Delete this habit?
+                                </h2>
 
                                 <p id="confirmModalDescription">
                                     This action cannot be undone.
                                 </p>
+
                             </div>
+
                         </div>
 
                         <div class="modal-actions">
@@ -625,13 +739,17 @@
                             <button class="secondary-button"
                                     id="cancelConfirmButton"
                                     type="button">
+
                                 Cancel
+
                             </button>
 
                             <button class="danger-button"
                                     id="acceptConfirmButton"
                                     type="button">
+
                                 Delete habit
+
                             </button>
 
                         </div>
@@ -642,7 +760,11 @@
 
                 <!-- FOOTER -->
                 <footer class="habits-footer">
-                    <p>StudyTrack V2 · Progress through consistency.</p>
+
+                    <p>
+                        StudyTrack V2 · Progress through consistency.
+                    </p>
+
                 </footer>
 
             </main>
@@ -652,4 +774,5 @@
     </div>
 
 </body>
+
 </html>

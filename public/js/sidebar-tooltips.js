@@ -1,347 +1,573 @@
-/* =========================================================
-   STUDYTRACK V2 — GOALS SIDEBAR VISUAL FIXES
-   Purpose:
-   1. Show floating tooltips when the sidebar is collapsed.
-   2. Keep the collapsed StudyTrack branding compact.
-   3. Improve typography on the Goals page.
-   4. Leave dashboard functionality and backend unchanged.
-   ========================================================= */
+"use strict";
 
-document.addEventListener("DOMContentLoaded", function () {
-    "use strict";
+/**
 
-    // Identify this page so the styles affect Goals only.
-    document.body.classList.add("goals-document");
+* StudyTrack V2 — Shared Sidebar Tooltips
+*
+* Features:
+* * Cream background and racing-green text.
+* * Positions tooltips beside sidebar controls.
+* * Supports collapsed desktop sidebars.
+* * Supports mouse and keyboard navigation.
+* * Supports navigation links, profile shortcuts and logout.
+* * Repositions tooltips on scroll and resize.
+* * Prevents duplicate tooltips.
+* * Keeps tooltips within the browser viewport.
+    */
 
-    const sidebar = document.querySelector(".sidebar");
-    const appLayout = document.querySelector(".app-layout");
-    const tooltipTargets = [
-        ".nav-link[data-tooltip]",
-        ".profile-shortcut[data-tooltip]"
-    ].join(",");
+(() => {
+    const TOOLTIP_CLASS = "studytrack-sidebar-tooltip";
+    const TOOLTIP_STYLE_ID = "studytrack-sidebar-tooltip-styles";
+    const TOOLTIP_ID = "studytrack-sidebar-tooltip";
 
-    if (!sidebar) {
-        console.warn("StudyTrack: Sidebar not found.");
+  
+const TOOLTIP_BACKGROUND = "#F4FEF3";
+const TOOLTIP_TEXT = "#004225";
+const TOOLTIP_BORDER = "#C8D9CA";
+
+const desktopQuery = window.matchMedia("(min-width: 851px)");
+
+let tooltip = null;
+let activeTarget = null;
+let resizeObserver = null;
+let sidebarStateObserver = null;
+
+/*
+ * 1. INJECT TOOLTIP STYLES
+ */
+
+function injectStyles() {
+    let style = document.getElementById(TOOLTIP_STYLE_ID);
+
+    if (!style) {
+        style = document.createElement("style");
+        style.id = TOOLTIP_STYLE_ID;
+        document.head.appendChild(style);
+    }
+
+    style.textContent = `
+    body > .${ TOOLTIP_CLASS } {
+        position: fixed!important;
+        z - index: 100000!important;
+
+        display: none;
+        align - items: center;
+        justify - content: center;
+
+        width: max - content;
+        max - width: min(280px, calc(100vw - 24px));
+
+        box - sizing: border - box;
+        padding: 10px 14px;
+
+        background: ${ TOOLTIP_BACKGROUND };
+        color: ${ TOOLTIP_TEXT };
+
+        border: 1px solid ${ TOOLTIP_BORDER };
+        border - radius: 9px;
+
+        box - shadow: 0 6px 20px rgba(0, 30, 17, 0.18);
+
+        font - family: Arial, Helvetica, sans - serif;
+        font - size: 13px;
+        font - weight: 600;
+        line - height: 1.4;
+        letter - spacing: 0.01em;
+
+        white - space: normal;
+        overflow - wrap: anywhere;
+        text - align: left;
+
+        pointer - events: none;
+
+        opacity: 0;
+        visibility: hidden;
+
+        transform: translateX(-3px);
+
+        transition:
+                opacity 140ms ease,
+            transform 140ms ease,
+                visibility 140ms ease;
+    }
+
+    body > .${ TOOLTIP_CLASS }.is - visible {
+        display: flex!important;
+        opacity: 1!important;
+        visibility: visible!important;
+        transform: translateX(0);
+    }
+
+    body > .${ TOOLTIP_CLASS }::before {
+        content: "";
+
+        position: absolute;
+        top: 50 %;
+        left: -6px;
+
+        width: 10px;
+        height: 10px;
+
+        background: ${ TOOLTIP_BACKGROUND };
+
+        border - left: 1px solid ${ TOOLTIP_BORDER };
+        border - bottom: 1px solid ${ TOOLTIP_BORDER };
+
+        transform: translateY(-50 %) rotate(45deg);
+    }
+
+    @media(prefers - reduced - motion: reduce) {
+        body > .${ TOOLTIP_CLASS } {
+            transition: none;
+        }
+    }
+    `;
+}
+
+/*
+ * 2. CREATE THE TOOLTIP ELEMENT
+ */
+
+function createTooltip() {
+    const existing = document.getElementById(TOOLTIP_ID);
+
+    if (existing) {
+        tooltip = existing;
+
+        /*
+         * Keep the tooltip directly under body.
+         * This prevents sidebar overflow rules from clipping it.
+         */
+
+        if (tooltip.parentElement !== document.body) {
+            document.body.appendChild(tooltip);
+        }
+
+        tooltip.classList.add(TOOLTIP_CLASS);
+        tooltip.setAttribute("role", "tooltip");
+
         return;
     }
 
-    /* =====================================================
-       GOALS PAGE VISUAL STYLES
-       ===================================================== */
+    tooltip = document.createElement("div");
 
-    const style = document.createElement("style");
-
-    style.textContent = `
-        /* Improve the Goals page typography. */
-        body.goals-document {
-            font-size: 16px;
-        }
-
-        body.goals-document .sidebar {
-            overflow-x: hidden;
-        }
-
-        body.goals-document .nav-link,
-        body.goals-document .profile-shortcut,
-        body.goals-document .sidebar-logout {
-            font-size: 16px;
-        }
-
-        /* Keep the Goals branding compact when collapsed. */
-        @media (min-width: 851px) {
-            body.goals-document .sidebar.sidebar-collapsed .brand,
-            body.goals-document .sidebar-collapsed .sidebar .brand {
-                justify-content: center;
-                gap: 0;
-            }
-
-            body.goals-document .sidebar.sidebar-collapsed .brand-copy,
-            body.goals-document .sidebar-collapsed .sidebar .brand-copy,
-            body.goals-document .sidebar.sidebar-collapsed .brand-name,
-            body.goals-document .sidebar-collapsed .sidebar .brand-name {
-                display: none !important;
-            }
-
-            body.goals-document .sidebar.sidebar-collapsed .brand-mark,
-            body.goals-document .sidebar-collapsed .sidebar .brand-mark {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                margin: 0 auto;
-            }
-
-            body.goals-document .sidebar.sidebar-collapsed .nav-link,
-            body.goals-document .sidebar-collapsed .sidebar .nav-link,
-            body.goals-document .sidebar.sidebar-collapsed .profile-shortcut,
-            body.goals-document .sidebar-collapsed .sidebar .profile-shortcut,
-            body.goals-document .sidebar.sidebar-collapsed .sidebar-logout,
-            body.goals-document .sidebar-collapsed .sidebar .sidebar-logout {
-                justify-content: center;
-            }
-
-            body.goals-document .sidebar.sidebar-collapsed .nav-label,
-            body.goals-document .sidebar-collapsed .sidebar .nav-label,
-            body.goals-document .sidebar.sidebar-collapsed .profile-shortcut-copy,
-            body.goals-document .sidebar-collapsed .sidebar .profile-shortcut-copy {
-                display: none !important;
-            }
-        }
-
-        /* Floating tooltips are attached to the document,
-           not confined inside the sidebar. */
-        .sidebar-floating-tooltip {
-            position: fixed;
-            z-index: 999999;
-            display: none;
-            max-width: 220px;
-            padding: 9px 13px;
-            border-radius: 7px;
-            background: #f5f0e6;
-            color: #004225;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            line-height: 1.4;
-            white-space: nowrap;
-            overflow-wrap: normal;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.22);
-            pointer-events: none;
-        }
-
-        .sidebar-floating-tooltip.is-visible {
-            display: block;
-        }
-
-        .sidebar-floating-tooltip::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: -5px;
-            width: 10px;
-            height: 10px;
-            background: inherit;
-            transform: translateY(-50%) rotate(45deg);
-        }
-
-        /* Do not display the custom tooltips on small screens. */
-        @media (max-width: 850px) {
-            .sidebar-floating-tooltip {
-                display: none !important;
-            }
-        }
-    `;
-
-    document.head.appendChild(style);
-
-    /* =====================================================
-       CREATE ONE FLOATING TOOLTIP
-       ===================================================== */
-
-    const tooltip = document.createElement("div");
-
-    tooltip.className = "sidebar-floating-tooltip";
+    tooltip.id = TOOLTIP_ID;
+    tooltip.className = TOOLTIP_CLASS;
     tooltip.setAttribute("role", "tooltip");
     tooltip.setAttribute("aria-hidden", "true");
 
     document.body.appendChild(tooltip);
+}
 
-    let activeTarget = null;
-    let positionFrame = null;
+/*
+ * 3. FIND THE SIDEBAR AND ITS COLLAPSED STATE
+ */
 
-    function isSidebarCollapsed() {
-        const desktop = window.matchMedia("(min-width: 851px)").matches;
+function getSidebar() {
+    return document.querySelector(".sidebar");
+}
 
-        if (!desktop) {
-            return false;
-        }
+function getLayout() {
+    return document.querySelector(".app-layout");
+}
 
-        return Boolean(
+function isCollapsedDesktop() {
+    if (!desktopQuery.matches) {
+        return false;
+    }
+
+    const sidebar = getSidebar();
+    const layout = getLayout();
+
+    return Boolean(
+        sidebar &&
+        (
             sidebar.classList.contains("sidebar-collapsed") ||
-            (appLayout &&
-                appLayout.classList.contains("sidebar-collapsed"))
-        );
+            (
+                layout &&
+                layout.classList.contains("sidebar-collapsed")
+            )
+        )
+    );
+}
+
+/*
+ * 4. GET THE TOOLTIP LABEL
+ */
+
+function getTooltipText(target) {
+    if (!target) {
+        return "";
     }
 
-    function hideTooltip() {
-        activeTarget = null;
+    const explicitTooltip = target.getAttribute("data-tooltip");
 
-        tooltip.classList.remove("is-visible");
-        tooltip.setAttribute("aria-hidden", "true");
-        tooltip.textContent = "";
-
-        if (positionFrame !== null) {
-            cancelAnimationFrame(positionFrame);
-            positionFrame = null;
-        }
+    if (explicitTooltip && explicitTooltip.trim()) {
+        return explicitTooltip.trim();
     }
 
-    function positionTooltip(target) {
-        if (!target || !target.isConnected) {
-            hideTooltip();
-            return;
-        }
+    const label = target.querySelector(
+        ".nav-label, " +
+        ".nav-link-text, " +
+        ".profile-shortcut-text, " +
+        ".sidebar-logout-text"
+    );
 
-        const label = target.getAttribute("data-tooltip");
-
-        if (!label || !isSidebarCollapsed()) {
-            hideTooltip();
-            return;
-        }
-
-        const rect = target.getBoundingClientRect();
-
-        tooltip.textContent = label;
-        tooltip.style.display = "block";
-        tooltip.classList.add("is-visible");
-
-        const tooltipRect = tooltip.getBoundingClientRect();
-
-        let left = rect.right + 12;
-        let top = rect.top + (rect.height - tooltipRect.height) / 2;
-
-        // Keep the tooltip inside the visible browser window.
-        const rightLimit = window.innerWidth - tooltipRect.width - 12;
-        const bottomLimit = window.innerHeight - tooltipRect.height - 12;
-
-        if (left > rightLimit) {
-            left = Math.max(12, rightLimit);
-        }
-
-        if (top > bottomLimit) {
-            top = bottomLimit;
-        }
-
-        if (top < 12) {
-            top = 12;
-        }
-
-        tooltip.style.left = left + "px";
-        tooltip.style.top = top + "px";
-        tooltip.setAttribute("aria-hidden", "false");
+    if (label && label.textContent.trim()) {
+        return label.textContent.trim();
     }
 
-    function showTooltip(target) {
-        if (!target || !target.matches(tooltipTargets)) {
-            hideTooltip();
-            return;
-        }
+    return target.getAttribute("aria-label") || "";
+}
 
-        if (!isSidebarCollapsed()) {
-            hideTooltip();
-            return;
-        }
+/*
+ * 5. POSITION THE TOOLTIP
+ */
 
-        const label = target.getAttribute("data-tooltip");
-
-        if (!label) {
-            hideTooltip();
-            return;
-        }
-
-        activeTarget = target;
-        positionTooltip(target);
+function positionTooltip(target) {
+    if (!tooltip || !target || !target.isConnected) {
+        return;
     }
 
-    function scheduleTooltipPosition() {
-        if (!activeTarget || positionFrame !== null) {
-            return;
-        }
+    const targetRect = target.getBoundingClientRect();
 
-        positionFrame = requestAnimationFrame(function () {
-            positionFrame = null;
+    const viewportPadding = 12;
+    const preferredGap = 14;
 
-            if (activeTarget) {
-                positionTooltip(activeTarget);
-            }
-        });
+    /*
+     * Make the tooltip measurable before positioning it.
+     */
+
+    tooltip.style.display = "flex";
+    tooltip.style.left = "0px";
+    tooltip.style.top = "0px";
+
+    const tooltipRect = tooltip.getBoundingClientRect();
+
+    /*
+     * Prefer placing the tooltip to the right of the icon.
+     */
+
+    const maximumLeft = Math.max(
+        viewportPadding,
+        window.innerWidth -
+            tooltipRect.width -
+            viewportPadding
+    );
+
+    let left = targetRect.right + preferredGap;
+
+    /*
+     * If there is insufficient room on the right,
+     * position it to the left of the target.
+     */
+
+    if (
+        left + tooltipRect.width >
+        window.innerWidth - viewportPadding
+    ) {
+        left =
+            targetRect.left -
+            tooltipRect.width -
+            preferredGap;
     }
 
-    /* =====================================================
-       MOUSE AND KEYBOARD INTERACTIONS
-       ===================================================== */
+    left = Math.max(
+        viewportPadding,
+        Math.min(left, maximumLeft)
+    );
 
-    document.addEventListener("pointerover", function (event) {
-        const target = event.target.closest(tooltipTargets);
+    /*
+     * Centre the tooltip vertically beside its icon.
+     */
 
-        if (!target) {
-            return;
-        }
+    const maximumTop = Math.max(
+        viewportPadding,
+        window.innerHeight -
+            tooltipRect.height -
+            viewportPadding
+    );
 
-        // Ignore movement between children of the same link.
-        if (event.relatedTarget && target.contains(event.relatedTarget)) {
-            return;
-        }
+    let top =
+        targetRect.top +
+        targetRect.height / 2 -
+        tooltipRect.height / 2;
 
+    top = Math.max(
+        viewportPadding,
+        Math.min(top, maximumTop)
+    );
+
+    tooltip.style.left = `${ Math.round(left) } px`;
+    tooltip.style.top = `${ Math.round(top) } px`;
+}
+
+/*
+ * 6. SHOW THE TOOLTIP
+ */
+
+function showTooltip(target) {
+    if (!tooltip || !target || !target.isConnected) {
+        hideTooltip();
+        return;
+    }
+
+    if (!isCollapsedDesktop()) {
+        hideTooltip();
+        return;
+    }
+
+    const text = getTooltipText(target);
+
+    if (!text) {
+        hideTooltip();
+        return;
+    }
+
+    /*
+     * Remove the accessibility association from
+     * the previous target, if there was one.
+     */
+
+    if (
+        activeTarget &&
+        activeTarget !== target &&
+        activeTarget.getAttribute("aria-describedby") === TOOLTIP_ID
+    ) {
+        activeTarget.removeAttribute("aria-describedby");
+    }
+
+    activeTarget = target;
+
+    tooltip.textContent = text;
+    tooltip.setAttribute("aria-hidden", "false");
+
+    target.setAttribute("aria-describedby", TOOLTIP_ID);
+
+    tooltip.classList.add("is-visible");
+
+    positionTooltip(target);
+}
+
+/*
+ * 7. HIDE THE TOOLTIP
+ */
+
+function hideTooltip(target) {
+    /*
+     * Do not hide another target's tooltip when a delayed
+     * mouse or focus event comes from a different control.
+     */
+
+    if (
+        target &&
+        activeTarget &&
+        target !== activeTarget
+    ) {
+        return;
+    }
+
+    if (!tooltip) {
+        return;
+    }
+
+    if (
+        activeTarget &&
+        activeTarget.getAttribute("aria-describedby") === TOOLTIP_ID
+    ) {
+        activeTarget.removeAttribute("aria-describedby");
+    }
+
+    activeTarget = null;
+
+    tooltip.classList.remove("is-visible");
+    tooltip.setAttribute("aria-hidden", "true");
+    tooltip.style.display = "none";
+}
+
+/*
+ * 8. REFRESH THE CURRENT TOOLTIP
+ */
+
+function refreshTooltip() {
+    if (!activeTarget) {
+        return;
+    }
+
+    if (
+        !activeTarget.isConnected ||
+        !isCollapsedDesktop()
+    ) {
+        hideTooltip();
+        return;
+    }
+
+    positionTooltip(activeTarget);
+}
+
+/*
+ * 9. ATTACH MOUSE AND KEYBOARD EVENTS
+ */
+
+function attachTooltipEvents(target) {
+    if (target.dataset.tooltipInitialized === "true") {
+        return;
+    }
+
+    target.dataset.tooltipInitialized = "true";
+
+    target.addEventListener("mouseenter", () => {
         showTooltip(target);
     });
 
-    document.addEventListener("pointerout", function (event) {
-        if (!activeTarget) {
-            return;
-        }
+    target.addEventListener("mouseleave", () => {
+        hideTooltip(target);
+    });
 
-        if (
-            event.target === activeTarget ||
-            activeTarget.contains(event.target)
-        ) {
-            if (
-                event.relatedTarget &&
-                activeTarget.contains(event.relatedTarget)
-            ) {
-                return;
+    target.addEventListener("focusin", () => {
+        showTooltip(target);
+    });
+
+    target.addEventListener("focusout", () => {
+        window.setTimeout(() => {
+            if (!target.contains(document.activeElement)) {
+                hideTooltip(target);
             }
-
-            hideTooltip();
-        }
+        }, 0);
     });
 
-    document.addEventListener("focusin", function (event) {
-        const target = event.target.closest(tooltipTargets);
-
-        if (target) {
-            showTooltip(target);
-        }
+    target.addEventListener("click", () => {
+        hideTooltip(target);
     });
+}
 
-    document.addEventListener("focusout", function (event) {
-        if (activeTarget && activeTarget.contains(event.target)) {
-            hideTooltip();
-        }
-    });
+/*
+ * 10. INITIALISE ALL SIDEBAR TOOLTIP TARGETS
+ */
 
-    // Reposition the tooltip if the browser window changes.
-    window.addEventListener("resize", function () {
-        if (!isSidebarCollapsed()) {
-            hideTooltip();
-            return;
-        }
+function initialiseTooltips() {
+    injectStyles();
+    createTooltip();
 
-        scheduleTooltipPosition();
-    });
+    const sidebar = getSidebar();
 
-    window.addEventListener("scroll", scheduleTooltipPosition, true);
+    if (!sidebar) {
+        console.warn(
+            "StudyTrack: Sidebar not found; tooltips were not attached."
+        );
 
-    // Hide tooltips if the sidebar expands or the theme/layout changes.
-    const observer = new MutationObserver(function () {
-        if (!isSidebarCollapsed()) {
+        return;
+    }
+
+    const targets = sidebar.querySelectorAll(
+        ".nav-link[data-tooltip], " +
+        ".profile-shortcut[data-tooltip], " +
+        ".sidebar-logout[data-tooltip]"
+    );
+
+    targets.forEach(attachTooltipEvents);
+
+    /*
+     * Observe sidebar size changes so the tooltip
+     * remains beside the correct control.
+     */
+
+    if (resizeObserver) {
+        resizeObserver.disconnect();
+    }
+
+    if ("ResizeObserver" in window) {
+        resizeObserver = new ResizeObserver(() => {
+            refreshTooltip();
+        });
+
+        resizeObserver.observe(sidebar);
+    }
+
+    refreshTooltip();
+}
+
+/*
+ * 11. WATCH SIDEBAR STATE CHANGES
+ */
+
+function observeSidebarState() {
+    if (!("MutationObserver" in window)) {
+        return;
+    }
+
+    if (sidebarStateObserver) {
+        sidebarStateObserver.disconnect();
+    }
+
+    sidebarStateObserver = new MutationObserver(() => {
+        if (!isCollapsedDesktop()) {
             hideTooltip();
         } else {
-            scheduleTooltipPosition();
+            refreshTooltip();
         }
     });
 
-    observer.observe(sidebar, {
-        attributes: true,
-        attributeFilter: ["class"]
-    });
+    const sidebar = getSidebar();
+    const layout = getLayout();
 
-    if (appLayout) {
-        observer.observe(appLayout, {
+    if (sidebar) {
+        sidebarStateObserver.observe(sidebar, {
             attributes: true,
             attributeFilter: ["class"]
         });
     }
 
-    console.log("StudyTrack: Goals sidebar visual fixes initialized.");
-});
+    if (layout) {
+        sidebarStateObserver.observe(layout, {
+            attributes: true,
+            attributeFilter: ["class"]
+        });
+    }
+}
+
+/*
+ * 12. START THE TOOLTIP SYSTEM
+ */
+
+function initialise() {
+    initialiseTooltips();
+    observeSidebarState();
+
+    window.addEventListener("resize", refreshTooltip);
+
+    window.addEventListener(
+        "scroll",
+        refreshTooltip,
+        true
+    );
+
+    if (typeof desktopQuery.addEventListener === "function") {
+        desktopQuery.addEventListener("change", () => {
+            hideTooltip();
+            refreshTooltip();
+        });
+    } else if (typeof desktopQuery.addListener === "function") {
+        desktopQuery.addListener(() => {
+            hideTooltip();
+            refreshTooltip();
+        });
+    }
+
+    console.info(
+        "StudyTrack: Shared sidebar tooltips initialized."
+    );
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener(
+        "DOMContentLoaded",
+        initialise,
+        { once: true }
+    );
+} else {
+    initialise();
+}
+
+
+})();

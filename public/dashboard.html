@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
 
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
@@ -18,13 +16,10 @@
     <link rel="stylesheet" href="css/dashboard.css">
 
     <script src="js/dashboard.js" defer></script>
-    
-
 </head>
 
 <body>
 
-    
     <!-- =====================================================
          APPLICATION LAYOUT
          ===================================================== -->
@@ -50,11 +45,9 @@
 
             </a>
 
-
             <div class="sidebar-section-label">
                 WORKSPACE
             </div>
-
 
             <nav class="sidebar-navigation" aria-label="Main navigation">
 
@@ -64,68 +57,58 @@
                    data-tooltip="Dashboard">
 
                     <span class="nav-icon" aria-hidden="true">⌂</span>
-
                     <span>Dashboard</span>
 
                 </a>
-
 
                 <a href="/goals.html"
                    class="nav-link"
                    data-tooltip="My Goals">
 
                     <span class="nav-icon" aria-hidden="true">◎</span>
-
                     <span>My Goals</span>
 
                 </a>
-
 
                 <a href="/habits.html"
                    class="nav-link"
                    data-tooltip="Habits">
 
                     <span class="nav-icon" aria-hidden="true">↻</span>
-
                     <span>Habits</span>
 
                 </a>
-
 
                 <a href="/tasks.html"
                    class="nav-link"
                    data-tooltip="Tasks">
 
                     <span class="nav-icon" aria-hidden="true">☷</span>
-
                     <span>Tasks</span>
 
                 </a>
-
 
                 <a href="/reminders.html"
                    class="nav-link"
                    data-tooltip="Reminders">
 
                     <span class="nav-icon" aria-hidden="true">♧</span>
-
                     <span>Reminders</span>
 
                 </a>
-
 
                 <a href="/focus.html"
                    class="nav-link"
                    data-tooltip="Focus Timer">
 
                     <span class="nav-icon" aria-hidden="true">◷</span>
-
                     <span>Focus Timer</span>
 
                 </a>
 
             </nav>
 
+            <!-- SIDEBAR BOTTOM AREA -->
 
             <div class="sidebar-bottom">
 
@@ -141,14 +124,13 @@
 
                 </div>
 
+                <!-- PROFILE SHORTCUT -->
 
                 <a href="/profile.html"
                    class="profile-shortcut"
                    data-tooltip="View your profile">
 
-                    <span class="profile-avatar" id="sidebarAvatar">
-                        S
-                    </span>
+                    <span class="profile-avatar" id="sidebarAvatar">S</span>
 
                     <span class="profile-shortcut-text">
 
@@ -164,10 +146,24 @@
 
                 </a>
 
+                <!-- LOGOUT BUTTON
+                     Positioned below View your profile.
+                     The existing logoutButton ID is preserved. -->
+
+                <button type="button"
+                        class="logout-button sidebar-logout"
+                        id="logoutButton"
+                        data-tooltip="Log out">
+
+                    <span class="nav-icon" aria-hidden="true">↪</span>
+
+                    <span class="sidebar-logout-text">Log out</span>
+
+                </button>
+
             </div>
 
         </aside>
-
 
         <!-- =================================================
              MAIN APPLICATION AREA
@@ -175,9 +171,7 @@
 
         <div class="main-area">
 
-            <!-- =================================================
-                 HEADER
-                 ================================================= -->
+            <!-- HEADER -->
 
             <header class="topbar">
 
@@ -196,7 +190,6 @@
 
                     </button>
 
-
                     <div class="breadcrumb">
 
                         <span>Workspace</span>
@@ -209,7 +202,6 @@
 
                 </div>
 
-
                 <div class="topbar-right">
 
                     <div class="date-display">
@@ -221,7 +213,6 @@
                         </span>
 
                     </div>
-
 
                     <!-- DAY / NIGHT THEME SELECTOR -->
 
@@ -240,7 +231,6 @@
 
                         </button>
 
-
                         <button type="button"
                                 class="theme-option"
                                 id="nightThemeButton"
@@ -254,30 +244,13 @@
 
                     </div>
 
-
-                    <!--
-                        TEMPORARY LOGOUT BUTTON
-
-                        This remains here until the Profile page
-                        is ready to receive the logout functionality.
-                    -->
-
-                    <button type="button"
-                            class="logout-button"
-                            id="logoutButton">
-
-                        Log out
-
-                    </button>
+                    <!-- LOGOUT HAS BEEN MOVED TO THE SIDEBAR -->
 
                 </div>
 
             </header>
 
-
-            <!-- =================================================
-                 PAGE CONTENT
-                 ================================================= -->
+            <!-- PAGE CONTENT -->
 
             <main class="dashboard-content">
 
@@ -304,7 +277,6 @@
 
                     </div>
 
-
                     <div class="welcome-decoration" aria-hidden="true">
 
                         <div class="decoration-circle decoration-circle-one"></div>
@@ -317,7 +289,6 @@
 
                 </section>
 
-
                 <!-- SESSION STATUS -->
 
                 <div class="status-message"
@@ -325,7 +296,6 @@
                      role="status"
                      aria-live="polite"
                      hidden></div>
-
 
                 <!-- QUICK OVERVIEW -->
 
@@ -349,7 +319,6 @@
                         </p>
 
                     </div>
-
 
                     <div class="overview-grid">
 
@@ -380,7 +349,6 @@
 
                         </article>
 
-
                         <!-- HABITS CARD -->
 
                         <article class="overview-card">
@@ -408,7 +376,6 @@
 
                         </article>
 
-
                         <!-- TASKS CARD -->
 
                         <article class="overview-card">
@@ -435,7 +402,6 @@
                             </a>
 
                         </article>
-
 
                         <!-- FOCUS CARD -->
 
@@ -468,7 +434,6 @@
 
                 </section>
 
-
                 <!-- GETTING STARTED -->
 
                 <section class="getting-started-section">
@@ -477,7 +442,6 @@
 
                         <div class="getting-started-icon"
                              aria-hidden="true">✦</div>
-
 
                         <div class="getting-started-copy">
 
@@ -495,7 +459,6 @@
 
                         </div>
 
-
                         <a href="/goals.html" class="primary-button">
                             Explore your goals
                             <span aria-hidden="true">→</span>
@@ -504,7 +467,6 @@
                     </div>
 
                 </section>
-
 
                 <!-- ACCOUNT INFORMATION -->
 
@@ -529,7 +491,6 @@
 
                         </div>
 
-
                         <div class="account-detail">
 
                             <span>Full name</span>
@@ -539,7 +500,6 @@
                             </strong>
 
                         </div>
-
 
                         <div class="account-detail">
 
@@ -551,7 +511,6 @@
 
                         </div>
 
-
                         <a href="/profile.html" class="account-profile-link">
                             View profile <span aria-hidden="true">→</span>
                         </a>
@@ -559,7 +518,6 @@
                     </div>
 
                 </section>
-
 
                 <!-- FOOTER -->
 
@@ -582,7 +540,6 @@
         </div>
 
     </div>
-    
 
 </body>
 

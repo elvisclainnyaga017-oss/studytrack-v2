@@ -3,21 +3,18 @@
    GOALS PAGE STYLESHEET
    Dashboard-aligned typography and shared design system
    ========================================================= */
-
-
 /* =========================================================
    1. GOALS HEADER AND SIDEBAR COMPATIBILITY
    ========================================================= */
-
 .goals-document .brand-copy {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-    .goals-document .brand-copy small {
-        display: block;
-    }
+.goals-document .brand-copy small {
+    display: block;
+}
 
 .goals-document .profile-shortcut-copy {
     min-width: 0;
@@ -31,12 +28,14 @@
         white-space: nowrap;
     }
 
+/* Sidebar logout button */
 .goals-document .sidebar-logout {
     display: flex;
     align-items: center;
     gap: 13px;
     width: 100%;
     min-height: 43px;
+    margin-top: 12px;
     padding: 0 13px;
     border: 1px solid transparent;
     border-radius: 11px;
@@ -72,19 +71,46 @@
         white-space: nowrap;
     }
 
-.goals-document .sidebar-collapsed .sidebar-logout {
+/*
+   COLLAPSED SIDEBAR FIXES
+
+   The shared sidebar JavaScript applies the
+   sidebar-collapsed class to the app-layout element.
+*/
+
+/* Keep the logo visible and hide the brand wording. */
+.goals-document .app-layout.sidebar-collapsed .brand-copy,
+.goals-document .app-layout.sidebar-collapsed .brand-name,
+.goals-document .app-layout.sidebar-collapsed .brand small {
+    display: none !important;
+}
+
+/* Center the logout button when the sidebar is collapsed. */
+.goals-document .app-layout.sidebar-collapsed .sidebar-logout {
     justify-content: center;
+    gap: 0;
     padding-right: 0;
     padding-left: 0;
 }
 
-    .goals-document .sidebar-collapsed .sidebar-logout > span:last-child {
-        display: none;
+    /* Hide the logout wording but retain the existing icon. */
+    .goals-document .app-layout.sidebar-collapsed .sidebar-logout > span:last-child {
+        display: none !important;
     }
 
+/* Also support pages where the collapsed class is on the sidebar. */
+.goals-document .sidebar.sidebar-collapsed .sidebar-logout {
+    justify-content: center;
+    gap: 0;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+    .goals-document .sidebar.sidebar-collapsed .sidebar-logout > span:last-child {
+        display: none !important;
+    }
 
 /* Hamburger button */
-
 .goals-document .menu-button {
     display: flex;
     align-items: center;
@@ -200,12 +226,15 @@
 }
 
 
-/* Prevent duplicate sidebar tooltips */
+/* Prevent duplicate CSS tooltips.
+   The shared JavaScript supplies the collapsed-sidebar tooltips. */
 
 .goals-document .sidebar .nav-link[data-tooltip]::before,
 .goals-document .sidebar .nav-link[data-tooltip]::after,
 .goals-document .sidebar .profile-shortcut[data-tooltip]::before,
-.goals-document .sidebar .profile-shortcut[data-tooltip]::after {
+.goals-document .sidebar .profile-shortcut[data-tooltip]::after,
+.goals-document .sidebar .sidebar-logout[data-tooltip]::before,
+.goals-document .sidebar .sidebar-logout[data-tooltip]::after {
     display: none !important;
 }
 
@@ -1274,3 +1303,5 @@
         transition-duration: 0.01ms !important;
     }
 }
+
+

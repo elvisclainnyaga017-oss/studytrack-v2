@@ -54,7 +54,6 @@ Preserves existing Habits functionality.
     display: none !important;
 }
 
-
 /* ==================================================
    2. HEADER AND BREADCRUMB
 ================================================== */
@@ -186,6 +185,7 @@ Preserves existing Habits functionality.
 /* ==================================================
    3. SIDEBAR
 ================================================== */
+
 /*
 The shared dashboard.css stylesheet controls the sidebar's:
 - Width and background
@@ -199,17 +199,18 @@ The shared dashboard.css stylesheet controls the sidebar's:
 
 Avoid redefining these styles in habits.css.
 */
+
 .sidebar-navigation {
     min-width: 0;
 }
 
-.sidebar-navigation .nav-link {
-    position: relative;
-}
-
-    .sidebar-navigation .nav-link > span:not(.nav-icon) {
-        min-width: 0;
+    .sidebar-navigation .nav-link {
+        position: relative;
     }
+
+        .sidebar-navigation .nav-link > span:not(.nav-icon) {
+            min-width: 0;
+        }
 
 .sidebar-bottom {
     margin-top: auto;
@@ -229,21 +230,21 @@ Avoid redefining these styles in habits.css.
         white-space: nowrap;
     }
 
-
 /* ==================================================
    4. SIDEBAR TOOLTIP OVERRIDES
 ================================================== */
 
 /*
-Intentionally no tooltip overrides here.
+The shared sidebar-tooltips.js script handles floating
+tooltip placement when the sidebar is collapsed.
 
-The shared dashboard.css stylesheet should supply the
-same tooltip styling on Dashboard and Habits.
+Avoid adding competing fixed-position tooltip rules here.
 */
 
 /* ==================================================
    5. PAGE INTRODUCTION
 ================================================== */
+
 .habits-heading {
     display: flex;
     align-items: flex-end;
@@ -283,7 +284,6 @@ same tooltip styling on Dashboard and Habits.
     font-size: 16px;
     line-height: 1.8;
 }
-
 
 /* ==================================================
    6. BUTTONS
@@ -352,7 +352,6 @@ same tooltip styling on Dashboard and Habits.
         box-shadow: none;
     }
 
-
 /* ==================================================
    7. STATUS MESSAGES
 ================================================== */
@@ -380,7 +379,6 @@ same tooltip styling on Dashboard and Habits.
         background: var(--danger-background);
         color: var(--danger);
     }
-
 
 /* ==================================================
    8. HABIT STATISTICS
@@ -455,7 +453,6 @@ same tooltip styling on Dashboard and Habits.
     line-height: 1.7;
 }
 
-
 /* ==================================================
    9. PROGRESS BAR
 ================================================== */
@@ -478,7 +475,6 @@ same tooltip styling on Dashboard and Habits.
     background: var(--green-600);
     transition: width 350ms ease;
 }
-
 
 /* ==================================================
    10. HABITS PANELS
@@ -533,7 +529,6 @@ same tooltip styling on Dashboard and Habits.
     white-space: nowrap;
 }
 
-
 /* ==================================================
    11. HABIT LIST AND LOADING STATE
 ================================================== */
@@ -578,7 +573,6 @@ same tooltip styling on Dashboard and Habits.
         transform: rotate(360deg);
     }
 }
-
 
 /* ==================================================
    12. HABIT CARDS
@@ -663,7 +657,6 @@ same tooltip styling on Dashboard and Habits.
         color: var(--text-muted);
     }
 
-
 /* ==================================================
    13. COMPLETION BUTTON
 ================================================== */
@@ -704,7 +697,6 @@ same tooltip styling on Dashboard and Habits.
         font-weight: 800;
         line-height: 1;
     }
-
 
 /* ==================================================
    14. HABIT ACTIONS
@@ -753,7 +745,6 @@ same tooltip styling on Dashboard and Habits.
         background: var(--surface-soft);
         color: var(--text-primary);
     }
-
 
 /* ==================================================
    15. EMPTY STATES
@@ -806,7 +797,6 @@ same tooltip styling on Dashboard and Habits.
     font-size: 15px;
     text-align: center;
 }
-
 
 /* ==================================================
    16. ARCHIVED HABITS SECTION
@@ -877,7 +867,6 @@ same tooltip styling on Dashboard and Habits.
     padding: 0 27px 27px;
 }
 
-
 /* ==================================================
    17. MODAL BACKDROP
 ================================================== */
@@ -910,7 +899,6 @@ same tooltip styling on Dashboard and Habits.
 body.modal-open {
     overflow: hidden;
 }
-
 
 /* ==================================================
    18. MODAL WINDOWS
@@ -985,7 +973,6 @@ body.modal-open {
         padding: 0;
         font-size: 25px;
     }
-
 
 /* ==================================================
    19. FORM FIELDS
@@ -1080,7 +1067,6 @@ body.modal-open {
     overflow-wrap: anywhere;
 }
 
-
 /* ==================================================
    20. MODAL ACTIONS
 ================================================== */
@@ -1107,7 +1093,6 @@ body.modal-open {
     .confirm-modal .modal-heading {
         margin-bottom: 28px;
     }
-
 
 /* ==================================================
    21. HISTORY MODAL
@@ -1197,7 +1182,6 @@ body.modal-open {
     font-size: 13px;
 }
 
-
 /* ==================================================
    22. PAGE FOOTER
 ================================================== */
@@ -1213,7 +1197,6 @@ body.modal-open {
         font-size: 13px;
         line-height: 1.8;
     }
-
 
 /* ==================================================
    23. NIGHT THEME
@@ -1265,7 +1248,6 @@ body.modal-open {
     background: #286d48;
     color: #ffffff;
 }
-
 
 /* ==================================================
    24. RESPONSIVE LAYOUT
@@ -1564,7 +1546,6 @@ body.modal-open {
         }
 }
 
-
 /* ==================================================
    25. REDUCED MOTION ACCESSIBILITY
 ================================================== */
@@ -1580,6 +1561,103 @@ body.modal-open {
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==================================================
+   26. SIDEBAR LOGOUT BUTTON
+================================================== */
+
+.sidebar .sidebar-logout {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-height: 43px;
+    margin-top: 10px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: #d5e5da;
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+    .sidebar .sidebar-logout:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+    }
+
+    .sidebar .sidebar-logout:focus-visible {
+        outline: 2px solid #a8cbb6;
+        outline-offset: 2px;
+    }
+
+    .sidebar .sidebar-logout:disabled {
+        cursor: wait;
+        opacity: 0.7;
+    }
+
+/*
+When the app layout is collapsed:
+- Keep the logout icon visible.
+- Hide the logout text.
+- Center the icon.
+- Do not create a duplicate icon with ::before.
+*/
+
+.app-layout.sidebar-collapsed .sidebar .sidebar-logout {
+    justify-content: center;
+    gap: 0;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+    .app-layout.sidebar-collapsed .sidebar .sidebar-logout .sidebar-logout-text {
+        display: none !important;
+    }
+
+    .app-layout.sidebar-collapsed .sidebar .sidebar-logout .nav-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        font-size: 19px;
+        line-height: 1;
+    }
+
+/* Support layouts that put the collapsed class directly on the sidebar. */
+
+.sidebar.sidebar-collapsed .sidebar-logout {
+    justify-content: center;
+    gap: 0;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+    .sidebar.sidebar-collapsed .sidebar-logout .sidebar-logout-text {
+        display: none !important;
+    }
+
+    .sidebar.sidebar-collapsed .sidebar-logout .nav-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        font-size: 19px;
+        line-height: 1;
+    }
+
+/* Keep the logout button comfortable to use on smaller screens. */
+
+@media (max-width: 850px) {
+    .sidebar .sidebar-logout {
+        min-height: 45px;
     }
 }
 
