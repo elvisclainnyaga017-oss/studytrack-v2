@@ -153,7 +153,6 @@ function getLocalDateString(date = new Date()) {
 
     const day = String(date.getDate()).padStart(2, "0");
 
-    // Correct format: YYYY-MM-DD
     return `${year}-${month}-${day}`;
 }
 
@@ -299,7 +298,6 @@ function showMessage(message, type = "success") {
 
     elements.habitsMessage.textContent = message;
 
-    // Correct class name: habits-message
     elements.habitsMessage.className =
         `habits-message ${type}`;
 
@@ -579,7 +577,6 @@ function applySidebarState(collapsed) {
     const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
 
     if (isMobile) {
-        // Match Dashboard and Goals mobile navigation.
         elements.appLayout.classList.toggle(
             "sidebar-open",
             Boolean(collapsed)
@@ -621,6 +618,11 @@ function applySidebarState(collapsed) {
             error
         );
     }
+
+    // Update tooltip visibility whenever the sidebar changes.
+    if (typeof updateHabitsSidebarTooltipState === "function") {
+        updateHabitsSidebarTooltipState();
+    }
 }
 
 
@@ -638,7 +640,6 @@ function initialiseSidebar() {
     }
 
     if (window.innerWidth <= MOBILE_BREAKPOINT) {
-        // Always start with the mobile sidebar closed.
         applySidebarState(false);
     } else {
         applySidebarState(collapsed);
@@ -689,6 +690,8 @@ function handleSidebarResize() {
             );
         }
     }
+
+    updateHabitsSidebarTooltipState();
 }
 
 
@@ -706,6 +709,8 @@ function closeMobileSidebar() {
             );
         }
     }
+
+    updateHabitsSidebarTooltipState();
 }
 
 
@@ -817,7 +822,6 @@ function shouldHabitAppearToday(habit) {
         return weekday >= 1 && weekday <= 5;
     }
 
-    // Weekly habits have no designated weekday in the current model.
     return true;
 }
 
@@ -1347,7 +1351,6 @@ async function saveHabit(event) {
     let method = "POST";
 
     if (wasEditing) {
-        // Correct API URL: no embedded spaces.
         url = `/api/habits/${habitIdBeingEdited}`;
 
         method = "PUT";
@@ -1445,7 +1448,6 @@ async function toggleHabitCompletion(habitId) {
 
     const method = completed ? "DELETE" : "PUT";
 
-    // Correct API URL: /api/habits/:id/records/:date
     const url =
         `/api/habits/${habit.id}/records/${today}`;
 
@@ -1531,7 +1533,6 @@ async function changeHabitStatus(habit, status) {
     };
 
     try {
-        // Correct API URL.
         await apiRequest(`/api/habits/${habit.id}`, {
             method: "PUT",
             body: JSON.stringify(payload)
@@ -1649,7 +1650,6 @@ async function openHabitHistory(habitId) {
     openModal(elements.historyModal);
 
     try {
-        // Correct API URL.
         const data = await apiRequest(
             `/api/habits/${habit.id}/records`
         );
@@ -1798,7 +1798,6 @@ async function logout() {
     elements.logoutButton.textContent = "Signing out...";
 
     try {
-        // Match the Dashboard and Goals logout endpoint.
         await apiRequest("/api/auth/logout", {
             method: "POST"
         });
@@ -1925,7 +1924,499 @@ function handleGlobalKeydown(event) {
 
 
 // ==================================================
-// 33. REGISTER EVENT LISTENERS
+// 33. INDEPENDENT HABITS SIDEBAR TOOLTIPS
+// ==================================================
+
+let habitsSidebarTooltip = null;
+let habitsSidebarTooltipTarget = null;
+let habitsSidebarTooltipStyles = null;
+let habitsSidebarTooltipObserver = null;
+let habitsSidebarTooltipInitialised = false;
+
+
+/**
+ * Returns true when the Habits page should display sidebar tooltips.
+ *
+ * Tooltips are only shown on desktop when the sidebar is collapsed.
+ * They are hidden on mobile and whenever the sidebar is expanded.
+ */
+function shouldShowHabitsSidebarTooltips() {
+    return Boolean(
+        elements.appLayout &&
+        window.innerWidth > MOBILE_BREAKPOINT &&
+        elements.appLayout.classList.contains("sidebar-collapsed")
+    );
+}
+
+
+/**
+ * Creates the Habits page's own tooltip element and CSS.
+ *
+ * The tooltip is appended directly to document.body and positioned
+ * with fixed coordinates. This keeps it outside the sidebar's
+ * overflow containers so it will not be clipped.
+ */
+function createHabitsSidebarTooltip() {
+    if (habitsSidebarTooltip) {
+        return;
+    }
+
+    habitsSidebarTooltipStyles = document.createElement("style");
+
+    habitsSidebarTooltipStyles.id = "habits-sidebar-tooltip-styles";
+
+    habitsSidebarTooltipStyles.textContent = `
+        #habits-sidebar-tooltip {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 2147483647;
+
+            display: block;
+            width: max-content;
+            max-width: min(240px, calc(100vw - 24px));
+
+            padding: 10px 13px;
+
+            background: #fff8e9;
+            color: #004225;
+
+            border: 1px solid rgba(0, 66, 37, 0.16);
+            border-radius: 8px;
+
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.4;
+            text-align: left;
+            white-space: normal;
+            overflow-wrap: anywhere;
+
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+
+            transform: translateY(3px);
+            transition:
+                opacity 120ms ease,
+                transform 120ms ease,
+                visibility 120ms ease;
+        }
+
+        #habits-sidebar-tooltip.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #habits-sidebar-tooltip {
+                transition: none;
+            }
+        }
+    `;
+
+    document.head.appendChild(habitsSidebarTooltipStyles);
+
+    habitsSidebarTooltip = document.createElement("div");
+
+    habitsSidebarTooltip.id = "habits-sidebar-tooltip";
+    habitsSidebarTooltip.className = "habits-sidebar-tooltip";
+    habitsSidebarTooltip.setAttribute("role", "tooltip");
+    habitsSidebarTooltip.setAttribute("aria-hidden", "true");
+
+    document.body.appendChild(habitsSidebarTooltip);
+}
+
+
+/**
+ * Finds the text to display for a sidebar item.
+ *
+ * data-tooltip takes priority. The title attribute is used as a
+ * fallback, followed by accessible labels and visible text.
+ */
+function getHabitsSidebarTooltipText(target) {
+    if (!target) {
+        return "";
+    }
+
+    const explicitTooltip = target.getAttribute("data-tooltip");
+
+    if (explicitTooltip && explicitTooltip.trim()) {
+        return explicitTooltip.trim();
+    }
+
+    const title = target.getAttribute("title");
+
+    if (title && title.trim()) {
+        return title.trim();
+    }
+
+    const ariaLabel = target.getAttribute("aria-label");
+
+    if (ariaLabel && ariaLabel.trim()) {
+        return ariaLabel.trim();
+    }
+
+    const visibleText = target.innerText || target.textContent || "";
+
+    return visibleText.replace(/\s+/g, " ").trim();
+}
+
+
+/**
+ * Finds a sidebar element that should have a tooltip.
+ */
+function findHabitsSidebarTooltipTarget(element) {
+    if (!(element instanceof Element)) {
+        return null;
+    }
+
+    const selector = [
+        ".sidebar-navigation .nav-link",
+        ".nav-link[data-tooltip]",
+        ".profile-shortcut",
+        ".sidebar-logout",
+        "#logoutButton",
+        "[data-sidebar-tooltip]"
+    ].join(", ");
+
+    const target = element.closest(selector);
+
+    if (!target) {
+        return null;
+    }
+
+    if (
+        elements.sidebar &&
+        !elements.sidebar.contains(target)
+    ) {
+        return null;
+    }
+
+    return target;
+}
+
+
+/**
+ * Positions the tooltip beside its target and clamps it to the
+ * visible viewport to prevent clipping at the top or bottom.
+ */
+function positionHabitsSidebarTooltip(target) {
+    if (!habitsSidebarTooltip || !target) {
+        return;
+    }
+
+    const targetRect = target.getBoundingClientRect();
+
+    const tooltipRect = habitsSidebarTooltip.getBoundingClientRect();
+
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
+
+    const gap = 12;
+    const edgePadding = 8;
+
+    let left = targetRect.right + gap;
+
+    // If the right side does not have enough room, use the left side.
+    if (
+        left + tooltipRect.width >
+        viewportWidth - edgePadding
+    ) {
+        left = targetRect.left - tooltipRect.width - gap;
+    }
+
+    // Keep the tooltip inside the horizontal viewport.
+    left = Math.max(
+        edgePadding,
+        Math.min(
+            left,
+            viewportWidth - tooltipRect.width - edgePadding
+        )
+    );
+
+    let top =
+        targetRect.top +
+        (targetRect.height - tooltipRect.height) / 2;
+
+    // Keep the tooltip inside the vertical viewport.
+    top = Math.max(
+        edgePadding,
+        Math.min(
+            top,
+            viewportHeight - tooltipRect.height - edgePadding
+        )
+    );
+
+    habitsSidebarTooltip.style.left = `${Math.round(left)}px`;
+    habitsSidebarTooltip.style.top = `${Math.round(top)}px`;
+}
+
+
+/**
+ * Displays the independent Habits tooltip for the selected item.
+ */
+function showHabitsSidebarTooltip(target) {
+    if (
+        !target ||
+        !shouldShowHabitsSidebarTooltips()
+    ) {
+        hideHabitsSidebarTooltip();
+        return;
+    }
+
+    const tooltipText = getHabitsSidebarTooltipText(target);
+
+    if (!tooltipText) {
+        hideHabitsSidebarTooltip();
+        return;
+    }
+
+    createHabitsSidebarTooltip();
+
+    if (!habitsSidebarTooltip) {
+        return;
+    }
+
+    // Remove the previous target's accessibility reference.
+    if (
+        habitsSidebarTooltipTarget &&
+        habitsSidebarTooltipTarget !== target
+    ) {
+        const previousIds = (
+            habitsSidebarTooltipTarget.getAttribute("aria-describedby") || ""
+        ).split(/\s+/).filter(Boolean);
+
+        const updatedIds = previousIds.filter(
+            id => id !== "habits-sidebar-tooltip"
+        );
+
+        if (updatedIds.length > 0) {
+            habitsSidebarTooltipTarget.setAttribute(
+                "aria-describedby",
+                updatedIds.join(" ")
+            );
+        } else {
+            habitsSidebarTooltipTarget.removeAttribute("aria-describedby");
+        }
+    }
+
+    habitsSidebarTooltipTarget = target;
+
+    habitsSidebarTooltip.textContent = tooltipText;
+
+    // Keep any existing accessible descriptions intact.
+    const describedBy = (
+        target.getAttribute("aria-describedby") || ""
+    ).split(/\s+/).filter(Boolean);
+
+    if (!describedBy.includes("habits-sidebar-tooltip")) {
+        describedBy.push("habits-sidebar-tooltip");
+    }
+
+    target.setAttribute("aria-describedby", describedBy.join(" "));
+
+    // Measure the tooltip before making it visible.
+    habitsSidebarTooltip.classList.remove("is-visible");
+    habitsSidebarTooltip.setAttribute("aria-hidden", "false");
+
+    habitsSidebarTooltip.style.left = "0px";
+    habitsSidebarTooltip.style.top = "0px";
+
+    habitsSidebarTooltip.classList.add("is-visible");
+
+    positionHabitsSidebarTooltip(target);
+}
+
+
+/**
+ * Hides the tooltip and cleans up its accessibility reference.
+ */
+function hideHabitsSidebarTooltip() {
+    if (habitsSidebarTooltip) {
+        habitsSidebarTooltip.classList.remove("is-visible");
+
+        habitsSidebarTooltip.setAttribute("aria-hidden", "true");
+    }
+
+    if (habitsSidebarTooltipTarget) {
+        const describedBy = (
+            habitsSidebarTooltipTarget.getAttribute("aria-describedby") || ""
+        ).split(/\s+/).filter(Boolean);
+
+        const updatedIds = describedBy.filter(
+            id => id !== "habits-sidebar-tooltip"
+        );
+
+        if (updatedIds.length > 0) {
+            habitsSidebarTooltipTarget.setAttribute(
+                "aria-describedby",
+                updatedIds.join(" ")
+            );
+        } else {
+            habitsSidebarTooltipTarget.removeAttribute("aria-describedby");
+        }
+    }
+
+    habitsSidebarTooltipTarget = null;
+}
+
+
+/**
+ * Rechecks whether a currently visible tooltip should remain visible.
+ */
+function updateHabitsSidebarTooltipState() {
+    if (!shouldShowHabitsSidebarTooltips()) {
+        hideHabitsSidebarTooltip();
+        return;
+    }
+
+    if (
+        habitsSidebarTooltipTarget &&
+        habitsSidebarTooltipTarget.isConnected
+    ) {
+        positionHabitsSidebarTooltip(habitsSidebarTooltipTarget);
+    }
+}
+
+
+/**
+ * Registers mouse, keyboard, resize and scroll behaviour for
+ * the Habits page's independent tooltip.
+ */
+function initialiseHabitsSidebarTooltips() {
+    if (habitsSidebarTooltipInitialised) {
+        return;
+    }
+
+    habitsSidebarTooltipInitialised = true;
+
+    createHabitsSidebarTooltip();
+
+    // Mouse hover: show the tooltip beside the hovered sidebar item.
+    document.addEventListener("mouseover", event => {
+        const target = findHabitsSidebarTooltipTarget(event.target);
+
+        if (!target) {
+            return;
+        }
+
+        // Ignore movement between children of the same sidebar item.
+        if (
+            event.relatedTarget instanceof Node &&
+            target.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
+        showHabitsSidebarTooltip(target);
+    });
+
+    // Mouse leave: hide the tooltip when leaving its sidebar item.
+    document.addEventListener("mouseout", event => {
+        if (!habitsSidebarTooltipTarget) {
+            return;
+        }
+
+        const target = findHabitsSidebarTooltipTarget(event.target);
+
+        if (target !== habitsSidebarTooltipTarget) {
+            return;
+        }
+
+        if (
+            event.relatedTarget instanceof Node &&
+            target.contains(event.relatedTarget)
+        ) {
+            return;
+        }
+
+        hideHabitsSidebarTooltip();
+    });
+
+    // Keyboard accessibility: display tooltips when navigating by Tab.
+    document.addEventListener("focusin", event => {
+        const target = findHabitsSidebarTooltipTarget(event.target);
+
+        if (target) {
+            showHabitsSidebarTooltip(target);
+        }
+    });
+
+    document.addEventListener("focusout", event => {
+        if (!habitsSidebarTooltipTarget) {
+            return;
+        }
+
+        const target = findHabitsSidebarTooltipTarget(event.target);
+
+        if (target === habitsSidebarTooltipTarget) {
+            hideHabitsSidebarTooltip();
+        }
+    });
+
+    // Close the tooltip when the user clicks a sidebar item.
+    document.addEventListener("click", event => {
+        const target = findHabitsSidebarTooltipTarget(event.target);
+
+        if (target) {
+            hideHabitsSidebarTooltip();
+        }
+    });
+
+    // Reposition the tooltip while the viewport changes.
+    window.addEventListener(
+        "resize",
+        updateHabitsSidebarTooltipState
+    );
+
+    // Keep the tooltip aligned while the page or sidebar scrolls.
+    window.addEventListener(
+        "scroll",
+        updateHabitsSidebarTooltipState,
+        true
+    );
+
+    // Hide tooltips with Escape for keyboard users.
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            hideHabitsSidebarTooltip();
+        }
+    });
+
+    // Hide the tooltip if its target is removed from the document.
+    if ("MutationObserver" in window && elements.appLayout) {
+        habitsSidebarTooltipObserver = new MutationObserver(() => {
+            if (
+                habitsSidebarTooltipTarget &&
+                !habitsSidebarTooltipTarget.isConnected
+            ) {
+                hideHabitsSidebarTooltip();
+            }
+
+            updateHabitsSidebarTooltipState();
+        });
+
+        habitsSidebarTooltipObserver.observe(
+            elements.appLayout,
+            {
+                attributes: true,
+                attributeFilter: ["class"],
+                childList: true,
+                subtree: true
+            }
+        );
+    }
+
+    updateHabitsSidebarTooltipState();
+}
+
+
+// ==================================================
+// 34. REGISTER EVENT LISTENERS
 // ==================================================
 
 function initialiseEventListeners() {
@@ -2099,7 +2590,7 @@ function initialiseEventListeners() {
 
 
 // ==================================================
-// 34. APPLICATION INITIALISATION
+// 35. APPLICATION INITIALISATION
 // ==================================================
 
 async function initialiseHabitsPage() {
@@ -2108,6 +2599,9 @@ async function initialiseHabitsPage() {
     initialiseTheme();
 
     initialiseSidebar();
+
+    // Use the Habits page's independent tooltip implementation.
+    initialiseHabitsSidebarTooltips();
 
     initialiseEventListeners();
 
@@ -2123,7 +2617,7 @@ async function initialiseHabitsPage() {
 
 
 // ==================================================
-// 35. START APPLICATION
+// 36. START APPLICATION
 // ==================================================
 
 if (document.readyState === "loading") {

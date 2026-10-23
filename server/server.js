@@ -14,6 +14,7 @@ const db = require("./db");
 const authRoutes = require("./routes/auth");
 const goalsRoutes = require("./routes/goals");
 const habitsRoutes = require("./routes/habits");
+const tasksRoutes = require("./routes/tasks");
 
 const app = express();
 
@@ -132,7 +133,21 @@ app.use("/api/auth", authRoutes);
 // ==================================================
 
 app.use("/api/goals", goalsRoutes);
+
+
+// ==================================================
+// HABITS ROUTES
+// ==================================================
+
 app.use("/api/habits", habitsRoutes);
+
+
+// ==================================================
+// TASKS ROUTES
+// ==================================================
+
+app.use("/api/tasks", tasksRoutes);
+
 
 // ==================================================
 // HANDLE UNKNOWN API ROUTES
@@ -167,6 +182,9 @@ async function startServer() {
             console.log(`Server: http://localhost:${PORT}`);
             console.log("Database: Connected");
             console.log("Authentication routes: Ready");
+            console.log("Goals routes: Ready");
+            console.log("Habits routes: Ready");
+            console.log("Tasks routes: Ready");
             console.log("====================================");
             console.log("");
         });
@@ -177,7 +195,9 @@ async function startServer() {
             server.close(async () => {
                 try {
                     await db.end();
+
                     console.log("Server stopped successfully.");
+
                     process.exit(0);
 
                 } catch (error) {

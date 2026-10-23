@@ -1,0 +1,1377 @@
+/* ==========================================================
+   STUDYTRACK V2 — MY TASKS
+   File: public/css/tasks.css
+
+   Shared layout: dashboard.css
+   Page-specific layout: this file
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. PAGE VARIABLES
+   ---------------------------------------------------------- */
+
+.tasks-document {
+    --tasks-green: #004225;
+    --tasks-green-light: #3d7c58;
+    --tasks-green-soft: #eaf4ed;
+    --tasks-cream: #f8f7f0;
+    --tasks-white: #ffffff;
+    --tasks-text: #203329;
+    --tasks-muted: #718078;
+    --tasks-border: #e3e9e4;
+    --tasks-surface: #ffffff;
+    --tasks-page: #f7f8f5;
+    --tasks-orange: #b96a0b;
+    --tasks-orange-soft: #fff3df;
+    --tasks-blue: #2563a6;
+    --tasks-blue-soft: #eaf3ff;
+    --tasks-red: #b42318;
+    --tasks-red-soft: #fff0ef;
+    --tasks-purple: #7550a6;
+    --tasks-purple-soft: #f2eaff;
+    --tasks-radius-small: 10px;
+    --tasks-radius-medium: 16px;
+    --tasks-radius-large: 22px;
+    --tasks-shadow: 0 8px 28px rgba(0, 48, 28, 0.06);
+    --tasks-shadow-hover: 0 14px 34px rgba(0, 48, 28, 0.11);
+    --tasks-transition: 180ms ease;
+    min-height: 100vh;
+    background: var(--tasks-page);
+    color: var(--tasks-text);
+}
+
+    /* Keep controls consistent with the rest of StudyTrack. */
+
+    .tasks-document *,
+    .tasks-document *::before,
+    .tasks-document *::after {
+        box-sizing: border-box;
+    }
+
+    .tasks-document button,
+    .tasks-document input,
+    .tasks-document select,
+    .tasks-document textarea {
+        font: inherit;
+    }
+
+    .tasks-document button {
+        cursor: pointer;
+    }
+
+        .tasks-document button:focus-visible,
+        .tasks-document a:focus-visible,
+        .tasks-document input:focus-visible,
+        .tasks-document select:focus-visible,
+        .tasks-document textarea:focus-visible {
+            outline: 3px solid rgba(61, 124, 88, 0.35);
+            outline-offset: 3px;
+        }
+
+    .tasks-document [hidden] {
+        display: none !important;
+    }
+
+    /* ----------------------------------------------------------
+   2. MAIN LAYOUT
+   ---------------------------------------------------------- */
+
+    .tasks-document .main-area {
+        min-width: 0;
+    }
+
+    .tasks-document .main-content {
+        min-width: 0;
+    }
+
+    .tasks-document .tasks-content {
+        width: 100%;
+        max-width: 1700px;
+        margin: 0 auto;
+        padding: 20px 30px 32px;
+        color: var(--tasks-text);
+    }
+
+    /* ----------------------------------------------------------
+   3. TOP BAR
+   ---------------------------------------------------------- */
+
+    .tasks-document .topbar {
+        position: relative;
+        z-index: 5;
+    }
+
+    .tasks-document .topbar-left,
+    .tasks-document .topbar-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .tasks-document .topbar-left {
+        gap: 18px;
+        min-width: 0;
+    }
+
+    .tasks-document .topbar-right {
+        gap: 18px;
+    }
+
+    .tasks-document .breadcrumb {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        font-size: 13px;
+    }
+
+    .tasks-document .breadcrumb-separator {
+        color: var(--tasks-muted);
+    }
+
+    .tasks-document .breadcrumb-current {
+        color: var(--tasks-green);
+        font-weight: 700;
+    }
+
+    /* ----------------------------------------------------------
+   4. THREE-LINE HAMBURGER
+   ---------------------------------------------------------- */
+
+    .tasks-document .menu-button {
+        display: inline-flex;
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        padding: 0;
+        border: 1px solid var(--tasks-border);
+        border-radius: 12px;
+        background: var(--tasks-white);
+        color: var(--tasks-green);
+        transition: background var(--tasks-transition), border-color var(--tasks-transition), transform var(--tasks-transition);
+    }
+
+        .tasks-document .menu-button:hover {
+            background: var(--tasks-green-soft);
+            border-color: var(--tasks-green-light);
+        }
+
+        .tasks-document .menu-button:active {
+            transform: scale(0.97);
+        }
+
+        .tasks-document .menu-button .menu-line {
+            display: block;
+            width: 19px;
+            height: 2px;
+            flex: 0 0 2px;
+            border-radius: 999px;
+            background: currentColor;
+            transition: width var(--tasks-transition), transform var(--tasks-transition);
+        }
+
+        .tasks-document .menu-button:hover .menu-line:nth-child(2) {
+            width: 14px;
+        }
+
+    /* ----------------------------------------------------------
+   5. DATE AND THEME CONTROLS
+   ---------------------------------------------------------- */
+
+    .tasks-document .date-display {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--tasks-muted);
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .tasks-document .date-display-icon {
+        color: var(--tasks-green);
+        font-size: 17px;
+    }
+
+    .tasks-document .theme-switcher {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid var(--tasks-border);
+        border-radius: 13px;
+        background: var(--tasks-white);
+    }
+
+    .tasks-document .theme-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 34px;
+        padding: 7px 11px;
+        border: 0;
+        border-radius: 9px;
+        background: transparent;
+        color: var(--tasks-muted);
+        font-size: 12px;
+        font-weight: 600;
+        transition: background var(--tasks-transition), color var(--tasks-transition);
+    }
+
+        .tasks-document .theme-button.active {
+            background: var(--tasks-green);
+            color: #ffffff;
+        }
+
+        .tasks-document .theme-button:not(.active):hover {
+            background: var(--tasks-green-soft);
+            color: var(--tasks-green);
+        }
+
+    /* ----------------------------------------------------------
+   6. SIDEBAR LABEL SIZE
+   ---------------------------------------------------------- */
+
+    .tasks-document .sidebar-nav .nav-link {
+        transition: background var(--tasks-transition), color var(--tasks-transition);
+    }
+
+    .tasks-document .sidebar-nav .nav-label {
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    .tasks-document .sidebar-nav .nav-icon {
+        flex-shrink: 0;
+    }
+
+    /* ----------------------------------------------------------
+   7. ACTIVE MY TASKS NAVIGATION ITEM
+   ---------------------------------------------------------- */
+
+    /*
+   Only the active item receives the solid green background.
+   Inactive navigation items retain their existing appearance.
+*/
+
+    .tasks-document .sidebar-nav .nav-link.active,
+    .tasks-document .sidebar-nav .nav-link.active:hover,
+    .tasks-document .sidebar-nav .nav-link.active:focus-visible {
+        background: #004225 !important;
+        color: #ffffff !important;
+        border-color: transparent;
+    }
+
+        .tasks-document .sidebar-nav .nav-link.active .nav-label,
+        .tasks-document .sidebar-nav .nav-link.active .nav-icon {
+            color: #ffffff !important;
+        }
+
+        .tasks-document .sidebar-nav .nav-link.active .nav-icon {
+            opacity: 1;
+        }
+
+        .tasks-document .sidebar-nav .nav-link.active::before,
+        .tasks-document .sidebar-nav .nav-link.active::after {
+            color: #ffffff;
+        }
+
+    /* Maintain the active appearance when the sidebar is collapsed. */
+
+    .tasks-document .app-layout.sidebar-collapsed
+    .sidebar-nav .nav-link.active {
+        background: #004225 !important;
+        color: #ffffff !important;
+    }
+
+    /* ----------------------------------------------------------
+   8. PAGE HEADER
+   ---------------------------------------------------------- */
+
+    .tasks-document .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        margin: 0 0 25px;
+        padding: 0;
+    }
+
+    .tasks-document .page-header-copy {
+        min-width: 0;
+    }
+
+    .tasks-document .page-eyebrow,
+    .tasks-document .section-eyebrow {
+        margin: 0 0 8px;
+        color: var(--tasks-green-light);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.7px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .page-header h1 {
+        margin: 0;
+        color: var(--tasks-green);
+        font-size: clamp(28px, 3vw, 36px);
+        font-weight: 800;
+        letter-spacing: -1.1px;
+        line-height: 1.15;
+    }
+
+    .tasks-document .page-subtitle {
+        max-width: 640px;
+        margin: 10px 0 0;
+        color: var(--tasks-muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    /* ----------------------------------------------------------
+   9. BUTTONS
+   ---------------------------------------------------------- */
+
+    .tasks-document .primary-button,
+    .tasks-document .secondary-button,
+    .tasks-document .danger-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 43px;
+        padding: 11px 17px;
+        border: 1px solid transparent;
+        border-radius: 11px;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.3;
+        text-decoration: none;
+        transition: background var(--tasks-transition), color var(--tasks-transition), border-color var(--tasks-transition), box-shadow var(--tasks-transition), transform var(--tasks-transition);
+    }
+
+    .tasks-document .primary-button {
+        background: var(--tasks-green);
+        color: #ffffff;
+        box-shadow: 0 5px 12px rgba(0, 66, 37, 0.12);
+    }
+
+        .tasks-document .primary-button:hover {
+            background: #075b37;
+            box-shadow: 0 8px 18px rgba(0, 66, 37, 0.18);
+            transform: translateY(-1px);
+        }
+
+        .tasks-document .primary-button:active,
+        .tasks-document .secondary-button:active,
+        .tasks-document .danger-button:active {
+            transform: translateY(0);
+        }
+
+    .tasks-document .secondary-button {
+        background: var(--tasks-white);
+        color: var(--tasks-text);
+        border-color: var(--tasks-border);
+    }
+
+        .tasks-document .secondary-button:hover {
+            background: var(--tasks-cream);
+            border-color: #c8d9ca;
+        }
+
+    .tasks-document .danger-button {
+        background: var(--tasks-red);
+        color: #ffffff;
+    }
+
+        .tasks-document .danger-button:hover {
+            background: #921b12;
+        }
+
+    /* ----------------------------------------------------------
+   10. NOTIFICATIONS
+   ---------------------------------------------------------- */
+
+    .tasks-document .tasks-notification {
+        margin: 0 0 20px;
+        padding: 13px 16px;
+        border: 1px solid var(--tasks-border);
+        border-radius: var(--tasks-radius-small);
+        background: var(--tasks-white);
+        color: var(--tasks-text);
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+        .tasks-document .tasks-notification.success {
+            border-color: #b6dfc3;
+            background: #edf9f0;
+            color: #17623a;
+        }
+
+        .tasks-document .tasks-notification.error {
+            border-color: #f0c5c1;
+            background: var(--tasks-red-soft);
+            color: var(--tasks-red);
+        }
+
+    /* ----------------------------------------------------------
+   11. SUMMARY CARD GRID
+   ---------------------------------------------------------- */
+
+    .tasks-document .task-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 17px;
+        margin: 0 0 27px;
+    }
+
+    /* ----------------------------------------------------------
+   12. SUMMARY CARDS
+   ---------------------------------------------------------- */
+
+    .tasks-document .task-summary-card {
+        --card-accent: var(--tasks-green);
+        --card-accent-soft: var(--tasks-green-soft);
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 150px;
+        padding: 20px 19px 17px;
+        border: 1px solid var(--tasks-border);
+        border-radius: var(--tasks-radius-medium);
+        background: #ffffff;
+        color: var(--tasks-text);
+        box-shadow: var(--tasks-shadow);
+        transition: transform var(--tasks-transition), box-shadow var(--tasks-transition), border-color var(--tasks-transition);
+    }
+
+        /* Coloured accent strip at the top of every summary card. */
+
+        .tasks-document .task-summary-card::before {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+            background: var(--card-accent);
+            content: "";
+        }
+
+        .tasks-document .task-summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--tasks-shadow-hover);
+            border-color: var(--card-accent);
+        }
+
+    .tasks-document .summary-total {
+        --card-accent: #187047;
+        --card-accent-soft: #eaf7ef;
+    }
+
+    .tasks-document .summary-pending {
+        --card-accent: #b96a0b;
+        --card-accent-soft: #fff3df;
+    }
+
+    .tasks-document .summary-progress {
+        --card-accent: #2563a6;
+        --card-accent-soft: #eaf3ff;
+    }
+
+    .tasks-document .summary-completed {
+        --card-accent: #21834d;
+        --card-accent-soft: #e8f7ed;
+    }
+
+    .tasks-document .summary-overdue {
+        --card-accent: #c0352b;
+        --card-accent-soft: #fff0ef;
+    }
+
+    .tasks-document .summary-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .tasks-document .summary-card-label {
+        min-width: 0;
+        color: var(--tasks-muted);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.5;
+    }
+
+    .tasks-document .summary-card-icon {
+        display: inline-flex;
+        flex: 0 0 37px;
+        width: 37px;
+        height: 37px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: var(--card-accent-soft);
+        color: var(--card-accent);
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .tasks-document .summary-card-value {
+        display: block;
+        margin-top: 12px;
+        color: var(--tasks-text);
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.8px;
+        line-height: 1.1;
+    }
+
+    .tasks-document .summary-card-description {
+        display: block;
+        margin-top: 8px;
+        color: var(--tasks-muted);
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    /* ----------------------------------------------------------
+   13. TASK WORKSPACE
+   ---------------------------------------------------------- */
+
+    .tasks-document .task-workspace {
+        min-width: 0;
+        padding: 25px;
+        border: 1px solid var(--tasks-border);
+        border-radius: var(--tasks-radius-large);
+        background: var(--tasks-surface);
+        box-shadow: var(--tasks-shadow);
+    }
+
+    .tasks-document .workspace-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 22px;
+    }
+
+        .tasks-document .workspace-heading h2 {
+            margin: 0;
+            color: var(--tasks-text);
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+
+    .tasks-document .workspace-description {
+        margin: 8px 0 0;
+        color: var(--tasks-muted);
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .tasks-document .visible-task-count {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        min-height: 32px;
+        padding: 7px 11px;
+        border: 1px solid #d9e9dd;
+        border-radius: 999px;
+        background: var(--tasks-green-soft);
+        color: var(--tasks-green);
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    /* ----------------------------------------------------------
+   14. SEARCH AND FILTER CONTROLS
+   ---------------------------------------------------------- */
+
+    .tasks-document .task-controls {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 22px;
+    }
+
+    .tasks-document .task-search-wrapper {
+        position: relative;
+        flex: 1 1 260px;
+        min-width: 160px;
+    }
+
+    .tasks-document .task-search-icon {
+        position: absolute;
+        top: 50%;
+        left: 14px;
+        color: var(--tasks-muted);
+        font-size: 23px;
+        line-height: 1;
+        transform: translateY(-53%);
+        pointer-events: none;
+    }
+
+    .tasks-document .task-search,
+    .tasks-document .task-filter {
+        width: 100%;
+        min-width: 0;
+        min-height: 43px;
+        border: 1px solid var(--tasks-border);
+        border-radius: 10px;
+        background: var(--tasks-white);
+        color: var(--tasks-text);
+        font-size: 12px;
+        transition: border-color var(--tasks-transition), box-shadow var(--tasks-transition);
+    }
+
+    .tasks-document .task-search {
+        padding: 11px 13px 11px 43px;
+    }
+
+        .tasks-document .task-search::placeholder {
+            color: #89958d;
+        }
+
+    .tasks-document .task-filter {
+        padding: 10px 29px 10px 11px;
+        cursor: pointer;
+    }
+
+        .tasks-document .task-search:focus,
+        .tasks-document .task-filter:focus {
+            border-color: var(--tasks-green-light);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(61, 124, 88, 0.12);
+        }
+
+    .tasks-document .task-filter-group {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(115px, 1fr));
+        gap: 9px;
+        flex: 1 1 480px;
+        min-width: 0;
+    }
+
+    /* ----------------------------------------------------------
+   15. TASK LIST AND LOADING STATE
+   ---------------------------------------------------------- */
+
+    .tasks-document .tasks-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .tasks-document .tasks-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        min-height: 155px;
+        padding: 24px;
+        color: var(--tasks-muted);
+        font-size: 13px;
+    }
+
+    .tasks-document .loading-spinner {
+        display: inline-block;
+        width: 21px;
+        height: 21px;
+        flex: 0 0 21px;
+        border: 2px solid #dce8df;
+        border-top-color: var(--tasks-green);
+        border-radius: 50%;
+        animation: tasks-spin 0.75s linear infinite;
+    }
+
+@keyframes tasks-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ----------------------------------------------------------
+   16. EMPTY STATE
+   ---------------------------------------------------------- */
+
+.tasks-document .tasks-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 42px 20px;
+    border: 1px dashed #cadbce;
+    border-radius: var(--tasks-radius-medium);
+    background: var(--tasks-page);
+    text-align: center;
+}
+
+.tasks-document .empty-state-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin-bottom: 15px;
+    border-radius: 18px;
+    background: var(--tasks-green-soft);
+    color: var(--tasks-green);
+    font-size: 27px;
+}
+
+.tasks-document .tasks-empty-state h3 {
+    margin: 0;
+    color: var(--tasks-text);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.tasks-document .tasks-empty-state p {
+    max-width: 390px;
+    margin: 10px 0 20px;
+    color: var(--tasks-muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* ----------------------------------------------------------
+   17. TASK FORM DIALOGS
+   ---------------------------------------------------------- */
+
+.tasks-document .task-dialog {
+    width: min(560px, calc(100% - 32px));
+    max-width: 560px;
+    max-height: min(88vh, 850px);
+    padding: 27px;
+    overflow-y: auto;
+    border: 1px solid var(--tasks-border);
+    border-radius: 22px;
+    background: var(--tasks-white);
+    color: var(--tasks-text);
+    box-shadow: 0 24px 90px rgba(0, 30, 18, 0.24);
+}
+
+    .tasks-document .task-dialog::backdrop {
+        background: rgba(0, 30, 18, 0.48);
+        backdrop-filter: blur(3px);
+    }
+
+.tasks-document .dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.tasks-document .dialog-eyebrow {
+    margin: 0 0 7px;
+    color: var(--tasks-green-light);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.tasks-document .dialog-header h2,
+.tasks-document .delete-task-dialog h2 {
+    margin: 0;
+    color: var(--tasks-text);
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+}
+
+.tasks-document #taskDialogSubtitle {
+    margin: 8px 0 0;
+    color: var(--tasks-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.tasks-document .dialog-close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--tasks-border);
+    border-radius: 10px;
+    background: var(--tasks-white);
+    color: var(--tasks-muted);
+    font-size: 23px;
+    line-height: 1;
+}
+
+    .tasks-document .dialog-close-button:hover {
+        background: var(--tasks-red-soft);
+        border-color: #f0c5c1;
+        color: var(--tasks-red);
+    }
+
+/* ----------------------------------------------------------
+   18. FORM FIELDS
+   ---------------------------------------------------------- */
+
+.tasks-document #taskForm {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.tasks-document .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+    .tasks-document .form-field label {
+        color: var(--tasks-text);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+        .tasks-document .form-field label span {
+            color: var(--tasks-red);
+        }
+
+    .tasks-document .form-field input,
+    .tasks-document .form-field select,
+    .tasks-document .form-field textarea {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        padding: 12px 13px;
+        border: 1px solid var(--tasks-border);
+        border-radius: 10px;
+        background: var(--tasks-white);
+        color: var(--tasks-text);
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .form-field textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+        .tasks-document .form-field input::placeholder,
+        .tasks-document .form-field textarea::placeholder {
+            color: #89958d;
+        }
+
+        .tasks-document .form-field input:focus,
+        .tasks-document .form-field select:focus,
+        .tasks-document .form-field textarea:focus {
+            border-color: var(--tasks-green-light);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(61, 124, 88, 0.12);
+        }
+
+.tasks-document .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.tasks-document .task-form-error {
+    padding: 11px 13px;
+    border: 1px solid #f0c5c1;
+    border-radius: 9px;
+    background: var(--tasks-red-soft);
+    color: var(--tasks-red);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.tasks-document .dialog-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 7px;
+}
+
+/* ----------------------------------------------------------
+   19. DELETE DIALOG
+   ---------------------------------------------------------- */
+
+.tasks-document .delete-task-dialog {
+    max-width: 440px;
+    text-align: center;
+}
+
+.tasks-document .delete-dialog-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 17px;
+    border-radius: 16px;
+    background: var(--tasks-red-soft);
+    color: var(--tasks-red);
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.tasks-document .delete-task-dialog > p {
+    margin: 13px 0 24px;
+    color: var(--tasks-muted);
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+    .tasks-document .delete-task-dialog > p strong {
+        color: var(--tasks-text);
+    }
+
+.tasks-document .delete-task-dialog .dialog-actions {
+    justify-content: center;
+}
+
+/* ----------------------------------------------------------
+   20. TASK FOOTER
+   ---------------------------------------------------------- */
+
+.tasks-document .tasks-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 23px 2px 0;
+    color: var(--tasks-muted);
+    font-size: 11px;
+}
+
+/* ----------------------------------------------------------
+   21. VISUALLY HIDDEN ACCESSIBILITY LABELS
+   ---------------------------------------------------------- */
+
+.tasks-document .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+/* ----------------------------------------------------------
+   22. NIGHT THEME
+   ---------------------------------------------------------- */
+
+:root[data-theme="night"] .tasks-document,
+:root[data-theme="night"] body.tasks-document {
+    --tasks-text: #e6efe8;
+    --tasks-muted: #a4b4a9;
+    --tasks-border: #35483c;
+    --tasks-surface: #19271f;
+    --tasks-page: #111b15;
+    --tasks-white: #19271f;
+    --tasks-green-soft: #203b2b;
+    --tasks-cream: #26352b;
+    --tasks-orange-soft: #453522;
+    --tasks-blue-soft: #22384d;
+    --tasks-red-soft: #462724;
+    --tasks-purple-soft: #382c49;
+    background: var(--tasks-page);
+    color: var(--tasks-text);
+}
+
+    :root[data-theme="night"] .tasks-document .tasks-content {
+        color: var(--tasks-text);
+    }
+
+    :root[data-theme="night"] .tasks-document .page-header h1,
+    :root[data-theme="night"] .tasks-document .breadcrumb-current,
+    :root[data-theme="night"] .tasks-document .workspace-heading h2,
+    :root[data-theme="night"] .tasks-document .summary-card-value,
+    :root[data-theme="night"] .tasks-document .dialog-header h2,
+    :root[data-theme="night"] .tasks-document .delete-task-dialog h2 {
+        color: #e6efe8;
+    }
+
+    :root[data-theme="night"] .tasks-document .task-summary-card {
+        border-color: #35483c;
+        background: #19271f;
+        color: #e6efe8;
+    }
+
+    :root[data-theme="night"] .tasks-document .task-workspace {
+        border-color: #35483c;
+        background: #19271f;
+    }
+
+    :root[data-theme="night"] .tasks-document .menu-button {
+        border-color: #35483c;
+        background: #19271f;
+        color: #e6efe8;
+    }
+
+        :root[data-theme="night"] .tasks-document .menu-button:hover {
+            background: #263b2d;
+        }
+
+    :root[data-theme="night"] .tasks-document .theme-switcher {
+        border-color: #35483c;
+        background: #19271f;
+    }
+
+    :root[data-theme="night"] .tasks-document .theme-button:not(.active) {
+        color: #a4b4a9;
+    }
+
+        :root[data-theme="night"] .tasks-document .theme-button:not(.active):hover {
+            background: #263b2d;
+            color: #e6efe8;
+        }
+
+    :root[data-theme="night"] .tasks-document .task-search,
+    :root[data-theme="night"] .tasks-document .task-filter,
+    :root[data-theme="night"] .tasks-document .form-field input,
+    :root[data-theme="night"] .tasks-document .form-field select,
+    :root[data-theme="night"] .tasks-document .form-field textarea {
+        border-color: #35483c;
+        background: #111b15;
+        color: #e6efe8;
+    }
+
+        :root[data-theme="night"] .tasks-document .task-search::placeholder,
+        :root[data-theme="night"] .tasks-document .form-field input::placeholder,
+        :root[data-theme="night"] .tasks-document .form-field textarea::placeholder {
+            color: #8fa295;
+        }
+
+    :root[data-theme="night"] .tasks-document .tasks-empty-state {
+        border-color: #35483c;
+        background: #152219;
+    }
+
+        :root[data-theme="night"] .tasks-document .tasks-empty-state h3 {
+            color: #e6efe8;
+        }
+
+    :root[data-theme="night"] .tasks-document .visible-task-count {
+        border-color: #35483c;
+        background: #203b2b;
+        color: #c7e6d0;
+    }
+
+    :root[data-theme="night"] .tasks-document .secondary-button {
+        border-color: #35483c;
+        background: #19271f;
+        color: #e6efe8;
+    }
+
+        :root[data-theme="night"] .tasks-document .secondary-button:hover {
+            background: #26352b;
+        }
+
+    :root[data-theme="night"] .tasks-document .dialog-close-button {
+        border-color: #35483c;
+        background: #19271f;
+        color: #a4b4a9;
+    }
+
+    :root[data-theme="night"] .tasks-document .task-dialog {
+        border-color: #35483c;
+        background: #19271f;
+        color: #e6efe8;
+    }
+
+    :root[data-theme="night"] .tasks-document .tasks-notification {
+        border-color: #35483c;
+        background: #19271f;
+        color: #e6efe8;
+    }
+
+/* ----------------------------------------------------------
+   23. RESPONSIVE LAYOUT — TABLETS
+   ---------------------------------------------------------- */
+
+@media (max-width: 1250px) {
+    .tasks-document .task-summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tasks-document .task-controls {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .tasks-document .task-search-wrapper {
+        flex-basis: auto;
+        width: 100%;
+    }
+
+    .tasks-document .task-filter-group {
+        flex-basis: auto;
+        width: 100%;
+    }
+}
+
+/* ----------------------------------------------------------
+   24. RESPONSIVE LAYOUT — SMALL TABLETS
+   ---------------------------------------------------------- */
+
+@media (max-width: 850px) {
+    .tasks-document .tasks-content {
+        padding: 21px 21px 28px;
+    }
+
+    .tasks-document .page-header {
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+        .tasks-document .page-header h1 {
+            font-size: 30px;
+        }
+
+    .tasks-document .task-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 13px;
+    }
+
+    .tasks-document .task-workspace {
+        padding: 21px;
+    }
+
+    .tasks-document .topbar-right {
+        gap: 10px;
+    }
+
+    .tasks-document .date-display {
+        font-size: 11px;
+    }
+}
+
+/* ----------------------------------------------------------
+   25. RESPONSIVE LAYOUT — MOBILE
+   ---------------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .tasks-document .tasks-content {
+        padding: 18px 14px 25px;
+    }
+
+    .tasks-document .topbar-left {
+        gap: 10px;
+    }
+
+    .tasks-document .topbar-right {
+        gap: 7px;
+    }
+
+    .tasks-document .breadcrumb {
+        gap: 6px;
+        font-size: 11px;
+    }
+
+    .tasks-document .date-display {
+        display: none;
+    }
+
+    .tasks-document .theme-switcher {
+        gap: 2px;
+        padding: 3px;
+    }
+
+    .tasks-document .theme-button {
+        gap: 4px;
+        min-height: 31px;
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .tasks-document .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        margin-bottom: 21px;
+    }
+
+        .tasks-document .page-header h1 {
+            font-size: 28px;
+        }
+
+    .tasks-document .page-subtitle {
+        font-size: 13px;
+    }
+
+    .tasks-document .page-header > .primary-button {
+        align-self: flex-start;
+    }
+
+    .tasks-document .task-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 11px;
+        margin-bottom: 21px;
+    }
+
+    .tasks-document .task-summary-card {
+        min-height: 137px;
+        padding: 17px 14px 14px;
+    }
+
+    .tasks-document .summary-card-icon {
+        flex-basis: 32px;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        font-size: 17px;
+    }
+
+    .tasks-document .summary-card-label {
+        font-size: 11px;
+    }
+
+    .tasks-document .summary-card-value {
+        margin-top: 11px;
+        font-size: 27px;
+    }
+
+    .tasks-document .summary-card-description {
+        font-size: 10px;
+    }
+
+    .tasks-document .task-workspace {
+        padding: 17px 13px;
+        border-radius: 17px;
+    }
+
+    .tasks-document .workspace-heading {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+        .tasks-document .workspace-heading h2 {
+            font-size: 19px;
+        }
+
+    .tasks-document .workspace-description {
+        font-size: 12px;
+    }
+
+    .tasks-document .visible-task-count {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
+
+    .tasks-document .task-filter-group {
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+
+    .tasks-document .task-search,
+    .tasks-document .task-filter {
+        min-height: 42px;
+    }
+
+    .tasks-document .tasks-footer {
+        font-size: 10px;
+    }
+
+    .tasks-document .task-dialog {
+        width: calc(100% - 20px);
+        max-height: 90vh;
+        padding: 21px 16px;
+        border-radius: 17px;
+    }
+
+    .tasks-document .dialog-header h2,
+    .tasks-document .delete-task-dialog h2 {
+        font-size: 20px;
+    }
+
+    .tasks-document .form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .tasks-document .dialog-actions {
+        gap: 8px;
+    }
+
+        .tasks-document .dialog-actions button {
+            flex: 1 1 auto;
+        }
+}
+
+/* ----------------------------------------------------------
+   26. EXTRA-SMALL MOBILE SCREENS
+   ---------------------------------------------------------- */
+
+@media (max-width: 360px) {
+    .tasks-document .tasks-content {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .tasks-document .task-summary-grid {
+        gap: 8px;
+    }
+
+    .tasks-document .task-summary-card {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .tasks-document .summary-card-label {
+        font-size: 10px;
+    }
+
+    .tasks-document .summary-card-icon {
+        flex-basis: 29px;
+        width: 29px;
+        height: 29px;
+    }
+
+    .tasks-document .breadcrumb {
+        font-size: 10px;
+    }
+
+    .tasks-document .theme-button {
+        padding-right: 6px;
+        padding-left: 6px;
+    }
+}
+
+/* ----------------------------------------------------------
+   27. REDUCED MOTION ACCESSIBILITY
+   ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .tasks-document *,
+    .tasks-document *::before,
+    .tasks-document *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

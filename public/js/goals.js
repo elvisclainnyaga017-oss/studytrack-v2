@@ -7,7 +7,7 @@
    Handles:
    - Authentication and account information
    - Day and night themes
-   - Sidebar navigation
+   - Sidebar navigation and independent tooltips
    - Goal creation and editing
    - Goal progress and completion
    - Goal search and filtering
@@ -495,7 +495,475 @@ window.addEventListener("resize", () => {
 
 
 /* =========================================================
-   8. LOGOUT
+   8. INDEPENDENT GOALS SIDEBAR TOOLTIPS
+
+   This tooltip system belongs only to the Goals page.
+
+   It uses its own element ID and CSS class so it does
+   not depend on the shared sidebar-tooltips.js script
+   or reuse the Dashboard tooltip element.
+   ========================================================= */
+
+function initialiseGoalsSidebarTooltips() {
+    if (!sidebar || !appLayout) {
+        return;
+    }
+
+    const tooltipId = "goalsSidebarTooltip";
+    const tooltipClass = "goals-sidebar-tooltip";
+    const styleId = "goalsSidebarTooltipStyles";
+
+    /*
+     * Prevent duplicate initialization.
+     */
+
+    if (document.getElementById(tooltipId)) {
+        return;
+    }
+
+    /*
+     * Add page-specific styles.
+     */
+
+    const tooltipStyles = document.createElement("style");
+
+    tooltipStyles.id = styleId;
+
+    tooltipStyles.textContent = `
+        .nav-link[data-tooltip]::before,
+        .nav-link[data-tooltip]::after,
+        .profile-shortcut[data-tooltip]::before,
+        .profile-shortcut[data-tooltip]::after,
+        .sidebar-logout[data-tooltip]::before,
+        .sidebar-logout[data-tooltip]::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        body > .${tooltipClass} {
+            position: fixed !important;
+            z-index: 100001 !important;
+
+            display: block;
+            box-sizing: border-box;
+
+            width: max-content;
+            max-width: min(280px, calc(100vw - 24px));
+
+            padding: 10px 14px;
+
+            background: #F4FEF3;
+            color: #004225;
+
+            border: 1px solid #C8D9CA;
+            border-radius: 9px;
+
+            box-shadow: 0 6px 20px rgba(0, 30, 17, 0.18);
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 0.01em;
+
+            white-space: normal;
+            overflow-wrap: anywhere;
+            text-align: left;
+
+            pointer-events: none;
+
+            opacity: 0;
+            visibility: hidden;
+
+            transform: translateX(-3px);
+
+            transition:
+                opacity 140ms ease,
+                transform 140ms ease,
+                visibility 140ms ease;
+        }
+
+        body > .${tooltipClass}.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        body > .${tooltipClass}::before {
+            content: "";
+
+            position: absolute;
+            top: 50%;
+            left: -6px;
+
+            width: 10px;
+            height: 10px;
+
+            background: #F4FEF3;
+
+            border-left: 1px solid #C8D9CA;
+            border-bottom: 1px solid #C8D9CA;
+
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body > .${tooltipClass} {
+                transition: none;
+            }
+        }
+    `;
+
+    document.head.appendChild(tooltipStyles);
+
+    /*
+     * Create this page's own tooltip element.
+     */
+
+    const tooltip = document.createElement("div");
+
+    tooltip.id = tooltipId;
+    tooltip.className = tooltipClass;
+
+    tooltip.setAttribute("role", "tooltip");
+    tooltip.setAttribute("aria-hidden", "true");
+
+    document.body.appendChild(tooltip);
+
+    /*
+     * Find the sidebar controls that have tooltip labels.
+     */
+
+    const tooltipTriggers = Array.from(
+        sidebar.querySelectorAll(
+            ".nav-link[data-tooltip], " +
+            ".profile-shortcut[data-tooltip], " +
+            ".sidebar-logout[data-tooltip]"
+        )
+    );
+
+    let activeTrigger = null;
+    let hoveredTrigger = null;
+    let focusedTrigger = null;
+
+    /*
+     * Only show tooltips when the desktop sidebar
+     * is collapsed.
+     */
+
+    function shouldDisplayTooltip(trigger) {
+        return Boolean(
+            window.innerWidth > 850 &&
+            appLayout.classList.contains("sidebar-collapsed") &&
+            trigger &&
+            trigger.isConnected &&
+            trigger.hasAttribute("data-tooltip")
+        );
+    }
+
+    /*
+     * Position the tooltip using the actual screen
+     * coordinates of the hovered sidebar control.
+     */
+
+    function positionTooltip(trigger) {
+        if (
+            !trigger ||
+            !tooltip.classList.contains("is-visible")
+        ) {
+            return;
+        }
+
+        if (!shouldDisplayTooltip(trigger)) {
+            hideTooltip();
+            return;
+        }
+
+        const label = trigger.getAttribute("data-tooltip");
+
+        if (!label || !label.trim()) {
+            hideTooltip();
+            return;
+        }
+
+        const triggerRect = trigger.getBoundingClientRect();
+
+        const viewportPadding = 12;
+        const preferredGap = 14;
+
+        /*
+         * Temporarily place the tooltip at a known
+         * position so its dimensions can be measured.
+         */
+
+        tooltip.style.left = "0px";
+        tooltip.style.top = "0px";
+
+        const tooltipRect = tooltip.getBoundingClientRect();
+
+        /*
+         * Prefer the right side of the hovered icon.
+         */
+
+        const rightPosition = triggerRect.right + preferredGap;
+
+        const enoughRoomOnRight =
+            rightPosition + tooltipRect.width <=
+            window.innerWidth - viewportPadding;
+
+        let left;
+
+        if (enoughRoomOnRight) {
+            left = rightPosition;
+        } else {
+            /*
+             * If the right side has insufficient room,
+             * try positioning the tooltip to the left.
+             */
+
+            const leftPosition =
+                triggerRect.left -
+                tooltipRect.width -
+                preferredGap;
+
+            if (leftPosition >= viewportPadding) {
+                left = leftPosition;
+            } else {
+                /*
+                 * Keep the tooltip inside the viewport
+                 * when neither side has enough space.
+                 */
+
+                left = Math.max(
+                    viewportPadding,
+                    Math.min(
+                        rightPosition,
+                        window.innerWidth -
+                        tooltipRect.width -
+                        viewportPadding
+                    )
+                );
+            }
+        }
+
+        /*
+         * Centre the tooltip vertically beside the
+         * specific sidebar control being hovered.
+         */
+
+        const preferredTop =
+            triggerRect.top +
+            triggerRect.height / 2 -
+            tooltipRect.height / 2;
+
+        const maximumTop = Math.max(
+            viewportPadding,
+            window.innerHeight -
+            tooltipRect.height -
+            viewportPadding
+        );
+
+        const top = Math.max(
+            viewportPadding,
+            Math.min(preferredTop, maximumTop)
+        );
+
+        /*
+         * CSS coordinates must have no space before px.
+         */
+
+        tooltip.style.left = `${Math.round(left)}px`;
+        tooltip.style.top = `${Math.round(top)}px`;
+    }
+
+    /*
+     * Show the tooltip for one specific control.
+     */
+
+    function showTooltip(trigger) {
+        if (!shouldDisplayTooltip(trigger)) {
+            hideTooltip();
+            return;
+        }
+
+        const label = trigger.getAttribute("data-tooltip");
+
+        if (!label || !label.trim()) {
+            hideTooltip();
+            return;
+        }
+
+        if (
+            activeTrigger &&
+            activeTrigger !== trigger &&
+            activeTrigger.getAttribute("aria-describedby") === tooltipId
+        ) {
+            activeTrigger.removeAttribute("aria-describedby");
+        }
+
+        activeTrigger = trigger;
+
+        tooltip.textContent = label.trim();
+
+        tooltip.setAttribute("aria-hidden", "false");
+
+        trigger.setAttribute("aria-describedby", tooltipId);
+
+        tooltip.classList.add("is-visible");
+
+        positionTooltip(trigger);
+    }
+
+    /*
+     * Hide this page's tooltip.
+     */
+
+    function hideTooltip() {
+        if (activeTrigger) {
+            if (
+                activeTrigger.getAttribute("aria-describedby") === tooltipId
+            ) {
+                activeTrigger.removeAttribute("aria-describedby");
+            }
+        }
+
+        activeTrigger = null;
+
+        tooltip.classList.remove("is-visible");
+
+        tooltip.setAttribute("aria-hidden", "true");
+    }
+
+    /*
+     * Display whichever control is currently hovered
+     * or has keyboard focus.
+     */
+
+    function refreshTooltip() {
+        const preferredTrigger =
+            focusedTrigger || hoveredTrigger;
+
+        if (
+            preferredTrigger &&
+            shouldDisplayTooltip(preferredTrigger)
+        ) {
+            showTooltip(preferredTrigger);
+        } else {
+            hideTooltip();
+        }
+    }
+
+    /*
+     * Attach events to every labelled sidebar control.
+     */
+
+    tooltipTriggers.forEach((trigger) => {
+        trigger.addEventListener("mouseenter", () => {
+            hoveredTrigger = trigger;
+            refreshTooltip();
+        });
+
+        trigger.addEventListener("mouseleave", () => {
+            if (hoveredTrigger === trigger) {
+                hoveredTrigger = null;
+            }
+
+            refreshTooltip();
+        });
+
+        trigger.addEventListener("focusin", () => {
+            focusedTrigger = trigger;
+            refreshTooltip();
+        });
+
+        trigger.addEventListener("focusout", () => {
+            window.setTimeout(() => {
+                if (
+                    focusedTrigger === trigger &&
+                    !trigger.contains(document.activeElement)
+                ) {
+                    focusedTrigger = null;
+                }
+
+                refreshTooltip();
+            }, 0);
+        });
+
+        trigger.addEventListener("click", () => {
+            if (hoveredTrigger === trigger) {
+                hoveredTrigger = null;
+            }
+
+            if (focusedTrigger === trigger) {
+                focusedTrigger = null;
+            }
+
+            hideTooltip();
+        });
+    });
+
+    /*
+     * Reposition the tooltip when scrolling.
+     */
+
+    window.addEventListener(
+        "scroll",
+        () => {
+            if (activeTrigger) {
+                positionTooltip(activeTrigger);
+            }
+        },
+        true
+    );
+
+    /*
+     * Reposition or hide it when the window is resized.
+     */
+
+    window.addEventListener("resize", () => {
+        if (!activeTrigger) {
+            return;
+        }
+
+        if (shouldDisplayTooltip(activeTrigger)) {
+            positionTooltip(activeTrigger);
+        } else {
+            hoveredTrigger = null;
+            focusedTrigger = null;
+            hideTooltip();
+        }
+    });
+
+    /*
+     * Observe sidebar collapse and expansion.
+     */
+
+    const sidebarStateObserver = new MutationObserver(() => {
+        if (
+            activeTrigger &&
+            !shouldDisplayTooltip(activeTrigger)
+        ) {
+            hoveredTrigger = null;
+            focusedTrigger = null;
+            hideTooltip();
+        } else {
+            refreshTooltip();
+        }
+    });
+
+    sidebarStateObserver.observe(appLayout, {
+        attributes: true,
+        attributeFilter: ["class"]
+    });
+
+    console.info(
+        "StudyTrack: Independent Goals sidebar tooltips initialized."
+    );
+}
+
+
+/* =========================================================
+   9. LOGOUT
    ========================================================= */
 
 async function logoutUser() {
@@ -542,7 +1010,7 @@ if (logoutButton) {
 
 
 /* =========================================================
-   9. GOAL SUMMARY STATISTICS
+   10. GOAL SUMMARY STATISTICS
    ========================================================= */
 
 function updateGoalSummary() {
@@ -593,7 +1061,7 @@ function updateGoalSummary() {
 
 
 /* =========================================================
-   10. CREATE GOAL CARD
+   11. CREATE GOAL CARD
    ========================================================= */
 
 function createGoalCard(goal) {
@@ -768,7 +1236,7 @@ function createGoalCard(goal) {
 
 
 /* =========================================================
-   11. SEARCH AND FILTER GOALS
+   12. SEARCH AND FILTER GOALS
    ========================================================= */
 
 function getVisibleGoals() {
@@ -855,7 +1323,7 @@ function renderGoals() {
 
 
 /* =========================================================
-   12. LOAD GOALS FROM THE DATABASE
+   13. LOAD GOALS FROM THE DATABASE
    ========================================================= */
 
 async function loadGoals() {
@@ -905,7 +1373,7 @@ async function loadGoals() {
 
 
 /* =========================================================
-   13. OPEN AND CLOSE THE GOAL FORM
+   14. OPEN AND CLOSE THE GOAL FORM
    ========================================================= */
 
 function resetGoalForm() {
@@ -1026,7 +1494,7 @@ if (cancelGoalFormButton) {
 
 
 /* =========================================================
-   14. CREATE OR UPDATE A GOAL
+   15. CREATE OR UPDATE A GOAL
    ========================================================= */
 
 if (goalForm) {
@@ -1128,7 +1596,7 @@ if (goalForm) {
 
 
 /* =========================================================
-   15. MARK A GOAL AS COMPLETED
+   16. MARK A GOAL AS COMPLETED
    ========================================================= */
 
 async function completeGoal(goalId) {
@@ -1159,7 +1627,7 @@ async function completeGoal(goalId) {
 
 
 /* =========================================================
-   16. DELETE GOALS
+   17. DELETE GOALS
    ========================================================= */
 
 function openDeleteDialog(goal) {
@@ -1250,7 +1718,7 @@ if (confirmDeleteButton) {
 
 
 /* =========================================================
-   17. SEARCH INPUT
+   18. SEARCH INPUT
    ========================================================= */
 
 if (goalSearch) {
@@ -1263,7 +1731,7 @@ if (goalSearch) {
 
 
 /* =========================================================
-   18. FILTER BUTTONS
+   19. FILTER BUTTONS
    ========================================================= */
 
 filterButtons.forEach((button) => {
@@ -1277,7 +1745,7 @@ filterButtons.forEach((button) => {
 
 
 /* =========================================================
-   19. INITIALISE THE GOALS PAGE
+   20. INITIALISE THE GOALS PAGE
    ========================================================= */
 
 async function initialiseGoalsPage() {
@@ -1288,6 +1756,12 @@ async function initialiseGoalsPage() {
     updateMenuButton();
 
     updateFilterButtons();
+
+    /*
+     * Initialise this page's independent tooltip system.
+     */
+
+    initialiseGoalsSidebarTooltips();
 
     const authenticated = await loadCurrentUser();
 
