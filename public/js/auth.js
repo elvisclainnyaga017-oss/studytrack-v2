@@ -8,6 +8,7 @@
    2. Handle user login.
    3. Display success and error messages.
    4. Check existing authentication sessions.
+   5. Handle user logout.
    ========================================================= */
 
 
@@ -322,7 +323,62 @@ if (registerForm) {
 
 
 /* =========================================================
-   6. EXISTING SESSION CHECK
+   6. LOGOUT
+   Uses the existing backend endpoint:
+   POST /api/auth/logout
+
+   The server destroys the session and clears its cookie.
+   ========================================================= */
+
+function initializeLogout() {
+    const logoutButtons = document.querySelectorAll("#logoutButton");
+
+    logoutButtons.forEach((logoutButton) => {
+        if (logoutButton.dataset.logoutInitialized === "true") {
+            return;
+        }
+
+        logoutButton.dataset.logoutInitialized = "true";
+
+        logoutButton.addEventListener("click", async function (event) {
+            event.preventDefault();
+
+            if (logoutButton.disabled) {
+                return;
+            }
+
+            const originalText = logoutButton.textContent.trim();
+
+            logoutButton.disabled = true;
+            logoutButton.setAttribute("aria-busy", "true");
+            logoutButton.textContent = "Signing out...";
+
+            try {
+                await sendAuthRequest("/api/auth/logout", {});
+
+                // Replace the current page so the authenticated
+                // page is not left as the active browser history entry.
+                window.location.replace("/index.html");
+
+            } catch (error) {
+                console.error("StudyTrack logout failed:", error);
+
+                logoutButton.disabled = false;
+                logoutButton.removeAttribute("aria-busy");
+                logoutButton.textContent = originalText;
+
+                window.alert(
+                    error.message ||
+                    "Unable to sign out. Please check your connection and try again."
+                );
+            }
+        });
+    });
+}
+
+
+/* =========================================================
+   7. EXISTING SESSION CHECK
 
    Redirects authenticated users away from login and
    registration pages.
@@ -362,5 +418,23 @@ async function redirectIfAuthenticated() {
 }
 
 
-redirectIfAuthenticated();
+/* =========================================================
+   8. INITIALIZE AUTHENTICATION FEATURES
+   ========================================================= */
+
+function initializeAuthentication() {
+    initializeLogout();
+    redirectIfAuthenticated();
+}
+
+
+if (document.readyState === "loading") {
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeAuthentication,
+        { once: true }
+    );
+} else {
+    initializeAuthentication();
+}
 

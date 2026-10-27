@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#004225">
+    <meta name="color-scheme" content="light dark">
+
+    <title>Reminders | StudyTrack</title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/reminders.css">
+
+    <script src="/js/auth.js" defer></script>
+    <script src="/js/reminders.js" defer></script>
+</head>
+
+<body class="reminders-document">
+
+    <div class="app-layout" id="appLayout">
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <a href="/dashboard.html"
+               class="brand"
+               aria-label="StudyTrack dashboard">
+
+                <span class="brand-mark">S</span>
+
+                <span class="brand-name">
+                    StudyTrack
+                    <small>YOUR PRODUCTIVITY SPACE</small>
+                </span>
+            </a>
+
+            <div class="sidebar-section-label">WORKSPACE</div>
+
+            <nav class="sidebar-navigation" aria-label="Main navigation">
+
+                <a href="/dashboard.html"
+                   class="nav-link"
+                   data-tooltip="Dashboard">
+
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="/goals.html"
+                   class="nav-link"
+                   data-tooltip="My Goals">
+
+                    <span class="nav-icon" aria-hidden="true">◎</span>
+                    <span>My Goals</span>
+                </a>
+
+                <a href="/habits.html"
+                   class="nav-link"
+                   data-tooltip="Habits">
+
+                    <span class="nav-icon" aria-hidden="true">↻</span>
+                    <span>Habits</span>
+                </a>
+
+                <a href="/tasks.html"
+                   class="nav-link"
+                   data-tooltip="Tasks">
+
+                    <span class="nav-icon" aria-hidden="true">☷</span>
+                    <span>Tasks</span>
+                </a>
+
+                <a href="/reminders.html"
+                   class="nav-link active"
+                   aria-current="page"
+                   data-tooltip="Reminders">
+
+                    <span class="nav-icon" aria-hidden="true">♧</span>
+                    <span>Reminders</span>
+                </a>
+
+                <a href="/focus.html"
+                   class="nav-link"
+                   data-tooltip="Focus Timer">
+
+                    <span class="nav-icon" aria-hidden="true">◷</span>
+                    <span>Focus Timer</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-tip">
+
+                    <span class="tip-icon" aria-hidden="true">✦</span>
+
+                    <p class="tip-heading">A little reminder</p>
+
+                    <p class="tip-text">
+                        Give your future self a little help.
+                        Plan ahead, stay consistent, and remember
+                        what matters.
+                    </p>
+                </div>
+
+                <a href="/profile.html"
+                   class="profile-shortcut"
+                   data-tooltip="View your profile">
+
+                    <span class="profile-avatar" id="sidebarAvatar">S</span>
+
+                    <span class="profile-shortcut-text">
+                        <strong id="sidebarUserName">Loading...</strong>
+                        <small>View your profile</small>
+                    </span>
+
+                    <span class="profile-arrow" aria-hidden="true">›</span>
+                </a>
+
+                <button type="button"
+                        class="logout-button sidebar-logout"
+                        id="logoutButton">
+
+                    ↪ Sign out
+                </button>
+
+            </div>
+        </aside>
+
+
+        <!-- =========================================
+             MAIN AREA
+        ========================================== -->
+
+        <div class="main-area main-content">
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button class="menu-button"
+                            id="sidebarToggle"
+                            type="button"
+                            aria-label="Toggle sidebar"
+                            aria-expanded="true"
+                            aria-controls="sidebar">
+
+                        <span class="menu-line" aria-hidden="true"></span>
+                        <span class="menu-line" aria-hidden="true"></span>
+                        <span class="menu-line" aria-hidden="true"></span>
+                    </button>
+
+                    <div class="breadcrumb" aria-label="Breadcrumb">
+
+                        <span>Workspace</span>
+
+                        <span class="breadcrumb-separator"
+                              aria-hidden="true">/</span>
+
+                        <span class="breadcrumb-current">Reminders</span>
+                    </div>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="date-display">
+
+                        <span class="date-display-icon"
+                              aria-hidden="true">▦</span>
+
+                        <span id="currentDate">Today</span>
+                    </div>
+
+                    <div class="theme-switcher"
+                         role="group"
+                         aria-label="Appearance">
+
+                        <button type="button"
+                                class="theme-option"
+                                id="dayThemeButton"
+                                data-theme-choice="day"
+                                aria-pressed="true"
+                                title="Day theme">
+
+                            <span aria-hidden="true">☀</span>
+                            <span>Day</span>
+
+                        </button>
+
+                        <button type="button"
+                                class="theme-option"
+                                id="nightThemeButton"
+                                data-theme-choice="night"
+                                aria-pressed="false"
+                                title="Night theme">
+
+                            <span aria-hidden="true">☾</span>
+                            <span>Night</span>
+
+                        </button>
+                       
+                    </div>
+
+
+                </div>
+            </header>
+
+
+            <!-- =====================================
+                 REMINDERS CONTENT
+            ====================================== -->
+
+            <main class="reminders-content">
+
+                <!-- PAGE HEADER -->
+
+                <section class="page-header">
+
+                    <div class="page-header-copy">
+
+                        <p class="page-eyebrow">
+                            YOUR PRODUCTIVITY WORKSPACE
+                        </p>
+
+                        <h1>My Reminders</h1>
+
+                        <p class="page-subtitle">
+                            Keep important dates, commitments, and
+                            follow-ups on your radar so nothing
+                            important slips through the cracks.
+                        </p>
+
+                    </div>
+
+                    <button class="primary-button"
+                            id="openReminderModalButton"
+                            type="button">
+
+                        <span aria-hidden="true">+</span>
+                        <span>Add Reminder</span>
+                    </button>
+
+                </section>
+
+
+                <!-- NOTIFICATIONS -->
+
+                <div class="reminders-notification"
+                     id="remindersNotification"
+                     role="status"
+                     aria-live="polite"
+                     hidden></div>
+
+
+                <!-- =================================
+                     SUMMARY CARDS
+                ================================== -->
+
+                <section class="reminder-summary-grid"
+                         aria-label="Reminder summary">
+
+                    <article class="reminder-summary-card summary-total">
+
+                        <div class="summary-card-top">
+
+                            <span class="summary-card-label">
+                                Total Reminders
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">♧</span>
+
+                        </div>
+
+                        <strong class="summary-card-value"
+                                id="totalReminders">0</strong>
+
+                        <span class="summary-card-description">
+                            All your reminders
+                        </span>
+
+                    </article>
+
+
+                    <article class="reminder-summary-card summary-pending">
+
+                        <div class="summary-card-top">
+
+                            <span class="summary-card-label">
+                                Pending
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">◷</span>
+
+                        </div>
+
+                        <strong class="summary-card-value"
+                                id="pendingReminders">0</strong>
+
+                        <span class="summary-card-description">
+                            Still need your attention
+                        </span>
+
+                    </article>
+
+
+                    <article class="reminder-summary-card summary-upcoming">
+
+                        <div class="summary-card-top">
+
+                            <span class="summary-card-label">
+                                Upcoming
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">↗</span>
+
+                        </div>
+
+                        <strong class="summary-card-value"
+                                id="upcomingReminders">0</strong>
+
+                        <span class="summary-card-description">
+                            Scheduled for the future
+                        </span>
+
+                    </article>
+
+
+                    <article class="reminder-summary-card summary-overdue">
+
+                        <div class="summary-card-top">
+
+                            <span class="summary-card-label">
+                                Overdue
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">!</span>
+
+                        </div>
+
+                        <strong class="summary-card-value"
+                                id="overdueReminders">0</strong>
+
+                        <span class="summary-card-description">
+                            Past their scheduled time
+                        </span>
+
+                    </article>
+
+
+                    <article class="reminder-summary-card summary-completed">
+
+                        <div class="summary-card-top">
+
+                            <span class="summary-card-label">
+                                Completed
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">✓</span>
+
+                        </div>
+
+                        <strong class="summary-card-value"
+                                id="completedReminders">0</strong>
+
+                        <span class="summary-card-description">
+                            Successfully taken care of
+                        </span>
+
+                    </article>
+
+                </section>
+
+
+                <!-- =================================
+                     REMINDER WORKSPACE
+                ================================== -->
+
+                <section class="reminder-workspace">
+
+                    <div class="workspace-heading">
+
+                        <div>
+
+                            <p class="section-eyebrow">
+                                STAY ONE STEP AHEAD
+                            </p>
+
+                            <h2>Your Reminder List</h2>
+
+                            <p class="workspace-description">
+                                Review what's coming up, follow up on
+                                overdue items, and mark completed
+                                reminders when you're done.
+                            </p>
+
+                        </div>
+
+                        <span class="visible-reminder-count"
+                              id="visibleReminderCount">
+
+                            0 reminders
+                        </span>
+
+                    </div>
+
+
+                    <!-- SEARCH AND FILTERS -->
+
+                    <div class="reminder-controls">
+
+                        <div class="reminder-search-wrapper">
+
+                            <span class="reminder-search-icon"
+                                  aria-hidden="true">⌕</span>
+
+                            <input type="search"
+                                   id="reminderSearch"
+                                   class="reminder-search"
+                                   placeholder="Search your reminders..."
+                                   aria-label="Search reminders"
+                                   autocomplete="off">
+
+                        </div>
+
+
+                        <div class="reminder-filter-group">
+
+                            <label class="visually-hidden"
+                                   for="reminderStatusFilter">
+
+                                Filter reminders by status
+                            </label>
+
+                            <select id="reminderStatusFilter"
+                                    class="reminder-filter">
+
+                                <option value="all">All statuses</option>
+                                <option value="pending">Pending</option>
+                                <option value="completed">Completed</option>
+
+                            </select>
+
+
+                            <label class="visually-hidden"
+                                   for="reminderTimeFilter">
+
+                                Filter reminders by timing
+                            </label>
+
+                            <select id="reminderTimeFilter"
+                                    class="reminder-filter">
+
+                                <option value="all">All timings</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="today">Due today</option>
+
+                            </select>
+
+
+                            <label class="visually-hidden"
+                                   for="reminderSortFilter">
+
+                                Sort reminders
+                            </label>
+
+                            <select id="reminderSortFilter"
+                                    class="reminder-filter">
+
+                                <option value="remind_at">
+                                    Earliest First
+                                </option>
+
+                                <option value="newest">
+                                    Recently Added
+                                </option>
+
+                                <option value="oldest">
+                                    Oldest Added
+                                </option>
+
+                                <option value="updated_at">
+                                    Recently Updated
+                                </option>
+
+                                <option value="title">
+                                    Reminder Name
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- REMINDER LIST -->
+
+                    <div class="reminders-list"
+                         id="remindersList"
+                         aria-live="polite">
+
+                        <div class="reminders-loading"
+                             id="remindersLoading">
+
+                            <span class="loading-spinner"
+                                  aria-hidden="true"></span>
+
+                            <span>Loading your reminders...</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- EMPTY STATE -->
+
+                    <div class="reminders-empty-state"
+                         id="remindersEmptyState"
+                         hidden>
+
+                        <div class="empty-state-icon"
+                             aria-hidden="true">♧</div>
+
+                        <h3 id="reminderEmptyStateTitle">
+                            No reminders yet
+                        </h3>
+
+                        <p id="reminderEmptyStateMessage">
+                            Create your first reminder to keep
+                            important dates and commitments
+                            organised.
+                        </p>
+
+                        <button class="primary-button"
+                                id="emptyStateAddReminderButton"
+                                type="button">
+
+                            <span aria-hidden="true">+</span>
+                            <span>Create a Reminder</span>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- FOOTER -->
+
+                <footer class="reminders-footer">
+
+                    <span>StudyTrack</span>
+
+                    <span>
+                        Remember what matters. Make progress every day.
+                    </span>
+
+                </footer>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <!-- =============================================
+         ADD / EDIT REMINDER DIALOG
+    ============================================== -->
+
+    <dialog class="reminder-dialog"
+            id="reminderDialog"
+            aria-labelledby="reminderDialogTitle">
+
+        <div class="dialog-header">
+
+            <div>
+
+                <p class="dialog-eyebrow">REMINDER DETAILS</p>
+
+                <h2 id="reminderDialogTitle">
+                    Create a Reminder
+                </h2>
+
+                <p id="reminderDialogSubtitle">
+                    Choose what to remember and when it matters.
+                </p>
+
+            </div>
+
+            <button class="dialog-close-button"
+                    id="closeReminderModalButton"
+                    type="button"
+                    aria-label="Close reminder form">
+
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="reminderForm">
+
+            <input type="hidden"
+                   id="reminderId"
+                   name="reminderId">
+
+
+            <div class="form-field">
+
+                <label for="reminderTitle">
+                    Reminder Title <span>*</span>
+                </label>
+
+                <input type="text"
+                       id="reminderTitle"
+                       name="title"
+                       maxlength="150"
+                       placeholder="What do you need to remember?"
+                       required>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="reminderDescription">
+                    Description
+                </label>
+
+                <textarea id="reminderDescription"
+                          name="description"
+                          rows="4"
+                          maxlength="10000"
+                          placeholder="Add any useful details..."></textarea>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="reminderDateTime">
+                    Reminder Date and Time <span>*</span>
+                </label>
+
+                <input type="datetime-local"
+                       id="reminderDateTime"
+                       name="remind_at"
+                       step="60"
+                       required>
+
+                <small class="form-help-text">
+                    Choose the local date and time for your reminder.
+                </small>
+
+            </div>
+
+
+            <div class="form-field">
+
+                <label for="reminderStatusField">
+                    Status
+                </label>
+
+                <select id="reminderStatusField"
+                        name="status">
+
+                    <option value="pending" selected>
+                        Pending
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="reminder-form-error"
+                 id="reminderFormError"
+                 role="alert"
+                 hidden></div>
+
+
+            <div class="dialog-actions">
+
+                <button class="secondary-button"
+                        id="cancelReminderModalButton"
+                        type="button">
+
+                    Cancel
+                </button>
+
+                <button class="primary-button"
+                        id="saveReminderButton"
+                        type="submit">
+
+                    Save Reminder
+                </button>
+
+            </div>
+
+        </form>
+
+    </dialog>
+
+
+    <!-- =============================================
+         DELETE REMINDER DIALOG
+    ============================================== -->
+
+    <dialog class="reminder-dialog delete-reminder-dialog"
+            id="deleteReminderDialog"
+            aria-labelledby="deleteReminderDialogTitle">
+
+        <div class="delete-dialog-icon"
+             aria-hidden="true">!</div>
+
+        <h2 id="deleteReminderDialogTitle">
+            Delete this reminder?
+        </h2>
+
+        <p>
+            Are you sure you want to delete
+            <strong id="deleteReminderName">this reminder</strong>?
+            This action cannot be undone.
+        </p>
+
+        <div class="dialog-actions">
+
+            <button class="secondary-button"
+                    id="cancelDeleteReminderButton"
+                    type="button">
+
+                Cancel
+            </button>
+
+            <button class="danger-button"
+                    id="confirmDeleteReminderButton"
+                    type="button">
+
+                Delete Reminder
+            </button>
+
+        </div>
+
+    </dialog>
+
+
+    <!-- =============================================
+         SIDEBAR, THEME, AND DATE CONTROLS
+    ============================================== -->
+
+    <script>
+        (function () {
+            "use strict";
+
+            const root = document.documentElement;
+            const layout = document.getElementById("appLayout");
+            const sidebar = document.getElementById("sidebar");
+            const toggle = document.getElementById("sidebarToggle");
+
+            const dayButton =
+                document.getElementById("dayThemeButton");
+
+            const nightButton =
+                document.getElementById("nightThemeButton");
+
+            const dateElement =
+                document.getElementById("currentDate");
+
+
+            // -----------------------------------------
+            // THEME
+            // -----------------------------------------
+
+            function applyTheme(theme = "day") {
+                const selectedTheme =
+                    theme === "night" ? "night" : "day";
+
+                root.setAttribute("data-theme", selectedTheme);
+
+                if (dayButton && nightButton) {
+                    dayButton.classList.toggle(
+                        "active",
+                        selectedTheme === "day"
+                    );
+
+                    nightButton.classList.toggle(
+                        "active",
+                        selectedTheme === "night"
+                    );
+
+                    dayButton.setAttribute(
+                        "aria-pressed",
+                        String(selectedTheme === "day")
+                    );
+
+                    nightButton.setAttribute(
+                        "aria-pressed",
+                        String(selectedTheme === "night")
+                    );
+                }
+
+                try {
+                    localStorage.setItem(
+                        "studytrack-theme",
+                        selectedTheme
+                    );
+                } catch (error) {
+                    // The page remains usable if storage is unavailable.
+                }
+            }
+
+
+            let savedTheme = "day";
+
+            try {
+                savedTheme =
+                    localStorage.getItem("studytrack-theme") || "day";
+            } catch (error) {
+                savedTheme = "day";
+            }
+
+            applyTheme(savedTheme);
+
+
+            if (dayButton) {
+                dayButton.addEventListener("click", function () {
+                    applyTheme("day");
+                });
+            }
+
+            if (nightButton) {
+                nightButton.addEventListener("click", function () {
+                    applyTheme("night");
+                });
+            }
+
+
+            // -----------------------------------------
+            // CURRENT DATE
+            // -----------------------------------------
+
+            if (dateElement) {
+                dateElement.textContent =
+                    new Intl.DateTimeFormat("en-KE", {
+                        weekday: "short",
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric"
+                    }).format(new Date());
+            }
+
+
+            // -----------------------------------------
+            // SIDEBAR COLLAPSE
+            // -----------------------------------------
+
+            function setSidebarCollapsed(collapsed = false) {
+                if (layout) {
+                    layout.classList.toggle(
+                        "sidebar-collapsed",
+                        collapsed
+                    );
+                }
+
+                if (toggle) {
+                    toggle.setAttribute(
+                        "aria-expanded",
+                        String(!collapsed)
+                    );
+                }
+
+                try {
+                    localStorage.setItem(
+                        "studytrack-sidebar-collapsed",
+                        String(collapsed)
+                    );
+                } catch (error) {
+                    // Sidebar remains usable without local storage.
+                }
+            }
+
+
+            let sidebarWasCollapsed = false;
+
+            try {
+                sidebarWasCollapsed =
+                    localStorage.getItem(
+                        "studytrack-sidebar-collapsed"
+                    ) === "true";
+            } catch (error) {
+                sidebarWasCollapsed = false;
+            }
+
+
+            if (window.matchMedia("(min-width: 851px)").matches) {
+                setSidebarCollapsed(sidebarWasCollapsed);
+            }
+
+
+            if (toggle) {
+                toggle.addEventListener("click", function () {
+                    if (
+                        window.matchMedia("(max-width: 850px)").matches
+                    ) {
+                        if (sidebar) {
+                            const isOpen =
+                                sidebar.classList.contains("sidebar-open");
+
+                            sidebar.classList.toggle(
+                                "sidebar-open",
+                                !isOpen
+                            );
+
+                            toggle.setAttribute(
+                                "aria-expanded",
+                                String(!isOpen)
+                            );
+                        }
+                    } else {
+                        const isCollapsed = Boolean(
+                            layout &&
+                            layout.classList.contains("sidebar-collapsed")
+                        );
+
+                        setSidebarCollapsed(!isCollapsed);
+                    }
+                });
+            }
+
+
+            // -----------------------------------------
+            // CLOSE MOBILE SIDEBAR WHEN CLICKING OUTSIDE
+            // -----------------------------------------
+
+            document.addEventListener("click", function (event) {
+                if (!sidebar || !toggle) {
+                    return;
+                }
+
+                const target = event.target;
+
+                if (!(target instanceof Node)) {
+                    return;
+                }
+
+                if (
+                    window.matchMedia("(max-width: 850px)").matches &&
+                    sidebar.classList.contains("sidebar-open") &&
+                    !sidebar.contains(target) &&
+                    !toggle.contains(target)
+                ) {
+                    sidebar.classList.remove("sidebar-open");
+
+                    toggle.setAttribute("aria-expanded", "false");
+                }
+            });
+
+
+            // -----------------------------------------
+            // HANDLE RESIZING
+            // -----------------------------------------
+
+            window.addEventListener("resize", function () {
+                if (
+                    window.matchMedia("(min-width: 851px)").matches &&
+                    sidebar
+                ) {
+                    sidebar.classList.remove("sidebar-open");
+
+                    const isCollapsed = Boolean(
+                        layout &&
+                        layout.classList.contains("sidebar-collapsed")
+                    );
+
+                    if (toggle) {
+                        toggle.setAttribute(
+                            "aria-expanded",
+                            String(!isCollapsed)
+                        );
+                    }
+                }
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
+

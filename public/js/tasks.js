@@ -235,9 +235,9 @@ if (search) {
 
 const queryString = query.toString();
 
-const endpoint = queryString
-    ? `/ api / tasks ? ${ queryString }`
-    : "/api/tasks";
+    const endpoint = queryString
+        ? `/api/tasks?${queryString}`
+        : "/api/tasks";
 
 const result = await tasksApiRequest(endpoint);
 
@@ -511,7 +511,7 @@ const metadata = createTaskElement("div", "task-meta");
 metadata.appendChild(
     createTaskElement(
         "span",
-        `task - badge priority - ${ task.priority }`,
+        `task-badge priority-${task.priority}`,
         `${ capitalize(task.priority) } priority`
     )
 );
@@ -521,7 +521,7 @@ const statusLabel = getStatusLabel(task.status);
 metadata.appendChild(
     createTaskElement(
         "span",
-        `task - badge status - ${ statusLabel.className }`,
+        `task-badge status-${ statusLabel.className }`,
         statusLabel.text
     )
 );
@@ -640,16 +640,13 @@ return text.charAt(0).toUpperCase() + text.slice(1);
     DATE HELPERS
     ========================================================= */
 
-    function getLocalDateString(date = new Date()) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
+function getLocalDateString(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
 
-        
-return `${ year } -${ month } -${ day }`;
-
-
-    }
+    return `${year}-${month}-${day}`;
+}
 
     function normalizeDate(dateValue) {
         if (!dateValue) {
@@ -759,7 +756,7 @@ if (TasksApp.notificationTimer) {
 }
 
 notification.textContent = message;
-notification.className = `tasks - notification ${ type }`;
+notification.className = `tasks-notification ${type}`;
 notification.hidden = false;
 
 if (type !== "error" && type !== "warning") {
@@ -1171,7 +1168,7 @@ clearTaskFormError();
 try {
     if (isEditing) {
         await tasksApiRequest(
-            `/ api / tasks / ${ encodeURIComponent(editingId) }`,
+            `/api/tasks/${encodeURIComponent(editingId)}`,
             {
                 method: "PUT",
                 body: taskData
@@ -1268,7 +1265,7 @@ TasksApp.requestInProgress = true;
 
 try {
     await tasksApiRequest(
-        `/ api / tasks / ${ encodeURIComponent(task.id) }/status`,
+        `/api/tasks/${encodeURIComponent(task.id)}/status`,
         {
             method: "PATCH",
                 body: {

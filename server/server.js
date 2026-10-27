@@ -15,6 +15,7 @@ const authRoutes = require("./routes/auth");
 const goalsRoutes = require("./routes/goals");
 const habitsRoutes = require("./routes/habits");
 const tasksRoutes = require("./routes/tasks");
+const remindersRoutes = require("./routes/reminders");
 
 const app = express();
 
@@ -95,9 +96,9 @@ app.get("/api/health", (req, res) => {
 app.get("/api/database-status", async (req, res) => {
     try {
         const [rows] = await db.query(`
-            SELECT
-                DATABASE() AS database_name,
-                @@port AS database_port
+SELECT
+DATABASE() AS database_name,
+    @@port AS database_port
         `);
 
         res.status(200).json({
@@ -150,6 +151,13 @@ app.use("/api/tasks", tasksRoutes);
 
 
 // ==================================================
+// REMINDERS ROUTES
+// ==================================================
+
+app.use("/api/reminders", remindersRoutes);
+
+
+// ==================================================
 // HANDLE UNKNOWN API ROUTES
 // ==================================================
 
@@ -180,55 +188,56 @@ async function startServer() {
             console.log("STUDYTRACK V2");
             console.log("====================================");
             console.log(`Server: http://localhost:${PORT}`);
-            console.log("Database: Connected");
-            console.log("Authentication routes: Ready");
-            console.log("Goals routes: Ready");
-            console.log("Habits routes: Ready");
-            console.log("Tasks routes: Ready");
-            console.log("====================================");
-            console.log("");
+console.log("Database: Connected");
+console.log("Authentication routes: Ready");
+console.log("Goals routes: Ready");
+console.log("Habits routes: Ready");
+console.log("Tasks routes: Ready");
+console.log("Reminders routes: Ready");
+console.log("====================================");
+console.log("");
         });
 
-        async function shutdown() {
-            console.log("\nShutting down StudyTrack V2...");
+async function shutdown() {
+    console.log("\nShutting down StudyTrack V2...");
 
-            server.close(async () => {
-                try {
-                    await db.end();
+    server.close(async () => {
+        try {
+            await db.end();
 
-                    console.log("Server stopped successfully.");
+            console.log("Server stopped successfully.");
 
-                    process.exit(0);
+            process.exit(0);
 
-                } catch (error) {
-                    console.error(
-                        "Shutdown error:",
-                        error.message
-                    );
+        } catch (error) {
+            console.error(
+                "Shutdown error:",
+                error.message
+            );
 
-                    process.exit(1);
-                }
-            });
+            process.exit(1);
         }
+    });
+}
 
-        process.once("SIGINT", shutdown);
-        process.once("SIGTERM", shutdown);
+process.once("SIGINT", shutdown);
+process.once("SIGTERM", shutdown);
 
     } catch (error) {
-        if (connection) {
-            connection.release();
-        }
-
-        console.error("");
-        console.error("STUDYTRACK V2 FAILED TO START");
-        console.error("Error code:", error.code || "UNKNOWN");
-        console.error("Check your database configuration.");
-        console.error("");
-
-        await db.end();
-
-        process.exitCode = 1;
+    if (connection) {
+        connection.release();
     }
+
+    console.error("");
+    console.error("STUDYTRACK V2 FAILED TO START");
+    console.error("Error code:", error.code || "UNKNOWN");
+    console.error("Check your database configuration.");
+    console.error("");
+
+    await db.end();
+
+    process.exitCode = 1;
+}
 }
 
 
@@ -237,3 +246,4 @@ async function startServer() {
 // ==================================================
 
 startServer();
+

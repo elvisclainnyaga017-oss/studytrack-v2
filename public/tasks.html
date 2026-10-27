@@ -1,136 +1,108 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#004225">
+    <meta name="color-scheme" content="light dark">
+
     <title>My Tasks | StudyTrack</title>
 
-    ```
     <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/tasks.css">
 
     <script src="/js/auth.js" defer></script>
-    <script src="/js/sidebar-tooltips.js" defer></script>
+    <script src="/js/tasks-tooltips.js" defer></script>
     <script src="/js/tasks.js" defer></script>
-    ```
-
 </head>
 
 <body class="tasks-document">
-
     <div class="app-layout" id="appLayout">
 
-        ```
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
-
-            <a class="sidebar-brand brand-link"
-               href="/dashboard.html"
-               aria-label="StudyTrack Dashboard">
-
-                <span class="brand-logo" aria-hidden="true">S</span>
-
-                <span class="brand-copy">
-                    <span class="brand-name">StudyTrack</span>
-                    <span class="brand-tagline">YOUR PRODUCTIVITY SPACE</span>
+            <a href="/dashboard.html" class="brand" aria-label="StudyTrack dashboard">
+                <span class="brand-mark">S</span>
+                <span class="brand-name">
+                    StudyTrack
+                    <small>YOUR PRODUCTIVITY SPACE</small>
                 </span>
             </a>
 
             <div class="sidebar-section-label">WORKSPACE</div>
 
-            <nav class="sidebar-nav" aria-label="Main navigation">
-
-                <a class="nav-link"
-                   href="/dashboard.html"
+            <nav class="sidebar-navigation" aria-label="Main navigation">
+                <a href="/dashboard.html"
+                   class="nav-link"
                    data-tooltip="Dashboard">
                     <span class="nav-icon" aria-hidden="true">⌂</span>
-                    <span class="nav-label">Dashboard</span>
+                    <span>Dashboard</span>
                 </a>
 
-                <a class="nav-link"
-                   href="/goals.html"
+                <a href="/goals.html"
+                   class="nav-link"
                    data-tooltip="My Goals">
                     <span class="nav-icon" aria-hidden="true">◎</span>
-                    <span class="nav-label">My Goals</span>
+                    <span>My Goals</span>
                 </a>
 
-                <a class="nav-link"
-                   href="/habits.html"
+                <a href="/habits.html"
+                   class="nav-link"
                    data-tooltip="Habits">
                     <span class="nav-icon" aria-hidden="true">↻</span>
-                    <span class="nav-label">Habits</span>
+                    <span>Habits</span>
                 </a>
 
-                <a class="nav-link active"
-                   href="/tasks.html"
+                <a href="/tasks.html"
+                   class="nav-link active"
                    aria-current="page"
-                   data-tooltip="My Tasks">
+                   data-tooltip="Tasks">
                     <span class="nav-icon" aria-hidden="true">☷</span>
-                    <span class="nav-label">My Tasks</span>
+                    <span>Tasks</span>
                 </a>
 
-                <a class="nav-link"
-                   href="/reminders.html"
+                <a href="/reminders.html"
+                   class="nav-link"
                    data-tooltip="Reminders">
                     <span class="nav-icon" aria-hidden="true">♧</span>
-                    <span class="nav-label">Reminders</span>
+                    <span>Reminders</span>
                 </a>
 
-                <a class="nav-link"
-                   href="/focus.html"
+                <a href="/focus.html"
+                   class="nav-link"
                    data-tooltip="Focus Timer">
                     <span class="nav-icon" aria-hidden="true">◷</span>
-                    <span class="nav-label">Focus Timer</span>
+                    <span>Focus Timer</span>
                 </a>
-
             </nav>
 
-            <!-- SIDEBAR BOTTOM -->
             <div class="sidebar-bottom">
+                <div class="sidebar-tip">
+                    <span class="tip-icon" aria-hidden="true">✦</span>
+                    <p class="tip-heading">A little reminder</p>
+                    <p class="tip-text">
+                        Small, consistent steps lead to meaningful progress.
+                    </p>
+                </div>
 
-                <section class="sidebar-tip" aria-label="Productivity reminder">
-                    <div class="sidebar-tip-heading">
-                        <span class="sidebar-tip-icon" aria-hidden="true">✦</span>
-                        <span>A little reminder</span>
-                    </div>
+                <a href="/profile.html"
+                   class="profile-shortcut"
+                   data-tooltip="View your profile">
+                    <span class="profile-avatar" id="sidebarAvatar">S</span>
 
-                    <p>Small, consistent steps lead to meaningful progress.</p>
-                </section>
-
-                <a class="profile-shortcut"
-                   href="/profile.html"
-                   data-tooltip="My Profile">
-
-                    <span class="profile-shortcut-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="8" r="3.5"
-                                    stroke="currentColor"
-                                    stroke-width="1.8" />
-                            <path d="M5 20c.5-4 3-6 7-6s6.5 2 7 6"
-                                  stroke="currentColor"
-                                  stroke-width="1.8"
-                                  stroke-linecap="round" />
-                        </svg>
+                    <span class="profile-shortcut-text">
+                        <strong id="sidebarUserName">Loading...</strong>
+                        <small>View your profile</small>
                     </span>
 
-                    <span class="profile-shortcut-copy">
-                        <span class="profile-shortcut-title">My Profile</span>
-                        <span class="profile-shortcut-subtitle">Account settings</span>
-                    </span>
+                    <span class="profile-arrow" aria-hidden="true">›</span>
                 </a>
 
-                <button class="sidebar-logout"
-                        id="logoutButton"
-                        type="button"
-                        data-tooltip="Sign Out">
-                    <span class="logout-icon" aria-hidden="true">↪</span>
-                    <span class="logout-label">Sign Out</span>
+                <button type="button"
+                        class="logout-button sidebar-logout"
+                        id="logoutButton">
+                    ↪ Sign out
                 </button>
-
             </div>
         </aside>
 
@@ -148,21 +120,28 @@
                             aria-label="Toggle sidebar"
                             aria-expanded="true"
                             aria-controls="sidebar">
-                        <span aria-hidden="true">☰</span>
+
+                        <span class="menu-line" aria-hidden="true"></span>
+                        <span class="menu-line" aria-hidden="true"></span>
+                        <span class="menu-line" aria-hidden="true"></span>
                     </button>
 
                     <div class="breadcrumb" aria-label="Breadcrumb">
                         <span>Workspace</span>
-                        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+
+                        <span class="breadcrumb-separator"
+                              aria-hidden="true">/</span>
+
                         <span class="breadcrumb-current">My Tasks</span>
                     </div>
-
                 </div>
 
                 <div class="topbar-right">
 
                     <div class="date-display">
-                        <span class="date-display-icon" aria-hidden="true">▦</span>
+                        <span class="date-display-icon"
+                              aria-hidden="true">▦</span>
+
                         <span id="currentDate">Today</span>
                     </div>
 
@@ -175,6 +154,7 @@
                                 class="theme-button active"
                                 aria-pressed="true"
                                 title="Day theme">
+
                             <span aria-hidden="true">☀</span>
                             <span>Day</span>
                         </button>
@@ -184,10 +164,10 @@
                                 class="theme-button"
                                 aria-pressed="false"
                                 title="Night theme">
+
                             <span aria-hidden="true">☾</span>
                             <span>Night</span>
                         </button>
-
                     </div>
                 </div>
             </header>
@@ -195,11 +175,17 @@
             <!-- TASKS CONTENT -->
             <main class="tasks-content">
 
+                <!-- PAGE HEADER -->
                 <section class="page-header">
 
                     <div class="page-header-copy">
-                        <p class="page-eyebrow">YOUR PRODUCTIVITY WORKSPACE</p>
+
+                        <p class="page-eyebrow">
+                            YOUR PRODUCTIVITY WORKSPACE
+                        </p>
+
                         <h1>My Tasks</h1>
+
                         <p class="page-subtitle">
                             Organise your workload, track your progress, and
                             keep moving towards your goals.
@@ -209,10 +195,10 @@
                     <button class="primary-button"
                             id="openTaskModalButton"
                             type="button">
+
                         <span aria-hidden="true">+</span>
                         <span>Add Task</span>
                     </button>
-
                 </section>
 
                 <div class="tasks-notification"
@@ -222,51 +208,98 @@
                      hidden></div>
 
                 <!-- SUMMARY CARDS -->
-                <section class="task-summary-grid" aria-label="Task summary">
+                <section class="task-summary-grid"
+                         aria-label="Task summary">
 
                     <article class="task-summary-card summary-total">
+
                         <div class="summary-card-top">
-                            <span class="summary-card-label">Total Tasks</span>
-                            <span class="summary-card-icon" aria-hidden="true">☷</span>
+                            <span class="summary-card-label">
+                                Total Tasks
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">☷</span>
                         </div>
-                        <strong class="summary-card-value" id="totalTasks">0</strong>
-                        <span class="summary-card-description">All your tasks</span>
+
+                        <strong class="summary-card-value"
+                                id="totalTasks">0</strong>
+
+                        <span class="summary-card-description">
+                            All your tasks
+                        </span>
                     </article>
 
                     <article class="task-summary-card summary-pending">
+
                         <div class="summary-card-top">
                             <span class="summary-card-label">Pending</span>
-                            <span class="summary-card-icon" aria-hidden="true">◷</span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">◷</span>
                         </div>
-                        <strong class="summary-card-value" id="pendingTasks">0</strong>
-                        <span class="summary-card-description">Waiting to begin</span>
+
+                        <strong class="summary-card-value"
+                                id="pendingTasks">0</strong>
+
+                        <span class="summary-card-description">
+                            Waiting to begin
+                        </span>
                     </article>
 
                     <article class="task-summary-card summary-progress">
+
                         <div class="summary-card-top">
-                            <span class="summary-card-label">In Progress</span>
-                            <span class="summary-card-icon" aria-hidden="true">↗</span>
+                            <span class="summary-card-label">
+                                In Progress
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">↗</span>
                         </div>
-                        <strong class="summary-card-value" id="inProgressTasks">0</strong>
-                        <span class="summary-card-description">Currently working on</span>
+
+                        <strong class="summary-card-value"
+                                id="inProgressTasks">0</strong>
+
+                        <span class="summary-card-description">
+                            Currently working on
+                        </span>
                     </article>
 
                     <article class="task-summary-card summary-completed">
+
                         <div class="summary-card-top">
-                            <span class="summary-card-label">Completed</span>
-                            <span class="summary-card-icon" aria-hidden="true">✓</span>
+                            <span class="summary-card-label">
+                                Completed
+                            </span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">✓</span>
                         </div>
-                        <strong class="summary-card-value" id="completedTasks">0</strong>
-                        <span class="summary-card-description">Successfully finished</span>
+
+                        <strong class="summary-card-value"
+                                id="completedTasks">0</strong>
+
+                        <span class="summary-card-description">
+                            Successfully finished
+                        </span>
                     </article>
 
                     <article class="task-summary-card summary-overdue">
+
                         <div class="summary-card-top">
                             <span class="summary-card-label">Overdue</span>
-                            <span class="summary-card-icon" aria-hidden="true">!</span>
+
+                            <span class="summary-card-icon"
+                                  aria-hidden="true">!</span>
                         </div>
-                        <strong class="summary-card-value" id="overdueTasks">0</strong>
-                        <span class="summary-card-description">Past their due date</span>
+
+                        <strong class="summary-card-value"
+                                id="overdueTasks">0</strong>
+
+                        <span class="summary-card-description">
+                            Past their due date
+                        </span>
                     </article>
 
                 </section>
@@ -275,15 +308,22 @@
                 <section class="task-workspace">
 
                     <div class="workspace-heading">
+
                         <div>
-                            <p class="section-eyebrow">STAY ORGANISED</p>
+                            <p class="section-eyebrow">
+                                STAY ORGANISED
+                            </p>
+
                             <h2>Your Task List</h2>
+
                             <p class="workspace-description">
-                                Review your tasks and decide what to work on next.
+                                Review your tasks and decide what to work
+                                on next.
                             </p>
                         </div>
 
-                        <span class="visible-task-count" id="visibleTaskCount">
+                        <span class="visible-task-count"
+                              id="visibleTaskCount">
                             0 tasks
                         </span>
                     </div>
@@ -292,7 +332,10 @@
                     <div class="task-controls">
 
                         <div class="task-search-wrapper">
-                            <span class="task-search-icon" aria-hidden="true">⌕</span>
+
+                            <span class="task-search-icon"
+                                  aria-hidden="true">⌕</span>
+
                             <input type="search"
                                    id="taskSearch"
                                    class="task-search"
@@ -303,33 +346,47 @@
 
                         <div class="task-filter-group">
 
-                            <label class="visually-hidden" for="statusFilter">
+                            <label class="visually-hidden"
+                                   for="statusFilter">
                                 Filter by status
                             </label>
-                            <select id="statusFilter" class="task-filter">
+
+                            <select id="statusFilter"
+                                    class="task-filter">
+
                                 <option value="all">All statuses</option>
                                 <option value="pending">Pending</option>
                                 <option value="in_progress">In Progress</option>
                                 <option value="completed">Completed</option>
                             </select>
 
-                            <label class="visually-hidden" for="priorityFilter">
+                            <label class="visually-hidden"
+                                   for="priorityFilter">
                                 Filter by priority
                             </label>
-                            <select id="priorityFilter" class="task-filter">
+
+                            <select id="priorityFilter"
+                                    class="task-filter">
+
                                 <option value="all">All priorities</option>
                                 <option value="high">High Priority</option>
                                 <option value="medium">Medium Priority</option>
                                 <option value="low">Low Priority</option>
                             </select>
 
-                            <label class="visually-hidden" for="sortFilter">
+                            <label class="visually-hidden"
+                                   for="sortFilter">
                                 Sort tasks
                             </label>
-                            <select id="sortFilter" class="task-filter">
+
+                            <select id="sortFilter"
+                                    class="task-filter">
+
                                 <option value="due_date">Due Date</option>
                                 <option value="priority">Priority</option>
-                                <option value="created_at">Recently Added</option>
+                                <option value="created_at">
+                                    Recently Added
+                                </option>
                                 <option value="title">Task Name</option>
                             </select>
 
@@ -338,27 +395,38 @@
 
                     <!-- TASK LIST -->
                     <div class="tasks-list" id="tasksList">
+
                         <div class="tasks-loading" id="tasksLoading">
-                            <span class="loading-spinner" aria-hidden="true"></span>
+                            <span class="loading-spinner"
+                                  aria-hidden="true"></span>
+
                             <span>Loading your tasks...</span>
                         </div>
                     </div>
 
                     <!-- EMPTY STATE -->
-                    <div class="tasks-empty-state" id="tasksEmptyState" hidden>
-                        <div class="empty-state-icon" aria-hidden="true">☷</div>
+                    <div class="tasks-empty-state"
+                         id="tasksEmptyState"
+                         hidden>
+
+                        <div class="empty-state-icon"
+                             aria-hidden="true">☷</div>
+
                         <h3 id="emptyStateTitle">No tasks yet</h3>
+
                         <p id="emptyStateMessage">
-                            Create your first task and start organising your day.
+                            Create your first task and start organising
+                            your day.
                         </p>
+
                         <button class="primary-button"
                                 id="emptyStateAddButton"
                                 type="button">
+
                             <span aria-hidden="true">+</span>
                             <span>Create a Task</span>
                         </button>
                     </div>
-
                 </section>
 
                 <footer class="tasks-footer">
@@ -368,22 +436,23 @@
 
             </main>
         </div>
-        ```
-
     </div>
 
     <!-- ADD / EDIT TASK DIALOG -->
-
     <dialog class="task-dialog"
             id="taskDialog"
             aria-labelledby="taskDialogTitle">
 
-        ```
         <div class="dialog-header">
+
             <div>
                 <p class="dialog-eyebrow">TASK DETAILS</p>
+
                 <h2 id="taskDialogTitle">Create a Task</h2>
-                <p id="taskDialogSubtitle">Add the details you need to get started.</p>
+
+                <p id="taskDialogSubtitle">
+                    Add the details you need to get started.
+                </p>
             </div>
 
             <button class="dialog-close-button"
@@ -396,10 +465,15 @@
 
         <form id="taskForm">
 
-            <input type="hidden" id="taskId" name="taskId">
+            <input type="hidden"
+                   id="taskId"
+                   name="taskId">
 
             <div class="form-field">
-                <label for="taskTitle">Task Title <span>*</span></label>
+                <label for="taskTitle">
+                    Task Title <span>*</span>
+                </label>
+
                 <input type="text"
                        id="taskTitle"
                        name="title"
@@ -410,6 +484,7 @@
 
             <div class="form-field">
                 <label for="taskDescription">Description</label>
+
                 <textarea id="taskDescription"
                           name="description"
                           rows="4"
@@ -418,13 +493,18 @@
             </div>
 
             <div class="form-row">
+
                 <div class="form-field">
                     <label for="taskDueDate">Due Date</label>
-                    <input type="date" id="taskDueDate" name="dueDate">
+
+                    <input type="date"
+                           id="taskDueDate"
+                           name="dueDate">
                 </div>
 
                 <div class="form-field">
                     <label for="taskPriority">Priority</label>
+
                     <select id="taskPriority" name="priority">
                         <option value="low">Low</option>
                         <option value="medium" selected>Medium</option>
@@ -435,13 +515,16 @@
 
             <div class="form-field">
                 <label for="taskStatusField">Status</label>
+
                 <select id="taskStatusField" name="status">
                     <option value="pending" selected>Pending</option>
                     <option value="in_progress">In Progress</option>
                     <option value="completed">Completed</option>
                 </select>
 
-                <input type="hidden" id="taskStatus" value="pending">
+                <input type="hidden"
+                       id="taskStatus"
+                       value="pending">
             </div>
 
             <div class="task-form-error"
@@ -450,6 +533,7 @@
                  hidden></div>
 
             <div class="dialog-actions">
+
                 <button class="secondary-button"
                         id="cancelTaskModalButton"
                         type="button">
@@ -463,18 +547,16 @@
                 </button>
             </div>
         </form>
-        ```
-
     </dialog>
 
     <!-- DELETE TASK DIALOG -->
-
     <dialog class="task-dialog delete-task-dialog"
             id="deleteTaskDialog"
             aria-labelledby="deleteDialogTitle">
 
-        ```
-        <div class="delete-dialog-icon" aria-hidden="true">!</div>
+        <div class="delete-dialog-icon"
+             aria-hidden="true">!</div>
+
         <h2 id="deleteDialogTitle">Delete this task?</h2>
 
         <p>
@@ -484,6 +566,7 @@
         </p>
 
         <div class="dialog-actions">
+
             <button class="secondary-button"
                     id="cancelDeleteButton"
                     type="button">
@@ -496,175 +579,216 @@
                 Delete Task
             </button>
         </div>
-        ```
-
     </dialog>
 
     <!-- SHARED HEADER CONTROLS -->
-
     <script>
-(function () {
-            "use strict";
+                        (function () {
+                            "use strict";
 
-            const root = document.documentElement;
-            const layout = document.getElementById("appLayout");
-            const sidebar = document.getElementById("sidebar");
-            const toggle = document.getElementById("sidebarToggle");
-            const dayButton = document.getElementById("dayThemeButton");
-            const nightButton = document.getElementById("nightThemeButton");
-            const dateElement = document.getElementById("currentDate");
+                            const root = document.documentElement;
+                            const layout = document.getElementById("appLayout");
+                            const sidebar = document.getElementById("sidebar");
+                            const toggle = document.getElementById("sidebarToggle");
+                            const dayButton = document.getElementById("dayThemeButton");
+                            const nightButton = document.getElementById("nightThemeButton");
+                            const dateElement = document.getElementById("currentDate");
 
-            /**
-             * Apply the selected appearance.
-             * @param {string} theme
-             * @returns {void}
-             */
-            function applyTheme(theme) {
-                const selectedTheme = theme === "night" ? "night" : "day";
+                            /**
+                             * Apply the selected appearance.
+                             * @param {string} theme - The appearance to apply.
+                             * @returns {void}
+                             */
+                            function applyTheme(theme = "day") {
+                                const selectedTheme =
+                                    theme === "night" ? "night" : "day";
 
-                root.setAttribute("data-theme", selectedTheme);
+                                root.setAttribute("data-theme", selectedTheme);
 
-                if (dayButton && nightButton) {
-                    dayButton.classList.toggle("active", selectedTheme === "day");
-                    nightButton.classList.toggle("active", selectedTheme === "night");
+                                if (dayButton && nightButton) {
+                                    dayButton.classList.toggle(
+                                        "active",
+                                        selectedTheme === "day"
+                                    );
 
-                    dayButton.setAttribute("aria-pressed", String(selectedTheme === "day"));
-                    nightButton.setAttribute("aria-pressed", String(selectedTheme === "night"));
-                }
+                                    nightButton.classList.toggle(
+                                        "active",
+                                        selectedTheme === "night"
+                                    );
 
-                try {
-                    localStorage.setItem("studytrack-theme", selectedTheme);
-                } catch (error) {
-                    // The page remains usable if storage is unavailable.
-                }
-            }
+                                    dayButton.setAttribute(
+                                        "aria-pressed",
+                                        String(selectedTheme === "day")
+                                    );
 
-            let savedTheme = "day";
+                                    nightButton.setAttribute(
+                                        "aria-pressed",
+                                        String(selectedTheme === "night")
+                                    );
+                                }
 
-            try {
-                savedTheme = localStorage.getItem("studytrack-theme") || "day";
-            } catch (error) {
-                savedTheme = "day";
-            }
+                                try {
+                                    localStorage.setItem(
+                                        "studytrack-theme",
+                                        selectedTheme
+                                    );
+                                } catch (error) {
+                                    // The page remains usable if storage is unavailable.
+                                }
+                            }
 
-            applyTheme(savedTheme);
+                            let savedTheme = "day";
 
-            if (dayButton) {
-                dayButton.addEventListener("click", function () {
-                    applyTheme("day");
-                });
-            }
+                            try {
+                                savedTheme =
+                                    localStorage.getItem("studytrack-theme") || "day";
+                            } catch (error) {
+                                savedTheme = "day";
+                            }
 
-            if (nightButton) {
-                nightButton.addEventListener("click", function () {
-                    applyTheme("night");
-                });
-            }
+                            applyTheme(savedTheme);
 
-            if (dateElement) {
-                dateElement.textContent = new Intl.DateTimeFormat("en-KE", {
-                    weekday: "short",
-                    day: "numeric",
-                    month: "short",
-                    year: "numeric"
-                }).format(new Date());
-            }
+                            if (dayButton) {
+                                dayButton.addEventListener("click", function () {
+                                    applyTheme("day");
+                                });
+                            }
 
-            /**
-             * Expand or collapse the desktop sidebar.
-             * @param {boolean} collapsed
-             * @returns {void}
-             */
-            function setSidebarCollapsed(collapsed) {
-                if (layout) {
-                    layout.classList.toggle("sidebar-collapsed", collapsed);
-                }
+                            if (nightButton) {
+                                nightButton.addEventListener("click", function () {
+                                    applyTheme("night");
+                                });
+                            }
 
-                if (toggle) {
-                    toggle.setAttribute("aria-expanded", String(!collapsed));
-                }
+                            if (dateElement) {
+                                dateElement.textContent =
+                                    new Intl.DateTimeFormat("en-KE", {
+                                        weekday: "short",
+                                        day: "numeric",
+                                        month: "short",
+                                        year: "numeric"
+                                    }).format(new Date());
+                            }
 
-                try {
-                    localStorage.setItem(
-                        "studytrack-sidebar-collapsed",
-                        String(collapsed)
-                    );
-                } catch (error) {
-                    // Sidebar controls remain usable without storage.
-                }
-            }
+                            /**
+                             * Expand or collapse the desktop sidebar.
+                             * @param {boolean} collapsed - Whether the sidebar is collapsed.
+                             * @returns {void}
+                             */
+                            function setSidebarCollapsed(collapsed = false) {
+                                if (layout) {
+                                    layout.classList.toggle(
+                                        "sidebar-collapsed",
+                                        collapsed
+                                    );
+                                }
 
-            let sidebarWasCollapsed = false;
+                                if (toggle) {
+                                    toggle.setAttribute(
+                                        "aria-expanded",
+                                        String(!collapsed)
+                                    );
+                                }
 
-            try {
-                sidebarWasCollapsed =
-                    localStorage.getItem("studytrack-sidebar-collapsed") === "true";
-            } catch (error) {
-                sidebarWasCollapsed = false;
-            }
+                                try {
+                                    localStorage.setItem(
+                                        "studytrack-sidebar-collapsed",
+                                        String(collapsed)
+                                    );
+                                } catch (error) {
+                                    // Sidebar controls remain usable without storage.
+                                }
+                            }
 
-            if (window.matchMedia("(min-width: 851px)").matches) {
-                setSidebarCollapsed(sidebarWasCollapsed);
-            }
+                            let sidebarWasCollapsed = false;
 
-            if (toggle) {
-                toggle.addEventListener("click", function () {
-                    if (window.matchMedia("(max-width: 850px)").matches) {
-                        if (sidebar) {
-                            const isOpen = sidebar.classList.contains("sidebar-open");
+                            try {
+                                sidebarWasCollapsed =
+                                    localStorage.getItem(
+                                        "studytrack-sidebar-collapsed"
+                                    ) === "true";
+                            } catch (error) {
+                                sidebarWasCollapsed = false;
+                            }
 
-                            sidebar.classList.toggle("sidebar-open", !isOpen);
-                            toggle.setAttribute("aria-expanded", String(!isOpen));
-                        }
-                    } else {
-                        const isCollapsed = Boolean(
-                            layout && layout.classList.contains("sidebar-collapsed")
-                        );
+                            if (window.matchMedia("(min-width: 851px)").matches) {
+                                setSidebarCollapsed(sidebarWasCollapsed);
+                            }
 
-                        setSidebarCollapsed(!isCollapsed);
-                    }
-                });
-            }
+                            if (toggle) {
+                                toggle.addEventListener("click", function () {
+                                    if (
+                                        window.matchMedia("(max-width: 850px)").matches
+                                    ) {
+                                        if (sidebar) {
+                                            const isOpen =
+                                                sidebar.classList.contains("sidebar-open");
 
-    document.addEventListener("click", function (event) {
-        if (!sidebar || !toggle) {
-            return;
-        }
-                const target = event.target;
+                                            sidebar.classList.toggle(
+                                                "sidebar-open",
+                                                !isOpen
+                                            );
 
-                if (!(target instanceof Node)) {
-                    return;
-                }
+                                            toggle.setAttribute(
+                                                "aria-expanded",
+                                                String(!isOpen)
+                                            );
+                                        }
+                                    } else {
+                                        const isCollapsed = Boolean(
+                                            layout &&
+                                            layout.classList.contains("sidebar-collapsed")
+                                        );
 
-                if (
-                    window.matchMedia("(max-width: 850px)").matches &&
-                    sidebar.classList.contains("sidebar-open") &&
-                    !sidebar.contains(target) &&
-                    !toggle.contains(target)
-                ) {
-                    sidebar.classList.remove("sidebar-open");
-                    toggle.setAttribute("aria-expanded", "false");
-                }
-            });
+                                        setSidebarCollapsed(!isCollapsed);
+                                    }
+                                });
+                            }
 
-            window.addEventListener("resize", function () {
-                if (
-                    window.matchMedia("(min-width: 851px)").matches &&
-                    sidebar
-                ) {
-                    sidebar.classList.remove("sidebar-open");
+                            document.addEventListener("click", function (event) {
+                                if (!sidebar || !toggle) {
+                                    return;
+                                }
 
-                    const isCollapsed = Boolean(
-                        layout && layout.classList.contains("sidebar-collapsed")
-                    );
+                                const target = event.target;
 
-                    if (toggle) {
-                        toggle.setAttribute("aria-expanded", String(!isCollapsed));
-                    }
-                }
-            });
-})();
+                                if (!(target instanceof Node)) {
+                                    return;
+                                }
+
+                                if (
+                                    window.matchMedia("(max-width: 850px)").matches &&
+                                    sidebar.classList.contains("sidebar-open") &&
+                                    !sidebar.contains(target) &&
+                                    !toggle.contains(target)
+                                ) {
+                                    sidebar.classList.remove("sidebar-open");
+
+                                    toggle.setAttribute("aria-expanded", "false");
+                                }
+                            });
+
+                            window.addEventListener("resize", function () {
+                                if (
+                                    window.matchMedia("(min-width: 851px)").matches &&
+                                    sidebar
+                                ) {
+                                    sidebar.classList.remove("sidebar-open");
+
+                                    const isCollapsed = Boolean(
+                                        layout &&
+                                        layout.classList.contains("sidebar-collapsed")
+                                    );
+
+                                    if (toggle) {
+                                        toggle.setAttribute(
+                                            "aria-expanded",
+                                            String(!isCollapsed)
+                                        );
+                                    }
+                                }
+                            });
+                        })();
     </script>
-
 </body>
 </html>

@@ -1375,3 +1375,947 @@
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ==========================================================
+   TASK LIST VISUAL REFRESH
+   Scoped strictly to the "Your Task List" workspace.
+   Existing task behavior, dialogs, sidebar, and summary cards
+   are intentionally left unchanged.
+   ========================================================== */
+
+.tasks-document .task-workspace {
+    padding: clamp(20px, 2.2vw, 30px);
+    border: 1px solid #dce8df;
+    border-radius: 22px;
+    background: radial-gradient(circle at top right, rgba(61, 124, 88, 0.055), transparent 260px), var(--tasks-surface);
+    box-shadow: 0 12px 32px rgba(0, 50, 29, 0.055);
+}
+
+.tasks-document .workspace-heading {
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+    .tasks-document .workspace-heading .section-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 9px;
+        color: var(--tasks-green);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.8px;
+    }
+
+        .tasks-document .workspace-heading .section-eyebrow::before {
+            width: 19px;
+            height: 2px;
+            border-radius: 99px;
+            background: var(--tasks-green-light);
+            content: "";
+        }
+
+    .tasks-document .workspace-heading h2 {
+        font-size: clamp(22px, 2vw, 27px);
+        letter-spacing: -0.8px;
+    }
+
+.tasks-document .workspace-description {
+    max-width: 560px;
+    margin-top: 7px;
+    font-size: 13px;
+}
+
+.tasks-document .visible-task-count {
+    min-height: 35px;
+    padding: 8px 13px;
+    border-color: #cfe1d4;
+    background: #edf7ef;
+    color: #155b35;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.tasks-document .task-controls {
+    display: grid;
+    grid-template-columns: minmax(220px, 1.1fr) minmax(0, 1.9fr);
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 13px;
+    border: 1px solid #e5ede7;
+    border-radius: 16px;
+    background: rgba(244, 250, 245, 0.78);
+}
+
+.tasks-document .task-search-wrapper {
+    flex: initial;
+    width: 100%;
+    min-width: 0;
+}
+
+.tasks-document .task-search,
+.tasks-document .task-filter {
+    min-height: 45px;
+    border-color: #dce7df;
+    border-radius: 11px;
+    background: #fff;
+    color: #20372a;
+    font-size: 12px;
+    box-shadow: 0 2px 5px rgba(0, 40, 20, 0.025);
+}
+
+.tasks-document .task-search {
+    padding-left: 43px;
+}
+
+.tasks-document .task-search-icon {
+    left: 14px;
+    color: #668271;
+}
+
+.tasks-document .task-search:focus,
+.tasks-document .task-filter:focus {
+    border-color: #4b9667;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(61, 124, 88, 0.13);
+}
+
+.tasks-document .task-filter-group {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+    min-width: 0;
+}
+
+.tasks-document .task-filter {
+    padding-right: 25px;
+    padding-left: 11px;
+    cursor: pointer;
+}
+
+.tasks-document .tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+    /* Individual task card */
+    .tasks-document .tasks-list .task-card {
+        position: relative;
+        display: grid;
+        grid-template-columns: 22px minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 17px;
+        min-width: 0;
+        padding: 21px 20px;
+        overflow: hidden;
+        border: 1px solid #e0e9e2;
+        border-left: 4px solid #79a98a;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 4px 13px rgba(0, 43, 24, 0.035);
+        transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease, background-color 180ms ease;
+    }
+
+        .tasks-document .tasks-list .task-card:hover {
+            border-color: #c9ddcf;
+            border-left-color: #287348;
+            box-shadow: 0 10px 24px rgba(0, 55, 30, 0.075);
+            transform: translateY(-1px);
+        }
+
+        .tasks-document .tasks-list .task-card::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 110px;
+            height: 100%;
+            background: linear-gradient(270deg, rgba(235, 246, 238, 0.45), transparent);
+            content: "";
+            pointer-events: none;
+        }
+
+.tasks-document .task-checkbox {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+    padding: 0;
+    border: 2px solid #b8cdbd;
+    border-radius: 7px;
+    background: #fff;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+    .tasks-document .task-checkbox:hover {
+        border-color: #287348;
+        transform: scale(1.05);
+    }
+
+    .tasks-document .task-checkbox.is-checked {
+        border-color: #237346;
+        background: #237346;
+        color: #fff;
+    }
+
+.tasks-document .task-main {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+}
+
+.tasks-document .task-title {
+    margin: 0;
+    color: #183b28;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.tasks-document .task-description {
+    margin: 6px 0 0;
+    color: #6b7c70;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.tasks-document .task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/* The current renderer supplies these class tokens to the badges. */
+.tasks-document .task-card .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 25px;
+    padding: 5px 9px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+    .tasks-document .task-card .badge.priority.high {
+        border-color: #f3d0cb;
+        background: #fff0ed;
+        color: #b33d31;
+    }
+
+    .tasks-document .task-card .badge.priority.medium {
+        border-color: #f0dfb8;
+        background: #fff8e8;
+        color: #94620b;
+    }
+
+    .tasks-document .task-card .badge.priority.low {
+        border-color: #cfe4d5;
+        background: #edf8f0;
+        color: #287348;
+    }
+
+    .tasks-document .task-card .badge.status.pending {
+        border-color: #d7e3eb;
+        background: #f0f6fa;
+        color: #46677c;
+    }
+
+    .tasks-document .task-card .badge.status.in-progress {
+        border-color: #d8d0f1;
+        background: #f3f0ff;
+        color: #6651a5;
+    }
+
+    .tasks-document .task-card .badge.status.completed {
+        border-color: #cbe5d2;
+        background: #eaf7ee;
+        color: #237346;
+    }
+
+.tasks-document .task-due-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 25px;
+    padding: 4px 2px;
+    color: #64776a;
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.4;
+}
+
+    .tasks-document .task-due-date.is-today {
+        color: #9a640b;
+    }
+
+    .tasks-document .task-due-date.is-overdue {
+        color: #bd3e34;
+    }
+
+.tasks-document .task-actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding-left: 4px;
+}
+
+.tasks-document .task-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid #e0e9e2;
+    border-radius: 10px;
+    background: #fff;
+    color: #597263;
+    font-size: 19px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+    .tasks-document .task-action-button:hover {
+        border-color: #c4d9ca;
+        background: #eff7f1;
+        color: #155b35;
+        transform: translateY(-1px);
+    }
+
+    .tasks-document .task-action-button.delete-task-button:hover {
+        border-color: #f0c9c5;
+        background: #fff0ee;
+        color: #b33d31;
+    }
+
+.tasks-document .task-card.task-is-completed {
+    border-left-color: #4c9b68;
+    background: #f9fcfa;
+}
+
+    .tasks-document .task-card.task-is-completed .task-title {
+        color: #6c7e72;
+        text-decoration: line-through;
+        text-decoration-color: #a8b9ad;
+    }
+
+    .tasks-document .task-card.task-is-completed .task-description {
+        color: #8b9a90;
+    }
+
+.tasks-document .task-card.task-is-overdue {
+    border-left-color: #c65347;
+}
+
+    .tasks-document .task-card.task-is-overdue .task-due-date {
+        font-weight: 800;
+    }
+
+/* Dark theme: keep the redesign consistent with the existing theme switcher. */
+:root[data-theme="night"] .tasks-document .task-workspace {
+    border-color: #35483c;
+    background: radial-gradient(circle at top right, rgba(61, 124, 88, 0.09), transparent 260px), #19271f;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+:root[data-theme="night"] .tasks-document .workspace-heading .section-eyebrow {
+    color: #8bc49b;
+}
+
+:root[data-theme="night"] .tasks-document .visible-task-count {
+    border-color: #35483c;
+    background: #203b2b;
+    color: #c7e6d0;
+}
+
+:root[data-theme="night"] .tasks-document .task-controls {
+    border-color: #35483c;
+    background: rgba(17, 27, 21, 0.6);
+}
+
+:root[data-theme="night"] .tasks-document .task-search,
+:root[data-theme="night"] .tasks-document .task-filter {
+    border-color: #35483c;
+    background: #111b15;
+    color: #e6efe8;
+}
+
+:root[data-theme="night"] .tasks-document .task-search-icon {
+    color: #a4b4a9;
+}
+
+:root[data-theme="night"] .tasks-document .tasks-list .task-card {
+    border-color: #35483c;
+    border-left-color: #5d9d70;
+    background: #19271f;
+    box-shadow: 0 4px 13px rgba(0, 0, 0, 0.08);
+}
+
+    :root[data-theme="night"] .tasks-document .tasks-list .task-card:hover {
+        border-color: #496a54;
+        border-left-color: #83bd92;
+        background: #1d3024;
+    }
+
+    :root[data-theme="night"] .tasks-document .tasks-list .task-card::after {
+        background: linear-gradient(270deg, rgba(61, 91, 69, 0.16), transparent);
+    }
+
+:root[data-theme="night"] .tasks-document .task-title {
+    color: #e2eee5;
+}
+
+:root[data-theme="night"] .tasks-document .task-description,
+:root[data-theme="night"] .tasks-document .task-due-date {
+    color: #a4b4a9;
+}
+
+:root[data-theme="night"] .tasks-document .task-checkbox {
+    border-color: #526b59;
+    background: #111b15;
+}
+
+    :root[data-theme="night"] .tasks-document .task-checkbox.is-checked {
+        border-color: #4c9b68;
+        background: #237346;
+    }
+
+:root[data-theme="night"] .tasks-document .task-action-button {
+    border-color: #35483c;
+    background: #19271f;
+    color: #b6c9bb;
+}
+
+    :root[data-theme="night"] .tasks-document .task-action-button:hover {
+        border-color: #496a54;
+        background: #263b2d;
+        color: #e6efe8;
+    }
+
+    :root[data-theme="night"] .tasks-document .task-action-button.delete-task-button:hover {
+        border-color: #75423c;
+        background: #462724;
+        color: #ffc0b8;
+    }
+
+:root[data-theme="night"] .tasks-document .task-card.task-is-completed {
+    background: #16231b;
+}
+
+    :root[data-theme="night"] .tasks-document .task-card.task-is-completed .task-title {
+        color: #9aaca0;
+    }
+
+@media (max-width: 1250px) {
+    .tasks-document .task-controls {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tasks-document .task-filter-group {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .tasks-document .task-workspace {
+        padding: 17px;
+        border-radius: 17px;
+    }
+
+    .tasks-document .workspace-heading {
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 19px;
+    }
+
+        .tasks-document .workspace-heading h2 {
+            font-size: 22px;
+        }
+
+    .tasks-document .visible-task-count {
+        min-height: 31px;
+        padding: 6px 9px;
+        font-size: 10px;
+    }
+
+    .tasks-document .task-controls {
+        gap: 10px;
+        padding: 10px;
+        border-radius: 13px;
+    }
+
+    .tasks-document .task-filter-group {
+        grid-template-columns: 1fr;
+    }
+
+    .tasks-document .task-filter {
+        min-height: 42px;
+    }
+
+    .tasks-document .tasks-list .task-card {
+        grid-template-columns: 22px minmax(0, 1fr);
+        gap: 12px;
+        padding: 16px 14px;
+    }
+
+    .tasks-document .task-actions {
+        grid-column: 2;
+        padding: 2px 0 0;
+    }
+
+    .tasks-document .task-title {
+        font-size: 14px;
+    }
+
+    .tasks-document .task-meta {
+        gap: 6px;
+        margin-top: 12px;
+    }
+
+    .tasks-document .task-card .badge {
+        min-height: 24px;
+        padding: 5px 7px;
+        font-size: 9px;
+    }
+
+    .tasks-document .task-action-button {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tasks-document .tasks-list .task-card,
+    .tasks-document .task-checkbox,
+    .tasks-document .task-action-button {
+        transition: none;
+    }
+}
+/* ==========================================================
+   STUDYTRACK V2 — TASKS FINAL CORRECTIONS
+   Standard text: 16px
+   Sidebar: aligned with the shared Habits/Dashboard layout
+   Tooltips: rendered outside the sidebar clipping boundary
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. STANDARD TEXT SIZE
+   ---------------------------------------------------------- */
+
+.tasks-document {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+    .tasks-document .tasks-content {
+        font-size: 16px;
+    }
+
+        .tasks-document .tasks-content p {
+            line-height: 1.7;
+        }
+
+    /* Keep headings and deliberately compact metadata as designed. */
+    .tasks-document .page-header h1,
+    .tasks-document .workspace-heading h2,
+    .tasks-document .summary-card-value,
+    .tasks-document .dialog-header h2,
+    .tasks-document .delete-task-dialog h2 {
+        line-height: 1.3;
+    }
+
+    /* Make task titles easier to read. */
+    .tasks-document .task-title {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    /* Standard form and filter text. */
+    .tasks-document .task-search,
+    .tasks-document .task-filter,
+    .tasks-document .form-field input,
+    .tasks-document .form-field select,
+    .tasks-document .form-field textarea {
+        font-size: 16px;
+    }
+
+    /* Standard descriptive text. */
+    .tasks-document .page-subtitle,
+    .tasks-document .workspace-description,
+    .tasks-document .tasks-empty-state p,
+    .tasks-document .delete-task-dialog > p {
+        font-size: 16px;
+    }
+
+/* ----------------------------------------------------------
+   TASKS — INDEPENDENT SIDEBAR NAVIGATION
+   ---------------------------------------------------------- */
+.tasks-document .sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    min-width: 0;
+}
+
+.tasks-document .sidebar-navigation .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-width: 0;
+    min-height: 49px;
+    padding: 12px 15px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    text-decoration: none;
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.tasks-document .sidebar-navigation .nav-icon {
+    display: inline-flex;
+    flex: 0 0 24px;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    min-width: 24px;
+    font-size: 21px;
+    line-height: 1;
+}
+
+.tasks-document .sidebar-navigation .nav-link > span:last-child {
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.tasks-document .sidebar-navigation .nav-link.active,
+.tasks-document .sidebar-navigation .nav-link.active:hover {
+    background: #004225;
+    color: #ffffff;
+    border-color: transparent;
+}
+
+    .tasks-document .sidebar-navigation .nav-link.active .nav-icon {
+        color: #ffffff;
+    }
+
+.tasks-document .sidebar-navigation .nav-link:focus-visible {
+    outline: 3px solid rgba(61, 124, 88, 0.45);
+    outline-offset: 3px;
+}
+
+@media (min-width: 851px) {
+    .tasks-document .app-layout.sidebar-collapsed
+    .sidebar-navigation .nav-link {
+        justify-content: center;
+        gap: 0;
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+        .tasks-document .app-layout.sidebar-collapsed
+        .sidebar-navigation .nav-link > span:last-child {
+            display: none;
+        }
+
+    .tasks-document .app-layout.sidebar-collapsed
+    .sidebar-navigation .nav-icon {
+        flex-basis: 30px;
+        width: 30px;
+        min-width: 30px;
+    }
+}
+
+
+/* ----------------------------------------------------------
+   3. SHARED SIDEBAR TOOLTIP COMPATIBILITY
+   ---------------------------------------------------------- */
+/*
+   The shared sidebar-tooltips.js script creates its tooltip
+   directly under <body>. It must not be clipped by the sidebar,
+   main content, task workspace, or another stacking context.
+*/
+body > .studytrack-sidebar-tooltip {
+    position: fixed !important;
+    z-index: 2147483647 !important;
+    max-width: min(260px, calc(100vw - 24px));
+    padding: 10px 13px;
+    border: 1px solid #c8d9ca;
+    border-radius: 9px;
+    background: #f4fef3;
+    color: #004225;
+    box-shadow: 0 8px 24px rgba(0, 40, 20, 0.18);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    pointer-events: none;
+}
+
+/*
+   Do not force overflow: visible on the scrolling sidebar.
+   The shared JavaScript tooltip is outside it, so the sidebar
+   can retain its normal scrolling behavior.
+*/
+
+.tasks-document .sidebar {
+    isolation: auto;
+}
+
+/* ----------------------------------------------------------
+   4. TASK BADGE COMPATIBILITY
+   ---------------------------------------------------------- */
+
+/* Support the existing renderer's badge class conventions. */
+.tasks-document .task-card .task-badge,
+.tasks-document .task-card .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 25px;
+    padding: 5px 9px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.tasks-document .task-card .priority-high,
+.tasks-document .task-card .priority.high {
+    border-color: #f3d0cb;
+    background: #fff0ed;
+    color: #b33d31;
+}
+
+.tasks-document .task-card .priority-medium,
+.tasks-document .task-card .priority.medium {
+    border-color: #f0dfb8;
+    background: #fff8e8;
+    color: #94620b;
+}
+
+.tasks-document .task-card .priority-low,
+.tasks-document .task-card .priority.low {
+    border-color: #cfe4d5;
+    background: #edf8f0;
+    color: #287348;
+}
+
+.tasks-document .task-card .status-pending,
+.tasks-document .task-card .status.pending {
+    border-color: #d7e3eb;
+    background: #f0f6fa;
+    color: #46677c;
+}
+
+.tasks-document .task-card .status-in-progress,
+.tasks-document .task-card .status.in-progress {
+    border-color: #d8d0f1;
+    background: #f3f0ff;
+    color: #6651a5;
+}
+
+.tasks-document .task-card .status-completed,
+.tasks-document .task-card .status.completed {
+    border-color: #cbe5d2;
+    background: #eaf7ee;
+    color: #237346;
+}
+
+/* ----------------------------------------------------------
+   5. NIGHT THEME
+   ---------------------------------------------------------- */
+
+:root[data-theme="night"] body > .studytrack-sidebar-tooltip {
+    border-color: #496a54;
+    background: #19271f;
+    color: #e6efe8;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="night"] .tasks-document .task-card .priority-high,
+:root[data-theme="night"] .tasks-document .task-card .priority.high {
+    border-color: #75423c;
+    background: #462724;
+    color: #ffc0b8;
+}
+
+:root[data-theme="night"] .tasks-document .task-card .priority-medium,
+:root[data-theme="night"] .tasks-document .task-card .priority.medium {
+    border-color: #78613a;
+    background: #453522;
+    color: #f4d69b;
+}
+
+:root[data-theme="night"] .tasks-document .task-card .priority-low,
+:root[data-theme="night"] .tasks-document .task-card .priority.low {
+    border-color: #3e674a;
+    background: #203b2b;
+    color: #bde6c8;
+}
+
+:root[data-theme="night"] .tasks-document .task-card .status-pending,
+:root[data-theme="night"] .tasks-document .task-card .status.pending {
+    border-color: #3d5668;
+    background: #223442;
+    color: #c4ddeb;
+}
+
+:root[data-theme="night"] .tasks-document .task-card .status-in-progress,
+:root[data-theme="night"] .tasks-document .task-card .status.in-progress {
+    border-color: #51446f;
+    background: #302744;
+    color: #d6c9ff;
+}
+
+:root[data-theme="night"] .tasks-document .task-card .status-completed,
+:root[data-theme="night"] .tasks-document .task-card .status.completed {
+    border-color: #3e674a;
+    background: #203b2b;
+    color: #bde6c8;
+}
+
+/* ----------------------------------------------------------
+   6. MOBILE SIDEBAR AND TEXT
+   ---------------------------------------------------------- */
+
+@media (max-width: 850px) {
+    .tasks-document .sidebar-nav .nav-label {
+        font-size: 16px;
+    }
+
+    .tasks-document .task-title {
+        font-size: 16px;
+    }
+
+    .tasks-document .task-search,
+    .tasks-document .task-filter,
+    .tasks-document .form-field input,
+    .tasks-document .form-field select,
+    .tasks-document .form-field textarea {
+        font-size: 16px;
+    }
+}
+
+/* ----------------------------------------------------------
+   7. REDUCED MOTION
+   ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .tasks-document .sidebar-nav .nav-link {
+        transition: none;
+    }
+}
+/* =========================================================
+   TASKS — INDEPENDENT SIDEBAR NAVIGATION
+   ========================================================= */
+
+.tasks-document .sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    min-width: 0;
+}
+
+    .tasks-document .sidebar-navigation .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        width: 100%;
+        min-width: 0;
+        min-height: 49px;
+        padding: 12px 15px;
+        border: 1px solid transparent;
+        border-radius: 11px;
+        text-decoration: none;
+        transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+    }
+
+    .tasks-document .sidebar-navigation .nav-icon {
+        display: inline-flex;
+        flex: 0 0 24px;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        min-width: 24px;
+        font-size: 21px;
+        line-height: 1;
+    }
+
+    .tasks-document .sidebar-navigation .nav-link > span:last-child {
+        min-width: 0;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    .tasks-document .sidebar-navigation .nav-link.active,
+    .tasks-document .sidebar-navigation .nav-link.active:hover {
+        background: #004225;
+        color: #fff;
+        border-color: transparent;
+    }
+
+        .tasks-document .sidebar-navigation .nav-link.active .nav-icon {
+            color: #fff;
+        }
+
+    .tasks-document .sidebar-navigation .nav-link:focus-visible {
+        outline: 3px solid rgba(61, 124, 88, 0.45);
+        outline-offset: 3px;
+    }
+
+@media (min-width: 851px) {
+    .tasks-document .app-layout.sidebar-collapsed
+    .sidebar-navigation .nav-link {
+        justify-content: center;
+        gap: 0;
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+        .tasks-document .app-layout.sidebar-collapsed
+        .sidebar-navigation .nav-link > span:last-child {
+            display: none;
+        }
+
+    .tasks-document .app-layout.sidebar-collapsed
+    .sidebar-navigation .nav-icon {
+        flex-basis: 30px;
+        width: 30px;
+        min-width: 30px;
+    }
+}
