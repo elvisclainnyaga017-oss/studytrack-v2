@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#004225">
+    <meta name="color-scheme" content="light dark">
+
+
+    <title>Focus Timer | StudyTrack</title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/focus.css">
+
+    <script src="/js/focus-tooltips.js" defer></script>
+    <script src="/js/focus.js" defer></script>
+
+
+</head>
+
+<body>
+    <div class="app-layout focus-app-layout">
+
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-brand">
+                <a href="/dashboard.html" class="brand-link" aria-label="StudyTrack dashboard">
+                    <span class="brand-mark" aria-hidden="true">S</span>
+                    <span class="brand-name">
+                        <span>StudyTrack</span>
+                        <small>YOUR PRODUCTIVITY SPACE</small>
+                    </span>
+                </a>
+            </div>
+
+            <p class="sidebar-section-label">WORKSPACE</p>
+
+            <nav class="sidebar-navigation" aria-label="Main navigation">
+
+                <a href="/dashboard.html"
+                   class="nav-link"
+                   data-tooltip="Dashboard">
+                    <span class="nav-icon" aria-hidden="true">⌂</span>
+                    <span class="nav-link-text">Dashboard</span>
+                </a>
+
+                <a href="/goals.html"
+                   class="nav-link"
+                   data-tooltip="My Goals">
+                    <span class="nav-icon" aria-hidden="true">◎</span>
+                    <span class="nav-link-text">My Goals</span>
+                </a>
+
+                <a href="/habits.html"
+                   class="nav-link"
+                   data-tooltip="Habits">
+                    <span class="nav-icon" aria-hidden="true">↻</span>
+                    <span class="nav-link-text">Habits</span>
+                </a>
+
+                <a href="/tasks.html"
+                   class="nav-link"
+                   data-tooltip="Tasks">
+                    <span class="nav-icon" aria-hidden="true">☷</span>
+                    <span class="nav-link-text">Tasks</span>
+                </a>
+
+                <a href="/reminders.html"
+                   class="nav-link"
+                   data-tooltip="Reminders">
+                    <span class="nav-icon" aria-hidden="true">♧</span>
+                    <span class="nav-link-text">Reminders</span>
+                </a>
+
+                <a href="/focus.html"
+                   class="nav-link active"
+                   aria-current="page"
+                   data-tooltip="Focus Timer">
+                    <span class="nav-icon" aria-hidden="true">◷</span>
+                    <span class="nav-link-text">Focus Timer</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <section class="sidebar-tip" aria-label="A little reminder">
+                    <span class="tip-icon" aria-hidden="true">✦</span>
+                    <h2 class="tip-heading">A little reminder</h2>
+                    <p class="tip-text">Small, consistent steps lead to meaningful progress.</p>
+                </section>
+
+                <a href="/profile.html"
+                   class="profile-shortcut"
+                   data-tooltip="My Profile">
+                    <span class="profile-avatar" id="sidebarAvatar" aria-hidden="true">S</span>
+                    <span class="profile-shortcut-details">
+                        <span class="profile-shortcut-name" id="sidebarUserName">Loading...</span>
+                        <span class="profile-shortcut-label">View your profile</span>
+                    </span>
+                </a>
+
+                <button type="button"
+                        class="sidebar-logout"
+                        id="logoutButton"
+                        data-tooltip="Sign out">
+                    <span class="logout-icon" aria-hidden="true">↪</span>
+                    <span class="sidebar-logout-text">Sign out</span>
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- =========================================
+             MAIN APPLICATION AREA
+        ========================================== -->
+
+        <div class="main-area">
+
+            <!-- TOP BAR -->
+
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button type="button"
+                            class="menu-button"
+                            id="menuButton"
+                            aria-label="Toggle navigation"
+                            aria-controls="sidebar"
+                            aria-expanded="true">
+                        <span class="menu-button-bar" aria-hidden="true"></span>
+                        <span class="menu-button-bar" aria-hidden="true"></span>
+                        <span class="menu-button-bar" aria-hidden="true"></span>
+                    </button>
+
+                    <div class="page-heading">
+                        <span class="page-eyebrow">STUDYTRACK WORKSPACE</span>
+                        <h1>Focus Timer</h1>
+                    </div>
+                </div>
+
+                <div class="focus-date topbar-date" aria-label="Current date">
+                    <span class="focus-date-icon" aria-hidden="true">◷</span>
+                    <span id="focusCurrentDate">Loading date...</span>
+                </div>
+
+                <div class="topbar-right">
+
+                    <div class="theme-switcher"
+                         role="group"
+                         aria-label="Choose appearance">
+
+                        <button type="button"
+                                class="theme-button"
+                                id="dayThemeButton"
+                                data-theme-choice="day"
+                                aria-pressed="true">
+                            <span aria-hidden="true">☀</span>
+                            <span>Day</span>
+                        </button>
+
+                        <button type="button"
+                                class="theme-button"
+                                id="nightThemeButton"
+                                data-theme-choice="night"
+                                aria-pressed="false">
+                            <span aria-hidden="true">☾</span>
+                            <span>Night</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <!-- =====================================
+                 PAGE CONTENT
+            ====================================== -->
+
+            <main class="main-content" id="mainContent">
+
+                <div class="focus-page">
+
+                    <!-- PAGE INTRODUCTION -->
+
+                    <section class="focus-introduction">
+                        <div>
+                            <p class="focus-eyebrow">MAKE EVERY MINUTE COUNT</p>
+                            <h2>Find your focus.</h2>
+                            <p class="focus-introduction-text">
+                                Work with intention, take meaningful breaks,
+                                and make steady progress toward your goals.
+                            </p>
+                        </div>
+
+                    </section>
+
+                    <!-- STATUS MESSAGE -->
+
+                    <div class="focus-message"
+                         id="focusMessage"
+                         role="status"
+                         aria-live="polite"
+                         hidden></div>
+
+                    <!-- =================================
+                         TIMER AND CONTROLS
+                    ================================== -->
+
+                    <section class="focus-workspace"
+                             aria-labelledby="timerSectionTitle">
+
+                        <div class="focus-timer-card">
+
+                            <div class="focus-card-heading">
+                                <div>
+                                    <p class="focus-eyebrow">YOUR PRODUCTIVITY SESSION</p>
+                                    <h2 id="timerSectionTitle">Stay in the zone</h2>
+                                </div>
+
+                                <span class="focus-live-indicator">
+                                    <span class="focus-live-dot" aria-hidden="true"></span>
+                                    <span id="timerStateLabel">Ready to focus</span>
+                                </span>
+                            </div>
+
+                            <!-- SESSION MODES -->
+
+                            <div class="focus-mode-selector"
+                                 role="group"
+                                 aria-label="Choose timer mode">
+
+                                <button type="button"
+                                        class="focus-mode-button is-active"
+                                        data-session-type="focus"
+                                        aria-pressed="true">
+                                    <span aria-hidden="true">◎</span>
+                                    Focus
+                                </button>
+
+                                <button type="button"
+                                        class="focus-mode-button"
+                                        data-session-type="short_break"
+                                        aria-pressed="false">
+                                    <span aria-hidden="true">☕</span>
+                                    Short Break
+                                </button>
+
+                                <button type="button"
+                                        class="focus-mode-button"
+                                        data-session-type="long_break"
+                                        aria-pressed="false">
+                                    <span aria-hidden="true">✳</span>
+                                    Long Break
+                                </button>
+
+                            </div>
+
+                            <!-- COUNTDOWN -->
+
+                            <div class="focus-clock-area">
+
+                                <div class="focus-progress-ring"
+                                     id="focusProgressRing"
+                                     role="img"
+                                     aria-label="Timer progress: 100 percent">
+
+                                    <div class="focus-clock-inner">
+
+                                        <span class="focus-clock-mode"
+                                              id="focusClockMode">
+                                            FOCUS SESSION
+                                        </span>
+
+                                        <time class="focus-clock"
+                                              id="focusClock"
+                                              datetime="PT25M"
+                                              aria-label="25 minutes remaining">
+                                            25:00
+                                        </time>
+
+                                        <span class="focus-clock-caption"
+                                              id="focusClockCaption">
+                                            Time to concentrate
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!-- TIMER CONTROLS -->
+
+                            <div class="focus-timer-controls">
+
+                                <button type="button"
+                                        class="focus-button focus-button-primary"
+                                        id="startPauseButton">
+                                    <span class="focus-button-icon" id="startPauseIcon" aria-hidden="true">▶</span>
+                                    <span id="startPauseLabel">Start Focus</span>
+                                </button>
+
+                                <button type="button"
+                                        class="focus-button focus-button-secondary"
+                                        id="resetTimerButton">
+                                    <span aria-hidden="true">↺</span>
+                                    Reset
+                                </button>
+
+                                <button type="button"
+                                        class="focus-button focus-button-secondary"
+                                        id="skipSessionButton">
+                                    Skip
+                                    <span aria-hidden="true">→</span>
+                                </button>
+
+                            </div>
+
+                            <p class="focus-timer-hint" id="focusTimerHint">
+                                Choose a session and start when you're ready.
+                            </p>
+
+                        </div>
+
+                        <!-- =================================
+                             SESSION SETTINGS
+                        ================================== -->
+
+                        <aside class="focus-settings-card">
+
+                            <div class="focus-card-heading">
+                                <div>
+                                    <p class="focus-eyebrow">MAKE IT YOURS</p>
+                                    <h2>Timer settings</h2>
+                                </div>
+
+                                <span class="focus-settings-icon" aria-hidden="true">⚙</span>
+                            </div>
+
+                            <p class="focus-settings-description">
+                                Adjust your session lengths to suit your workflow.
+                            </p>
+
+                            <form id="focusSettingsForm">
+
+                                <div class="focus-setting-field">
+                                    <label for="focusDuration">Focus session</label>
+
+                                    <div class="focus-duration-input">
+                                        <input type="number"
+                                               id="focusDuration"
+                                               name="focusDuration"
+                                               min="1"
+                                               max="180"
+                                               value="25"
+                                               required>
+
+                                        <span>minutes</span>
+                                    </div>
+                                </div>
+
+                                <div class="focus-setting-field">
+                                    <label for="shortBreakDuration">Short break</label>
+
+                                    <div class="focus-duration-input">
+                                        <input type="number"
+                                               id="shortBreakDuration"
+                                               name="shortBreakDuration"
+                                               min="1"
+                                               max="60"
+                                               value="5"
+                                               required>
+
+                                        <span>minutes</span>
+                                    </div>
+                                </div>
+
+                                <div class="focus-setting-field">
+                                    <label for="longBreakDuration">Long break</label>
+
+                                    <div class="focus-duration-input">
+                                        <input type="number"
+                                               id="longBreakDuration"
+                                               name="longBreakDuration"
+                                               min="1"
+                                               max="90"
+                                               value="15"
+                                               required>
+
+                                        <span>minutes</span>
+                                    </div>
+                                </div>
+
+                                <button type="submit"
+                                        class="focus-button focus-button-primary focus-settings-save"
+                                        id="saveFocusSettingsButton">
+                                    Save settings
+                                </button>
+
+                            </form>
+
+                            <div class="focus-settings-note">
+                                <span aria-hidden="true">ⓘ</span>
+                                <p>
+                                    Changing a duration updates the selected
+                                    session when you save your settings.
+                                </p>
+                            </div>
+
+                        </aside>
+
+                    </section>
+
+                    <!-- =================================
+                         DAILY STATISTICS
+                    ================================== -->
+
+                    <section class="focus-statistics-section"
+                             aria-labelledby="focusStatisticsTitle">
+
+                        <div class="focus-section-heading">
+                            <div>
+                                <p class="focus-eyebrow">YOUR DAILY PROGRESS</p>
+                                <h2 id="focusStatisticsTitle">Focus statistics</h2>
+                            </div>
+
+                            <span class="focus-section-subtitle">Today's activity</span>
+                        </div>
+
+                        <div class="focus-statistics-grid">
+
+                            <article class="focus-stat-card">
+                                <div class="focus-stat-icon focus-stat-icon-sessions"
+                                     aria-hidden="true">
+                                    ◎
+                                </div>
+
+                                <div class="focus-stat-content">
+                                    <span class="focus-stat-label">
+                                        Completed focus sessions
+                                    </span>
+
+                                    <strong class="focus-stat-value"
+                                            id="completedFocusSessions">
+                                        —
+                                    </strong>
+
+                                    <span class="focus-stat-description">
+                                        Sessions completed today
+                                    </span>
+                                </div>
+                            </article>
+
+                            <article class="focus-stat-card">
+                                <div class="focus-stat-icon focus-stat-icon-time"
+                                     aria-hidden="true">
+                                    ◷
+                                </div>
+
+                                <div class="focus-stat-content">
+                                    <span class="focus-stat-label">
+                                        Total focus time
+                                    </span>
+
+                                    <strong class="focus-stat-value"
+                                            id="totalFocusTime">
+                                        —
+                                    </strong>
+
+                                    <span class="focus-stat-description">
+                                        Time spent in focus mode
+                                    </span>
+                                </div>
+                            </article>
+
+                            <article class="focus-stat-card">
+                                <div class="focus-stat-icon focus-stat-icon-breaks"
+                                     aria-hidden="true">
+                                    ☕
+                                </div>
+
+                                <div class="focus-stat-content">
+                                    <span class="focus-stat-label">
+                                        Break sessions
+                                    </span>
+
+                                    <strong class="focus-stat-value"
+                                            id="completedBreakSessions">
+                                        —
+                                    </strong>
+
+                                    <span class="focus-stat-description">
+                                        Short and long breaks completed
+                                    </span>
+                                </div>
+                            </article>
+
+                        </div>
+
+                    </section>
+
+                    <!-- =================================
+                         SESSION HISTORY
+                    ================================== -->
+
+                    <section class="focus-history-section"
+                             aria-labelledby="focusHistoryTitle">
+
+                        <div class="focus-section-heading">
+                            <div>
+                                <p class="focus-eyebrow">YOUR RECENT ACTIVITY</p>
+                                <h2 id="focusHistoryTitle">Session history</h2>
+                            </div>
+
+                            <button type="button"
+                                    class="focus-history-refresh"
+                                    id="refreshFocusHistoryButton">
+                                <span aria-hidden="true">↻</span>
+                                Refresh
+                            </button>
+                        </div>
+
+                        <div class="focus-history-card">
+
+                            <div class="focus-history-table-wrapper">
+
+                                <table class="focus-history-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Session</th>
+                                            <th scope="col">Planned</th>
+                                            <th scope="col">Duration</th>
+                                            <th scope="col">Completed</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="focusHistoryBody">
+
+                                        <tr>
+                                            <td colspan="5"
+                                                class="focus-history-loading">
+                                                Loading your sessions...
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="focus-history-footer">
+                                <span id="focusHistoryCount">
+                                    Your recent sessions will appear here.
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                    <!-- =================================
+                         FOCUS REMINDER
+                    ================================== -->
+
+                    <section class="focus-encouragement">
+
+                        <div class="focus-encouragement-icon" aria-hidden="true">
+                            ✦
+                        </div>
+
+                        <div>
+                            <h2>Progress comes from consistency.</h2>
+                            <p>
+                                Focus on the task in front of you.
+                                One intentional session at a time.
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+</body>
+</html>

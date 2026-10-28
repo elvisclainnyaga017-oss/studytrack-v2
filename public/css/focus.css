@@ -1,0 +1,1896 @@
+/* =========================================================
+STUDYTRACK V2
+FOCUS TIMER STYLESHEET
+File: public/css/focus.css
+
+Design:
+
+* Racing green and cream visual identity
+* Day and night theme support
+* Responsive timer workspace
+* Circular progress indicator
+* Session settings, statistics and history
+  ========================================================= */
+
+/* =========================================================
+
+1. FOCUS PAGE DESIGN TOKENS
+   ========================================================= */
+
+.focus-page {
+    --focus-green: #004225;
+    --focus-green-dark: #002b19;
+    --focus-green-medium: #3d7c58;
+    --focus-green-light: #e5f2e7;
+    --focus-background: #f4fef3;
+    --focus-surface: #ffffff;
+    --focus-surface-soft: #f8fbf7;
+    --focus-text: #193d2b;
+    --focus-text-muted: #6d8173;
+    --focus-border: #dce8dc;
+    --focus-track: #e6eee5;
+    --focus-success: #267447;
+    --focus-warning: #a56a16;
+    --focus-danger: #b33b3b;
+    --focus-shadow: 0 8px 28px rgba(0, 45, 25, 0.055);
+    --focus-radius-large: 22px;
+    --focus-radius-medium: 15px;
+    --focus-radius-small: 10px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    color: var(--focus-text);
+    font-family: inherit;
+}
+
+:root[data-theme="night"] .focus-page {
+    --focus-green: #78bd91;
+    --focus-green-dark: #a4d9b5;
+    --focus-green-medium: #8ac7a0;
+    --focus-green-light: #1b3d2b;
+    --focus-background: #111b15;
+    --focus-surface: #1a2820;
+    --focus-surface-soft: #202f25;
+    --focus-text: #e6f2e8;
+    --focus-text-muted: #a3b8a8;
+    --focus-border: #35483a;
+    --focus-track: #35483a;
+    --focus-success: #86d6a2;
+    --focus-warning: #e8bd73;
+    --focus-danger: #f09a9a;
+    --focus-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================================
+2. PAGE INTRODUCTION
+========================================================= */
+
+.focus-introduction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.focus-eyebrow {
+    margin: 0 0 9px;
+    color: var(--focus-green-medium);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.5;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.focus-introduction h2 {
+    margin: 0;
+    color: var(--focus-green);
+    font-size: clamp(27px, 3vw, 36px);
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -0.045em;
+}
+
+.focus-introduction-text {
+    max-width: 600px;
+    margin: 12px 0 0;
+    color: var(--focus-text-muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.focus-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    padding: 12px 16px;
+    background: var(--focus-surface);
+    border: 1px solid var(--focus-border);
+    border-radius: 12px;
+    color: var(--focus-text-muted);
+    font-size: 12px;
+    font-weight: 650;
+    box-shadow: var(--focus-shadow);
+}
+
+.focus-date-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--focus-green-light);
+    color: var(--focus-green);
+    font-size: 19px;
+}
+
+/* =========================================================
+3. STATUS MESSAGES
+========================================================= */
+
+.focus-message {
+    margin-bottom: 22px;
+    padding: 14px 17px;
+    border: 1px solid var(--focus-border);
+    border-radius: var(--focus-radius-small);
+    background: var(--focus-surface);
+    color: var(--focus-text);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+    .focus-message[hidden] {
+        display: none !important;
+    }
+
+    .focus-message.is-success {
+        background: var(--focus-green-light);
+        border-color: var(--focus-green-medium);
+        color: var(--focus-green);
+    }
+
+    .focus-message.is-error {
+        border-color: #dca9a9;
+        background: #fff0f0;
+        color: #8d2929;
+    }
+
+:root[data-theme="night"] .focus-message.is-error {
+    border-color: #714141;
+    background: #392323;
+    color: #ffc0c0;
+}
+
+/* =========================================================
+4. MAIN TIMER WORKSPACE
+========================================================= */
+
+.focus-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(270px, 0.85fr);
+    align-items: stretch;
+    gap: 22px;
+    margin-bottom: 36px;
+}
+
+.focus-timer-card,
+.focus-settings-card {
+    min-width: 0;
+    background: var(--focus-surface);
+    border: 1px solid var(--focus-border);
+    border-radius: var(--focus-radius-large);
+    box-shadow: var(--focus-shadow);
+}
+
+.focus-timer-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 650px;
+    padding: 27px 30px 25px;
+}
+
+    .focus-timer-card > .focus-card-heading {
+        width: 100%;
+    }
+
+.focus-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+    .focus-card-heading h2 {
+        margin: 0;
+        color: var(--focus-text);
+        font-size: 19px;
+        font-weight: 750;
+        line-height: 1.4;
+        letter-spacing: -0.025em;
+    }
+
+    .focus-card-heading .focus-eyebrow {
+        margin-bottom: 6px;
+    }
+
+.focus-live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    margin-top: 4px;
+    color: var(--focus-text-muted);
+    font-size: 11px;
+    font-weight: 650;
+}
+
+.focus-live-dot {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #a5b5a8;
+}
+
+.focus-live-indicator.is-running .focus-live-dot {
+    background: #3caa65;
+    box-shadow: 0 0 0 4px rgba(60, 170, 101, 0.12);
+}
+
+.focus-live-indicator.is-paused .focus-live-dot {
+    background: #d69b3c;
+}
+
+.focus-live-indicator.is-complete .focus-live-dot {
+    background: #3caa65;
+}
+
+/* =========================================================
+5. SESSION MODE SELECTOR
+========================================================= */
+
+.focus-mode-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 31px auto 25px;
+    padding: 5px;
+    background: var(--focus-surface-soft);
+    border: 1px solid var(--focus-border);
+    border-radius: 13px;
+}
+
+.focus-mode-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--focus-text-muted);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+    .focus-mode-button > span {
+        font-size: 17px;
+        line-height: 1;
+    }
+
+    .focus-mode-button:hover {
+        color: var(--focus-green);
+        background: var(--focus-green-light);
+    }
+
+    .focus-mode-button.is-active {
+        background: var(--focus-green);
+        border-color: var(--focus-green);
+        color: #ffffff;
+        box-shadow: 0 3px 9px rgba(0, 66, 37, 0.15);
+    }
+
+:root[data-theme="night"] .focus-mode-button.is-active {
+    color: #102519;
+    background: #78bd91;
+    border-color: #78bd91;
+}
+
+/* =========================================================
+6. CIRCULAR COUNTDOWN
+========================================================= */
+
+.focus-clock-area {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: 4px 0 9px;
+}
+
+.focus-progress-ring {
+    --focus-progress: 100%;
+    display: grid;
+    place-items: center;
+    width: clamp(230px, 28vw, 300px);
+    aspect-ratio: 1 / 1;
+    padding: 11px;
+    border-radius: 50%;
+    background: conic-gradient( var(--focus-green-medium) var(--focus-progress), var(--focus-track) var(--focus-progress) );
+    box-shadow: 0 0 0 1px var(--focus-border), 0 12px 32px rgba(0, 45, 25, 0.055);
+    transition: background 180ms linear;
+}
+
+.focus-clock-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    border: 1px solid var(--focus-border);
+    border-radius: 50%;
+    background: var(--focus-surface);
+    text-align: center;
+}
+
+.focus-clock-mode {
+    margin-bottom: 13px;
+    color: var(--focus-green-medium);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.focus-clock {
+    display: block;
+    color: var(--focus-green);
+    font-size: clamp(48px, 6.4vw, 72px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.075em;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+}
+
+.focus-clock-caption {
+    margin-top: 15px;
+    color: var(--focus-text-muted);
+    font-size: 12px;
+    font-weight: 550;
+    line-height: 1.5;
+}
+
+/* =========================================================
+7. TIMER CONTROLS
+========================================================= */
+
+.focus-timer-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    margin-top: 26px;
+}
+
+.focus-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 11px 17px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: transform 150ms ease, background 150ms ease, color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+    .focus-button:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .focus-button:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    .focus-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+
+.focus-button-primary {
+    background: var(--focus-green);
+    border-color: var(--focus-green);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 66, 37, 0.13);
+}
+
+    .focus-button-primary:hover:not(:disabled) {
+        background: var(--focus-green-dark);
+        border-color: var(--focus-green-dark);
+        box-shadow: 0 6px 15px rgba(0, 66, 37, 0.17);
+    }
+
+:root[data-theme="night"] .focus-button-primary {
+    background: #78bd91;
+    border-color: #78bd91;
+    color: #102519;
+}
+
+    :root[data-theme="night"] .focus-button-primary:hover:not(:disabled) {
+        background: #91d1a7;
+        border-color: #91d1a7;
+    }
+
+.focus-button-secondary {
+    background: var(--focus-surface);
+    border-color: var(--focus-border);
+    color: var(--focus-text);
+}
+
+    .focus-button-secondary:hover:not(:disabled) {
+        background: var(--focus-green-light);
+        border-color: var(--focus-green-medium);
+        color: var(--focus-green);
+    }
+
+.focus-button-icon {
+    font-size: 13px;
+}
+
+.focus-timer-hint {
+    max-width: 420px;
+    margin: 17px 0 0;
+    color: var(--focus-text-muted);
+    font-size: 11px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* =========================================================
+8. SESSION SETTINGS CARD
+========================================================= */
+
+.focus-settings-card {
+    display: flex;
+    flex-direction: column;
+    padding: 27px 23px;
+}
+
+    .focus-settings-card .focus-card-heading {
+        align-items: center;
+    }
+
+.focus-settings-icon {
+    display: grid;
+    place-items: center;
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--focus-green-light);
+    color: var(--focus-green);
+    font-size: 20px;
+}
+
+.focus-settings-description {
+    margin: 15px 0 24px;
+    color: var(--focus-text-muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+#focusSettingsForm {
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+}
+
+.focus-setting-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+    .focus-setting-field label {
+        color: var(--focus-text);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+.focus-duration-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 47px;
+    padding: 5px 12px;
+    border: 1px solid var(--focus-border);
+    border-radius: 10px;
+    background: var(--focus-surface-soft);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+    .focus-duration-input:focus-within {
+        border-color: var(--focus-green-medium);
+        box-shadow: 0 0 0 3px rgba(61, 124, 88, 0.12);
+    }
+
+    .focus-duration-input input {
+        width: 100%;
+        min-width: 0;
+        min-height: 32px;
+        padding: 3px 2px;
+        border: 0;
+        outline: none;
+        background: transparent;
+        color: var(--focus-text);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 750;
+        font-variant-numeric: tabular-nums;
+    }
+
+        .focus-duration-input input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .focus-duration-input input::-webkit-inner-spin-button,
+        .focus-duration-input input::-webkit-outer-spin-button {
+            margin: 0;
+        }
+
+        .focus-duration-input input[type="number"] {
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+
+    .focus-duration-input span {
+        flex-shrink: 0;
+        color: var(--focus-text-muted);
+        font-size: 11px;
+        font-weight: 550;
+    }
+
+.focus-settings-save {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.focus-settings-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: auto;
+    padding: 14px 12px 0;
+    border-top: 1px solid var(--focus-border);
+}
+
+    .focus-settings-note > span {
+        flex-shrink: 0;
+        color: var(--focus-green-medium);
+        font-size: 16px;
+        line-height: 1.3;
+    }
+
+    .focus-settings-note p {
+        margin: 0;
+        color: var(--focus-text-muted);
+        font-size: 10px;
+        line-height: 1.8;
+    }
+
+/* =========================================================
+9. DAILY STATISTICS
+========================================================= */
+
+.focus-statistics-section,
+.focus-history-section {
+    margin-bottom: 36px;
+}
+
+.focus-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 19px;
+}
+
+    .focus-section-heading h2 {
+        margin: 0;
+        color: var(--focus-text);
+        font-size: 21px;
+        font-weight: 800;
+        line-height: 1.4;
+        letter-spacing: -0.035em;
+    }
+
+    .focus-section-heading .focus-eyebrow {
+        margin-bottom: 5px;
+    }
+
+.focus-section-subtitle {
+    color: var(--focus-text-muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.focus-statistics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.focus-stat-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    min-width: 0;
+    min-height: 142px;
+    padding: 23px 20px;
+    background: var(--focus-surface);
+    border: 1px solid var(--focus-border);
+    border-radius: var(--focus-radius-medium);
+    box-shadow: var(--focus-shadow);
+    transition: transform 160ms ease, border-color 160ms ease;
+}
+
+    .focus-stat-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--focus-green-medium);
+    }
+
+.focus-stat-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    font-size: 22px;
+}
+
+.focus-stat-icon-sessions {
+    background: var(--focus-green-light);
+    color: var(--focus-green);
+}
+
+.focus-stat-icon-time {
+    background: #e7efff;
+    color: #4569b2;
+}
+
+.focus-stat-icon-breaks {
+    background: #fff0dc;
+    color: #a66b20;
+}
+
+:root[data-theme="night"] .focus-stat-icon-time {
+    background: #263858;
+    color: #a6c0ff;
+}
+
+:root[data-theme="night"] .focus-stat-icon-breaks {
+    background: #493722;
+    color: #f2c17f;
+}
+
+.focus-stat-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 7px;
+    min-width: 0;
+}
+
+.focus-stat-label {
+    color: var(--focus-text-muted);
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.5;
+}
+
+.focus-stat-value {
+    color: var(--focus-green);
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+}
+
+.focus-stat-description {
+    color: var(--focus-text-muted);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+10. SESSION HISTORY
+========================================================= */
+
+.focus-history-refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 39px;
+    padding: 9px 13px;
+    border: 1px solid var(--focus-border);
+    border-radius: 10px;
+    background: var(--focus-surface);
+    color: var(--focus-text);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+    .focus-history-refresh:hover {
+        background: var(--focus-green-light);
+        border-color: var(--focus-green-medium);
+        color: var(--focus-green);
+    }
+
+    .focus-history-refresh > span {
+        font-size: 17px;
+    }
+
+.focus-history-card {
+    overflow: hidden;
+    background: var(--focus-surface);
+    border: 1px solid var(--focus-border);
+    border-radius: var(--focus-radius-medium);
+    box-shadow: var(--focus-shadow);
+}
+
+.focus-history-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.focus-history-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: left;
+}
+
+    .focus-history-table thead {
+        background: var(--focus-surface-soft);
+    }
+
+    .focus-history-table th {
+        padding: 15px 19px;
+        border-bottom: 1px solid var(--focus-border);
+        color: var(--focus-text-muted);
+        font-size: 10px;
+        font-weight: 800;
+        line-height: 1.5;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .focus-history-table td {
+        padding: 16px 19px;
+        border-bottom: 1px solid var(--focus-border);
+        color: var(--focus-text);
+        font-size: 12px;
+        line-height: 1.6;
+        vertical-align: middle;
+    }
+
+    .focus-history-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .focus-history-table tbody tr {
+        transition: background 130ms ease;
+    }
+
+        .focus-history-table tbody tr:hover {
+            background: var(--focus-surface-soft);
+        }
+
+.focus-history-loading {
+    padding: 35px 19px !important;
+    color: var(--focus-text-muted) !important;
+    text-align: center;
+}
+
+.focus-history-session {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 750;
+}
+
+.focus-history-session-icon {
+    display: grid;
+    place-items: center;
+    width: 31px;
+    height: 31px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: var(--focus-green-light);
+    color: var(--focus-green);
+    font-size: 15px;
+}
+
+    .focus-history-session-icon.is-break {
+        background: #fff0dc;
+        color: #a66b20;
+    }
+
+:root[data-theme="night"] .focus-history-session-icon.is-break {
+    background: #493722;
+    color: #f2c17f;
+}
+
+.focus-history-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    background: var(--focus-green-light);
+    color: var(--focus-green);
+    font-size: 10px;
+    font-weight: 750;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+    .focus-history-status::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+.focus-history-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 19px;
+    border-top: 1px solid var(--focus-border);
+    background: var(--focus-surface-soft);
+    color: var(--focus-text-muted);
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+11. ENCOURAGEMENT BANNER
+========================================================= */
+
+.focus-encouragement {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    margin-bottom: 24px;
+    padding: 23px 25px;
+    border: 1px solid var(--focus-border);
+    border-radius: var(--focus-radius-medium);
+    background: linear-gradient( 115deg, var(--focus-green-light), var(--focus-surface) );
+}
+
+.focus-encouragement-icon {
+    display: grid;
+    place-items: center;
+    width: 47px;
+    height: 47px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: var(--focus-green);
+    color: #ffffff;
+    font-size: 24px;
+}
+
+:root[data-theme="night"] .focus-encouragement-icon {
+    background: #78bd91;
+    color: #102519;
+}
+
+.focus-encouragement h2 {
+    margin: 0;
+    color: var(--focus-green);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.5;
+}
+
+.focus-encouragement p {
+    margin: 5px 0 0;
+    color: var(--focus-text-muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+12. ACCESSIBILITY AND INTERACTION
+========================================================= */
+
+.focus-page button:focus-visible,
+.focus-page input:focus-visible {
+    outline: 3px solid var(--focus-green-medium);
+    outline-offset: 3px;
+}
+
+.focus-page button:disabled {
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .focus-page *,
+    .focus-page *::before,
+    .focus-page *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* =========================================================
+13. RESPONSIVE LAYOUT — SMALL DESKTOPS
+========================================================= */
+
+@media (max-width: 1200px) {
+    .focus-workspace {
+        grid-template-columns: minmax(0, 1.35fr) minmax(255px, 0.9fr);
+        gap: 17px;
+    }
+
+
+    .focus-timer-card {
+        padding-right: 22px;
+        padding-left: 22px;
+    }
+
+    .focus-settings-card {
+        padding-right: 19px;
+        padding-left: 19px;
+    }
+
+    .focus-stat-card {
+        gap: 12px;
+        padding: 20px 16px;
+    }
+
+    .focus-stat-icon {
+        width: 39px;
+        height: 39px;
+    }
+}
+
+/* =========================================================
+14. RESPONSIVE LAYOUT — TABLETS
+========================================================= */
+
+@media (max-width: 1000px) {
+    .focus-workspace {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+
+    .focus-timer-card {
+        min-height: 0;
+        padding: 28px 24px;
+    }
+
+    .focus-settings-card {
+        padding: 25px;
+    }
+
+    .focus-settings-description {
+        margin-bottom: 20px;
+    }
+
+    #focusSettingsForm {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: end;
+        gap: 15px;
+    }
+
+    .focus-settings-save {
+        grid-column: 1 / -1;
+    }
+
+    .focus-settings-note {
+        margin-top: 22px;
+        padding-top: 15px;
+    }
+
+    .focus-statistics-grid {
+        gap: 13px;
+    }
+
+    .focus-stat-card {
+        flex-direction: column;
+        min-height: 170px;
+    }
+}
+
+/* =========================================================
+15. RESPONSIVE LAYOUT — MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+    .focus-introduction {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 17px;
+        margin-bottom: 23px;
+    }
+
+        .focus-introduction h2 {
+            font-size: 29px;
+        }
+
+    .focus-introduction-text {
+        font-size: 13px;
+    }
+
+    .focus-date {
+        padding: 9px 12px;
+    }
+
+    .focus-workspace {
+        gap: 16px;
+        margin-bottom: 30px;
+    }
+
+    .focus-timer-card {
+        padding: 22px 15px;
+        border-radius: 18px;
+    }
+
+    .focus-card-heading h2 {
+        font-size: 17px;
+    }
+
+    .focus-live-indicator {
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    .focus-mode-selector {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+        width: 100%;
+        margin: 24px auto 24px;
+    }
+
+    .focus-mode-button {
+        flex-direction: column;
+        gap: 5px;
+        min-height: 62px;
+        padding: 8px 4px;
+        font-size: 10px;
+        text-align: center;
+    }
+
+        .focus-mode-button > span {
+            font-size: 17px;
+        }
+
+    .focus-progress-ring {
+        width: min(72vw, 260px);
+        padding: 9px;
+    }
+
+    .focus-clock {
+        font-size: clamp(46px, 12vw, 61px);
+    }
+
+    .focus-clock-mode {
+        font-size: 9px;
+    }
+
+    .focus-clock-caption {
+        font-size: 11px;
+    }
+
+    .focus-timer-controls {
+        gap: 8px;
+        margin-top: 23px;
+    }
+
+    .focus-button {
+        min-height: 42px;
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+
+    .focus-timer-controls .focus-button-primary {
+        flex: 1 1 100%;
+    }
+
+    .focus-timer-controls .focus-button-secondary {
+        flex: 1 1 0;
+    }
+
+    .focus-timer-hint {
+        font-size: 10px;
+    }
+
+    .focus-settings-card {
+        padding: 22px 17px;
+    }
+
+    #focusSettingsForm {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .focus-settings-save {
+        grid-column: auto;
+    }
+
+    .focus-statistics-section,
+    .focus-history-section {
+        margin-bottom: 30px;
+    }
+
+    .focus-section-heading {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+        .focus-section-heading h2 {
+            font-size: 19px;
+        }
+
+    .focus-section-subtitle {
+        margin-top: 5px;
+        font-size: 10px;
+        text-align: right;
+    }
+
+    .focus-statistics-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 11px;
+    }
+
+    .focus-stat-card {
+        flex-direction: row;
+        align-items: center;
+        min-height: 105px;
+        padding: 17px;
+    }
+
+    .focus-stat-icon {
+        width: 43px;
+        height: 43px;
+    }
+
+    .focus-stat-value {
+        font-size: 26px;
+    }
+
+    .focus-stat-content {
+        gap: 5px;
+    }
+
+    .focus-history-refresh {
+        min-height: 35px;
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+
+    .focus-history-table th,
+    .focus-history-table td {
+        padding-right: 13px;
+        padding-left: 13px;
+    }
+
+    .focus-encouragement {
+        align-items: flex-start;
+        gap: 13px;
+        padding: 19px 16px;
+    }
+
+    .focus-encouragement-icon {
+        width: 39px;
+        height: 39px;
+        border-radius: 11px;
+        font-size: 20px;
+    }
+
+    .focus-encouragement h2 {
+        font-size: 13px;
+    }
+
+    .focus-encouragement p {
+        font-size: 11px;
+    }
+}
+
+/* =========================================================
+16. VERY SMALL MOBILE SCREENS
+========================================================= */
+
+@media (max-width: 380px) {
+    .focus-timer-card {
+        padding-right: 11px;
+        padding-left: 11px;
+    }
+
+
+    .focus-card-heading {
+        gap: 9px;
+    }
+
+        .focus-card-heading h2 {
+            font-size: 15px;
+        }
+
+    .focus-live-indicator {
+        font-size: 9px;
+    }
+
+    .focus-mode-button {
+        font-size: 9px;
+    }
+
+    .focus-progress-ring {
+        width: min(76vw, 235px);
+    }
+
+    .focus-clock {
+        font-size: 43px;
+    }
+
+    .focus-button {
+        padding-right: 9px;
+        padding-left: 9px;
+    }
+
+    .focus-section-heading h2 {
+        font-size: 17px;
+    }
+
+    .focus-stat-card {
+        padding: 14px;
+    }
+}
+
+/* =========================================================
+END OF STUDYTRACK V2 FOCUS TIMER STYLESHEET
+========================================================= */
+
+
+/* =========================================================
+17. FOCUS PAGE SHARED SIDEBAR AND HEADER ALIGNMENT
+Scoped to Focus Timer so the other pages remain unchanged.
+========================================================= */
+
+/* Use the same brand spacing and mark treatment as the other pages. */
+.focus-app-layout .sidebar-brand {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    margin: 0 4px 42px;
+}
+
+.focus-app-layout .sidebar .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    text-decoration: none;
+}
+
+.focus-app-layout .sidebar .brand-mark {
+    display: grid;
+    flex: 0 0 43px;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 800;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.focus-app-layout .sidebar .brand-name {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: opacity 160ms ease, width 160ms ease;
+}
+
+    .focus-app-layout .sidebar .brand-name > span {
+        display: block;
+        color: #ffffff;
+        font-size: 21px;
+        font-weight: 750;
+        letter-spacing: -0.7px;
+        line-height: 1.35;
+    }
+
+    .focus-app-layout .sidebar .brand-name small {
+        display: block;
+        margin-top: 4px;
+        color: #a4c3b0;
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 1.2px;
+        line-height: 1.5;
+        white-space: normal;
+    }
+
+.focus-app-layout .sidebar-section-label {
+    display: block;
+    margin: 0 10px 13px;
+    color: #a4c3b0;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 1.4px;
+}
+
+.focus-app-layout .sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Match the shared sidebar reminder card used by the other pages. */
+.focus-app-layout .sidebar-tip {
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.focus-app-layout .tip-icon {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+    border-radius: 9px;
+    background: rgba(139, 212, 166, 0.14);
+    color: #a7e6bb;
+    font-size: 17px;
+}
+
+.focus-app-layout .tip-heading {
+    margin: 0 0 5px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.focus-app-layout .tip-text {
+    margin: 0;
+    color: #b2c7b9;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* The profile markup on Focus has different inner class names from
+   the shared stylesheet, so give those elements the same treatment. */
+.focus-app-layout .sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 35px;
+}
+
+.focus-app-layout .profile-shortcut {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 5px 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.focus-app-layout .profile-shortcut-details {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.focus-app-layout .profile-shortcut-name {
+    display: block;
+    overflow: hidden;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 650;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.focus-app-layout .profile-shortcut-label {
+    display: block;
+    margin-top: 3px;
+    color: #a8c1b1;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.focus-app-layout .sidebar-logout {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-height: 47px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    background: transparent;
+    color: #c0d2c7;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 550;
+    text-align: left;
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition), border-color var(--transition);
+}
+
+    .focus-app-layout .sidebar-logout:hover,
+    .focus-app-layout .sidebar-logout:focus-visible {
+        border-color: rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.075);
+        color: #ffffff;
+    }
+
+.focus-app-layout .logout-icon {
+    display: grid;
+    flex: 0 0 25px;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    color: #a8cbb6;
+    font-size: 21px;
+    line-height: 1;
+}
+
+/* Match the shared topbar heading, hamburger and theme control. */
+.focus-app-layout .topbar {
+    min-height: var(--header-height);
+    padding-right: 38px;
+    padding-left: 38px;
+}
+
+.focus-app-layout .topbar-left,
+.focus-app-layout .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 0;
+}
+
+/* Keep the current date in the header beside the page title and theme switch. */
+.focus-app-layout .topbar-date {
+    display: inline-flex;
+    align-items: center;
+    justify-self: center;
+    gap: 8px;
+    flex: 0 1 auto;
+    min-width: 0;
+    padding: 8px 12px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 650;
+    white-space: nowrap;
+}
+
+    .focus-app-layout .topbar-date .focus-date-icon {
+        width: auto;
+        height: auto;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 17px;
+    }
+
+.focus-app-layout .page-heading {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.focus-app-layout .page-eyebrow {
+    margin: 0 0 2px;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 750;
+    line-height: 1.4;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.focus-app-layout .page-heading h1 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.45px;
+}
+
+.focus-app-layout .menu-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex: 0 0 39px;
+    width: 39px;
+    height: 39px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--surface);
+    cursor: pointer;
+}
+
+    .focus-app-layout .menu-button:hover {
+        border-color: var(--border-strong);
+        background: var(--green-50);
+    }
+
+    .focus-app-layout .menu-button .menu-button-bar {
+        display: block;
+        width: 15px;
+        height: 2px;
+        flex: 0 0 2px;
+        border-radius: 2px;
+        background: var(--green-800);
+        transition: transform 160ms ease, opacity 160ms ease;
+    }
+
+:root[data-theme="night"] .focus-app-layout .menu-button .menu-button-bar {
+    background: #a7e6bb;
+}
+
+.focus-app-layout .theme-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--background);
+}
+
+.focus-app-layout .theme-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 33px;
+    padding: 0 11px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+    .focus-app-layout .theme-button > span:first-child {
+        font-size: 15px;
+        line-height: 1;
+    }
+
+    .focus-app-layout .theme-button:hover {
+        color: var(--text-primary);
+    }
+
+    .focus-app-layout .theme-button[aria-pressed="true"] {
+        border-color: var(--border);
+        background: var(--surface);
+        color: var(--green-800);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+:root[data-theme="night"] .focus-app-layout .theme-button[aria-pressed="true"] {
+    border-color: #3c6249;
+    background: #294333;
+    color: #c4f0d0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+
+/* Match the content gutters used beneath the shared header. */
+.focus-app-layout .main-content {
+    width: 100%;
+    min-width: 0;
+    padding: 30px 38px 44px;
+}
+
+.focus-app-layout .focus-page {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Desktop collapsed sidebar: center the mark and controls while
+   keeping profile and logout stacked at the bottom. */
+.focus-app-layout.sidebar-collapsed .sidebar {
+    overflow-x: visible;
+}
+
+.focus-app-layout.sidebar-collapsed .sidebar-brand {
+    justify-content: center;
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.focus-app-layout.sidebar-collapsed .sidebar .brand-link {
+    justify-content: center;
+    width: 100%;
+}
+
+.focus-app-layout.sidebar-collapsed .sidebar .brand-name,
+.focus-app-layout.sidebar-collapsed .sidebar-section-label,
+.focus-app-layout.sidebar-collapsed .sidebar-tip,
+.focus-app-layout.sidebar-collapsed .profile-shortcut-details,
+.focus-app-layout.sidebar-collapsed .sidebar-logout-text {
+    display: none !important;
+}
+
+.focus-app-layout.sidebar-collapsed .profile-shortcut {
+    justify-content: center;
+    margin-right: 0;
+    margin-left: 0;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.focus-app-layout.sidebar-collapsed .sidebar-logout {
+    justify-content: center;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+    .focus-app-layout.sidebar-collapsed .sidebar-logout .logout-icon {
+        flex-basis: 25px;
+    }
+
+/* The shared stylesheet's pseudo tooltips are clipped by the sidebar.
+   Focus uses a fixed-position JavaScript tooltip instead, so suppress
+   pseudo tooltips here to prevent duplicates. */
+.focus-app-layout.sidebar-collapsed .sidebar .nav-link[data-tooltip]::before,
+.focus-app-layout.sidebar-collapsed .sidebar .nav-link[data-tooltip]::after,
+.focus-app-layout.sidebar-collapsed .sidebar .profile-shortcut[data-tooltip]::before,
+.focus-app-layout.sidebar-collapsed .sidebar .profile-shortcut[data-tooltip]::after {
+    display: none !important;
+    content: none !important;
+}
+
+.studytrack-focus-tooltip {
+    position: fixed;
+    z-index: 10000;
+    display: block;
+    max-width: min(240px, calc(100vw - 20px));
+    padding: 9px 12px;
+    border: 1px solid #c8d9ca;
+    border-radius: 9px;
+    background: #f4fef3;
+    color: #004225;
+    box-shadow: 0 8px 24px rgba(0, 45, 25, 0.18);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.35;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(2px);
+    transition: opacity 100ms ease, transform 100ms ease, visibility 100ms ease;
+}
+
+    .studytrack-focus-tooltip.is-visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+@media (max-width: 1250px) {
+    .focus-app-layout .topbar {
+        padding-right: 26px;
+        padding-left: 26px;
+    }
+
+    .focus-app-layout .main-content {
+        padding-right: 26px;
+        padding-left: 26px;
+    }
+}
+
+@media (max-width: 850px) {
+    .focus-app-layout .topbar {
+        min-height: 68px;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .focus-app-layout .main-content {
+        padding: 25px 20px 35px;
+    }
+
+    .focus-app-layout.sidebar-collapsed .sidebar .brand-name {
+        display: flex !important;
+    }
+
+    .focus-app-layout .sidebar-bottom {
+        padding-top: 24px;
+    }
+
+    .studytrack-focus-tooltip {
+        display: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .focus-app-layout .topbar {
+        gap: 10px;
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .focus-app-layout .topbar-left,
+    .focus-app-layout .topbar-right {
+        gap: 8px;
+    }
+
+    .focus-app-layout .topbar-date {
+        gap: 4px;
+        padding: 4px 0;
+        font-size: 10px;
+    }
+
+        .focus-app-layout .topbar-date .focus-date-icon {
+            font-size: 13px;
+        }
+
+    .focus-app-layout .page-eyebrow {
+        font-size: 8px;
+        letter-spacing: 0.7px;
+    }
+
+    .focus-app-layout .page-heading h1 {
+        font-size: 18px;
+    }
+
+    .focus-app-layout .main-content {
+        padding: 22px 16px 30px;
+    }
+
+    .focus-app-layout .theme-switcher {
+        gap: 1px;
+        padding: 3px;
+    }
+
+    .focus-app-layout .theme-button {
+        gap: 4px;
+        min-height: 32px;
+        padding: 0 7px;
+        font-size: 12px;
+    }
+
+        .focus-app-layout .theme-button > span:first-child {
+            font-size: 13px;
+        }
+
+    .focus-introduction {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 23px;
+    }
+
+    .focus-date {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .focus-app-layout .topbar {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .focus-app-layout .topbar-left,
+    .focus-app-layout .topbar-right {
+        gap: 6px;
+    }
+
+    .focus-app-layout .topbar-date {
+        white-space: normal;
+        text-align: center;
+        font-size: 9px;
+    }
+
+    .focus-app-layout .menu-button {
+        flex-basis: 35px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .focus-app-layout .page-heading h1 {
+        font-size: 16px;
+    }
+
+    .focus-app-layout .theme-button {
+        gap: 3px;
+        padding-right: 5px;
+        padding-left: 5px;
+        font-size: 10px;
+    }
+
+    .focus-app-layout .main-content {
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .studytrack-focus-tooltip,
+    .focus-app-layout .sidebar .brand-name,
+    .focus-app-layout .menu-button .menu-button-bar {
+        transition: none !important;
+    }
+}
