@@ -1,5 +1,4 @@
 "use strict";
-
 // ==================================================
 // STUDYTRACK V2
 // EXPRESS SERVER
@@ -20,6 +19,7 @@ const habitsRoutes = require("./routes/habits");
 const tasksRoutes = require("./routes/tasks");
 const remindersRoutes = require("./routes/reminders");
 const focusRoutes = require("./routes/focus");
+const profileRoutes = require("./routes/profile");
 
 const app = express();
 
@@ -169,6 +169,13 @@ app.use("/api/focus", focusRoutes);
 
 
 // ==================================================
+// PROFILE ROUTES
+// ==================================================
+
+app.use("/api/profile", profileRoutes);
+
+
+// ==================================================
 // HANDLE UNKNOWN API ROUTES
 // ==================================================
 
@@ -206,6 +213,7 @@ async function startServer() {
             console.log("Tasks routes: Ready");
             console.log("Reminders routes: Ready");
             console.log("Focus Timer routes: Ready");
+            console.log("Profile routes: Ready");
             console.log("====================================");
             console.log("");
         });

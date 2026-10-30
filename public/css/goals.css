@@ -1303,5 +1303,217 @@
         transition-duration: 0.01ms !important;
     }
 }
+/* =========================================================
+   STUDYTRACK V2
+   GOALS PAGE — TYPOGRAPHY STANDARDISATION
+   Added: 30 October 2026
+   ========================================================= */
 
+/* Base typography */
+.goals-document,
+.goals-page {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+    /* Sidebar and header */
+    .goals-document .sidebar-logout {
+        font-size: 15px;
+    }
+
+    .goals-document .breadcrumb,
+    .goals-document .date-display {
+        font-size: 14px;
+    }
+
+    .goals-document .theme-option {
+        font-size: 14px;
+    }
+
+    /* Page headings */
+    .goals-page h2 {
+        font-size: clamp(23px, 2.2vw, 28px);
+    }
+
+.goals-welcome h2 {
+    font-size: clamp(30px, 3vw, 36px);
+    line-height: 1.3;
+}
+
+.goal-form-heading h2 {
+    font-size: 23px;
+}
+
+.confirm-dialog h2 {
+    font-size: 24px;
+}
+
+.goals-empty h3 {
+    font-size: 21px;
+}
+
+/* Section labels */
+.section-kicker {
+    font-size: 13px;
+}
+
+/* Descriptions and feedback */
+.welcome-description,
+.goal-list-description,
+.form-introduction {
+    font-size: 16px;
+}
+
+.goals-message {
+    font-size: 15px;
+}
+
+.confirm-dialog p {
+    font-size: 16px;
+}
+
+/* Buttons */
+.primary-button,
+.secondary-button,
+.danger-button {
+    font-size: 15px;
+    min-height: 46px;
+}
+
+.goal-complete-button {
+    font-size: 15px;
+    min-height: 40px;
+}
+
+.filter-button {
+    font-size: 14px;
+}
+
+/* Summary cards */
+.summary-label {
+    font-size: 14px;
+}
+
+.summary-number {
+    font-size: clamp(28px, 2.8vw, 34px);
+}
+
+.summary-footnote {
+    font-size: 13px;
+}
+
+/* Form labels and fields */
+.form-field label {
+    font-size: 16px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    font-size: 16px;
+}
+
+.form-field small {
+    font-size: 13px;
+}
+
+/* Search */
+.goal-search input {
+    font-size: 16px;
+}
+
+/* Goal cards */
+.goal-status {
+    font-size: 12px;
+}
+
+.goal-title {
+    font-size: 21px !important;
+}
+
+.goal-description {
+    font-size: 16px;
+}
+
+.goal-date-row {
+    font-size: 13px;
+}
+
+.goal-progress-heading span:first-child {
+    font-size: 14px;
+}
+
+.goal-progress-percentage {
+    font-size: 15px;
+}
+
+.goal-updated {
+    font-size: 13px;
+}
+
+/* Loading and empty states */
+.goals-loading p,
+.goals-empty p {
+    font-size: 16px;
+}
+
+/* Mobile typography */
+@media (max-width: 650px) {
+    .goals-document .breadcrumb,
+    .goals-document .date-display {
+        font-size: 13px;
+    }
+
+    .goals-document .theme-option {
+        font-size: 13px;
+    }
+
+    .goals-welcome h2 {
+        font-size: 30px;
+    }
+
+    .summary-label {
+        font-size: 13px;
+    }
+
+    .summary-footnote {
+        font-size: 12px;
+    }
+
+    .goal-title {
+        font-size: 20px !important;
+    }
+
+    .filter-button {
+        font-size: 13px;
+    }
+
+    .goal-form-heading h2 {
+        font-size: 22px;
+    }
+}
+
+/* Small mobile screens */
+@media (max-width: 380px) {
+    .goals-document .breadcrumb,
+    .goals-document .date-display {
+        font-size: 12px;
+    }
+
+    .goals-document .theme-option {
+        font-size: 12px;
+    }
+
+    .summary-label {
+        font-size: 12px;
+    }
+
+    .summary-footnote {
+        font-size: 12px;
+    }
+
+    .goal-title {
+        font-size: 19px !important;
+    }
+}
 

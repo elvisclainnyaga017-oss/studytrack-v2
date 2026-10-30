@@ -1,0 +1,1367 @@
+/* ==================================================
+   STUDYTRACK V2
+   PROFILE PAGE STYLES
+   Independent Sidebar and Tooltips
+================================================== */
+
+/* ==================================================
+   THEME VARIABLES
+================================================== */
+
+:root {
+    color-scheme: light;
+    --green: #004225;
+    --green-light: #3d7c58;
+    --green-soft: #eaf3eb;
+    --page-bg: #f3f7f1;
+    --surface: #ffffff;
+    --surface-soft: #f8fbf7;
+    --text: #183a29;
+    --text-secondary: #708174;
+    --border: #dce8dc;
+    --input-bg: #ffffff;
+    --shadow: 0 8px 30px rgba(0, 66, 37, 0.055);
+    --danger: #c34747;
+    --success: #2d8550;
+}
+
+    /* Dark theme is applied ONLY when data-theme="night" */
+
+    :root[data-theme="night"] {
+        color-scheme: dark;
+        --page-bg: #101b16;
+        --surface: #19271f;
+        --surface-soft: #203027;
+        --text: #edf5ee;
+        --text-secondary: #a5b8a9;
+        --border: #34473a;
+        --input-bg: #17231b;
+        --green-soft: #253c2d;
+        --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+/* ==================================================
+   GLOBAL
+================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    background: var(--page-bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ==================================================
+   MAIN LAYOUT
+================================================== */
+
+.app-layout {
+    min-height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background: var(--green);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 17px 18px;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 100;
+    overflow-x: visible;
+    overflow-y: auto;
+    transition: width 0.25s ease, transform 0.25s ease;
+}
+
+.main-area {
+    min-width: 0;
+    flex: 1;
+    margin-left: 250px;
+    transition: margin-left 0.25s ease;
+}
+
+/* ==================================================
+   SIDEBAR BRAND
+================================================== */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 53px;
+    margin-bottom: 38px;
+    position: relative;
+}
+
+.brand-mark {
+    width: 39px;
+    height: 39px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: #f4fef3;
+    color: var(--green);
+    font-size: 23px;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.brand-text {
+    min-width: 0;
+}
+
+    .brand-text h2 {
+        font-size: 22px;
+        font-weight: 750;
+        letter-spacing: -0.5px;
+    }
+
+    .brand-text span {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+        letter-spacing: 1.1px;
+        color: #c5dacb;
+    }
+
+.sidebar-section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #a8c3ae;
+    padding: 0 12px;
+    margin-bottom: 13px;
+}
+
+.sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nav-link {
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 13px;
+    border-radius: 10px;
+    color: #d6e6d9;
+    font-size: 15px;
+    font-weight: 550;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+    .nav-link:hover,
+    .nav-link.active {
+        background: rgba(255, 255, 255, 0.13);
+        color: #ffffff;
+    }
+
+.nav-icon {
+    width: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.nav-label {
+    white-space: nowrap;
+}
+
+/* ==================================================
+   SIDEBAR BOTTOM
+================================================== */
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.sidebar-reminder {
+    padding: 15px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.reminder-icon {
+    color: #d7e9b8;
+    font-size: 18px;
+}
+
+.sidebar-reminder p {
+    color: #d6e5d9;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 7px;
+}
+
+.profile-shortcut {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 9px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    margin-bottom: 8px;
+    min-width: 0;
+}
+
+    .profile-shortcut:hover,
+    .profile-shortcut.active {
+        background: rgba(255, 255, 255, 0.11);
+    }
+
+.sidebar-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    background: #e2eee1;
+    color: var(--green);
+    font-weight: 750;
+    font-size: 15px;
+    overflow: hidden;
+}
+
+    .sidebar-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.sidebar-profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    flex: 1;
+}
+
+    .sidebar-profile-details strong {
+        font-size: 14px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .sidebar-profile-details span {
+        font-size: 13px;
+        color: #c5dacb;
+    }
+
+.shortcut-arrow {
+    font-size: 20px;
+    color: #c5dacb;
+}
+
+.sidebar-logout {
+    width: 100%;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 13px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #e3eee5;
+    text-align: left;
+    font-size: 15px;
+}
+
+    .sidebar-logout:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #ffffff;
+    }
+
+.sidebar-close {
+    display: none;
+}
+
+/* ==================================================
+   TOP HEADER
+================================================== */
+
+.topbar {
+    min-height: 86px;
+    padding: 17px 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.topbar-left {
+    gap: 13px;
+}
+
+.topbar-eyebrow,
+.section-eyebrow {
+    display: block;
+    color: var(--green-light);
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 1.5px;
+}
+
+.topbar h1 {
+    font-size: 36px;
+    font-weight: 750;
+    margin-top: 4px;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+}
+
+.topbar-right {
+    gap: 20px;
+}
+
+.current-date {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.theme-switch {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 25px;
+    background: var(--page-bg);
+    border: 1px solid var(--border);
+}
+
+.theme-button {
+    border: 0;
+    background: transparent;
+    width: 32px;
+    height: 30px;
+    border-radius: 50%;
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+    .theme-button.active {
+        background: var(--green);
+        color: #ffffff;
+    }
+
+.menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 9px;
+    background: var(--green-soft);
+    color: var(--green);
+    font-size: 22px;
+    transition: background 0.2s ease;
+}
+
+    .menu-button:hover {
+        background: var(--border);
+    }
+
+.sidebar-overlay {
+    display: none;
+}
+
+/* ==================================================
+   PROFILE-ONLY TOOLTIP
+================================================== */
+
+.profile-sidebar-tooltip {
+    position: fixed;
+    z-index: 100000;
+    display: none;
+    align-items: center;
+    width: max-content;
+    max-width: min(280px, calc(100vw - 24px));
+    box-sizing: border-box;
+    padding: 10px 14px;
+    background: #f4fef3;
+    color: #004225;
+    border: 1px solid #c8d9ca;
+    border-radius: 9px;
+    box-shadow: 0 6px 20px rgba(0, 30, 17, 0.18);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-3px);
+    transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+}
+
+    .profile-sidebar-tooltip.is-visible {
+        display: flex;
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+
+    .profile-sidebar-tooltip::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -6px;
+        width: 10px;
+        height: 10px;
+        background: #f4fef3;
+        border-left: 1px solid #c8d9ca;
+        border-bottom: 1px solid #c8d9ca;
+        transform: translateY(-50%) rotate(45deg);
+    }
+
+/* ==================================================
+   PAGE CONTENT
+================================================== */
+
+.main-content {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding: 34px 38px 28px;
+}
+
+.page-introduction {
+    margin-bottom: 23px;
+}
+
+    .page-introduction h2 {
+        font-size: 24px;
+        font-weight: 750;
+        letter-spacing: -0.5px;
+        line-height: 1.3;
+        margin-top: 7px;
+    }
+
+    .page-introduction p {
+        color: var(--text-secondary);
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 7px;
+    }
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+/* ==================================================
+   FEEDBACK
+================================================== */
+
+.feedback-message {
+    display: none;
+    padding: 12px 15px;
+    margin-bottom: 17px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+    .feedback-message.visible {
+        display: block;
+    }
+
+    .feedback-message.success {
+        background: #e6f5e9;
+        color: #236a3b;
+        border: 1px solid #c6e6cd;
+    }
+
+    .feedback-message.error {
+        background: #fff0ef;
+        color: #a43636;
+        border: 1px solid #f0ceca;
+    }
+
+:root[data-theme="night"] .feedback-message.success {
+    background: #203d2a;
+    color: #a8e4b8;
+    border-color: #355a40;
+}
+
+:root[data-theme="night"] .feedback-message.error {
+    background: #482626;
+    color: #ffc0b8;
+    border-color: #693b38;
+}
+
+/* ==================================================
+   PROFILE OVERVIEW
+================================================== */
+
+.profile-overview {
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    min-height: 220px;
+}
+
+.overview-picture-area {
+    width: 190px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.profile-picture-wrapper {
+    width: 116px;
+    height: 116px;
+    position: relative;
+    border-radius: 50%;
+    padding: 5px;
+    background: var(--green-soft);
+    border: 2px solid var(--border);
+}
+
+.profile-picture,
+.profile-picture-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.profile-picture {
+    display: block;
+    object-fit: cover;
+}
+
+.profile-picture-placeholder {
+    display: grid;
+    place-items: center;
+    background: var(--green);
+    color: white;
+    font-size: 39px;
+    font-weight: 750;
+}
+
+    /* Critical: keep hidden placeholders hidden */
+
+    .profile-picture-placeholder[hidden],
+    .profile-picture[hidden] {
+        display: none !important;
+    }
+
+.picture-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 15px;
+}
+
+.picture-hint {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 9px;
+}
+
+.overview-details {
+    min-width: 0;
+}
+
+    .overview-details h2 {
+        font-size: 24px;
+        font-weight: 750;
+        letter-spacing: -0.5px;
+        line-height: 1.3;
+        margin-top: 10px;
+        overflow-wrap: anywhere;
+    }
+
+.overview-username {
+    color: var(--green-light);
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.overview-email {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-top: 11px;
+    overflow-wrap: anywhere;
+}
+
+.profile-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 17px;
+    padding: 7px 11px;
+    border-radius: 30px;
+    background: var(--green-soft);
+    color: var(--green-light);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #3caa65;
+}
+
+/* ==================================================
+   BUTTONS
+================================================== */
+
+.button {
+    min-height: 42px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-size: 15px;
+    font-weight: 650;
+    transition: 0.2s ease;
+}
+
+    .button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+
+.button-primary {
+    background: var(--green);
+    color: #ffffff;
+}
+
+    .button-primary:hover:not(:disabled) {
+        background: #075a34;
+        transform: translateY(-1px);
+    }
+
+.button-secondary {
+    background: var(--surface-soft);
+    color: var(--text-secondary);
+    border-color: var(--border);
+}
+
+    .button-secondary:hover:not(:disabled) {
+        border-color: var(--green-light);
+        color: var(--text);
+    }
+
+/* ==================================================
+   FORM CARDS
+================================================== */
+
+.form-card,
+.account-information-card {
+    padding: 25px 28px;
+}
+
+.card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+    .card-heading h2 {
+        font-size: 22px;
+        font-weight: 750;
+        line-height: 1.3;
+        margin-top: 7px;
+        letter-spacing: -0.3px;
+    }
+
+    .card-heading p {
+        font-size: 16px;
+        color: var(--text-secondary);
+        margin-top: 6px;
+        line-height: 1.6;
+    }
+
+.heading-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: grid;
+    place-items: center;
+    background: var(--green-soft);
+    color: var(--green-light);
+    font-size: 19px;
+    flex-shrink: 0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text);
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: var(--green-light);
+        box-shadow: 0 0 0 3px rgba(61, 124, 88, 0.1);
+    }
+
+.form-group input:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.form-group small {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-top: 6px;
+}
+
+.input-prefix-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--input-bg);
+    padding-left: 12px;
+}
+
+    .input-prefix-wrapper span {
+        color: var(--text-secondary);
+        font-size: 16px;
+    }
+
+    .input-prefix-wrapper input {
+        border: 0;
+        box-shadow: none !important;
+    }
+
+.character-count {
+    text-align: right;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+}
+
+.password-hint {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 17px;
+}
+
+/* ==================================================
+   ACCOUNT INFORMATION
+================================================== */
+
+.account-information-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.information-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface-soft);
+    min-width: 0;
+}
+
+    .information-item span {
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+
+    .information-item strong {
+        font-size: 16px;
+        overflow-wrap: anywhere;
+    }
+
+.account-active {
+    color: #3caa65;
+}
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+.profile-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 2px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+    .profile-footer span:first-child {
+        color: var(--green-light);
+        font-weight: 750;
+    }
+
+/* ==================================================
+   DESKTOP SIDEBAR COLLAPSE
+================================================== */
+
+@media (min-width: 851px) {
+
+    .app-layout.sidebar-collapsed .sidebar {
+        width: 76px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .app-layout.sidebar-collapsed .main-area {
+        margin-left: 76px;
+    }
+
+    .app-layout.sidebar-collapsed .brand-text,
+    .app-layout.sidebar-collapsed .sidebar-section-label,
+    .app-layout.sidebar-collapsed .nav-label,
+    .app-layout.sidebar-collapsed .sidebar-profile-details,
+    .app-layout.sidebar-collapsed .shortcut-arrow,
+    .app-layout.sidebar-collapsed .sidebar-reminder {
+        display: none;
+    }
+
+    .app-layout.sidebar-collapsed .sidebar-brand {
+        justify-content: center;
+    }
+
+    .app-layout.sidebar-collapsed .nav-link,
+    .app-layout.sidebar-collapsed .sidebar-logout {
+        justify-content: center;
+        padding: 0;
+    }
+
+    .app-layout.sidebar-collapsed .profile-shortcut {
+        justify-content: center;
+        padding: 9px 0;
+    }
+
+    .app-layout.sidebar-collapsed .nav-icon {
+        margin: 0;
+    }
+
+    .app-layout.sidebar-collapsed .sidebar-navigation {
+        align-items: stretch;
+    }
+
+    .app-layout.sidebar-collapsed .profile-shortcut,
+    .app-layout.sidebar-collapsed .nav-link,
+    .app-layout.sidebar-collapsed .sidebar-logout {
+        position: relative;
+    }
+}
+
+/* ==================================================
+   RESPONSIVE LAYOUT
+================================================== */
+
+@media (max-width: 1100px) {
+
+    .main-content {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .topbar {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+@media (max-width: 850px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: 265px;
+    }
+
+    .app-layout.sidebar-open .sidebar {
+        transform: translateX(0);
+    }
+
+    .main-area {
+        margin-left: 0;
+    }
+
+    .menu-button {
+        display: inline-flex;
+    }
+
+    .sidebar-close {
+        display: block;
+        margin-left: auto;
+        border: 0;
+        background: transparent;
+        color: #ffffff;
+        font-size: 26px;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        background: rgba(0, 0, 0, 0.45);
+    }
+
+    .app-layout.sidebar-open .sidebar-overlay {
+        display: block;
+    }
+
+    .profile-sidebar-tooltip {
+        display: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .topbar {
+        min-height: 75px;
+        padding: 13px 16px;
+    }
+
+        .topbar h1 {
+            font-size: 30px;
+        }
+
+    .topbar-eyebrow {
+        font-size: 11px;
+    }
+
+    .current-date {
+        display: none;
+    }
+
+    .topbar-right {
+        gap: 8px;
+    }
+
+    .main-content {
+        padding: 24px 15px;
+    }
+
+    .page-introduction h2 {
+        font-size: 22px;
+    }
+
+    .profile-overview {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 23px 17px;
+    }
+
+    .overview-picture-area {
+        width: 100%;
+    }
+
+    .overview-details h2 {
+        font-size: 22px;
+    }
+
+    .form-card,
+    .account-information-card {
+        padding: 21px 17px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .form-group-full {
+        grid-column: auto;
+    }
+
+    .account-information-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* ==================================================
+   REDUCED MOTION
+================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* =========================================================
+   PROFILE SIDEBAR — MATCH DASHBOARD AND GOALS
+========================================================= */
+
+/* ---------------------------------------------------------
+   1. EXPANDED SIDEBAR DIMENSIONS
+--------------------------------------------------------- */
+
+.profile-app-layout .sidebar {
+    width: 250px;
+    padding: 28px 18px 18px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.profile-app-layout .main-area {
+    margin-left: 250px;
+}
+
+
+/* ---------------------------------------------------------
+   2. BRAND AND LOGO
+--------------------------------------------------------- */
+
+.profile-app-layout .sidebar-brand {
+    gap: 12px;
+    min-height: 53px;
+    margin: 0 4px 42px;
+}
+
+.profile-app-layout .brand-mark {
+    width: 43px;
+    height: 43px;
+    border-radius: 14px;
+    font-size: 25px;
+}
+
+.profile-app-layout .brand-text h2 {
+    font-size: 21px;
+    font-weight: 750;
+    letter-spacing: -0.7px;
+    line-height: 1.35;
+}
+
+.profile-app-layout .brand-text span {
+    margin-top: 4px;
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: 1.2px;
+}
+
+
+/* ---------------------------------------------------------
+   3. NAVIGATION
+--------------------------------------------------------- */
+
+.profile-app-layout .sidebar-section-label {
+    margin: 0 10px 13px;
+    padding: 0;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 1.4px;
+}
+
+.profile-app-layout .sidebar-navigation {
+    gap: 6px;
+}
+
+.profile-app-layout .nav-link {
+    min-height: 49px;
+    gap: 13px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 550;
+}
+
+.profile-app-layout .nav-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 21px;
+}
+
+
+/* ---------------------------------------------------------
+   4. SIDEBAR BOTTOM SECTION
+--------------------------------------------------------- */
+
+.profile-app-layout .sidebar-bottom {
+    margin-top: auto;
+    padding-top: 35px;
+}
+
+/* Reminder card */
+.profile-app-layout .sidebar-reminder {
+    padding: 16px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.profile-app-layout .reminder-icon {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 10px;
+    border-radius: 9px;
+    background: rgba(139, 212, 166, 0.14);
+    color: #a7e6bb;
+    font-size: 17px;
+}
+
+.profile-app-layout .sidebar-reminder p {
+    margin: 0;
+    color: #b2c7b9;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+/* ---------------------------------------------------------
+   5. PROFILE SHORTCUT
+--------------------------------------------------------- */
+
+.profile-app-layout .profile-shortcut {
+    position: relative;
+    gap: 11px;
+    min-width: 0;
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding: 12px 5px 4px;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0;
+}
+
+.profile-app-layout .sidebar-avatar {
+    width: 39px;
+    height: 39px;
+    font-size: 15px;
+}
+
+.profile-app-layout .sidebar-profile-details strong {
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.profile-app-layout .sidebar-profile-details span {
+    margin-top: 3px;
+    color: #a8c1b1;
+    font-size: 12px;
+}
+
+.profile-app-layout .shortcut-arrow {
+    font-size: 23px;
+    color: #b4cabb;
+}
+
+
+/* ---------------------------------------------------------
+   6. LOGOUT BUTTON
+--------------------------------------------------------- */
+
+.profile-app-layout .sidebar-logout {
+    min-height: 42px;
+    padding: 0 13px;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+
+/* ---------------------------------------------------------
+   7. COLLAPSED DESKTOP SIDEBAR
+--------------------------------------------------------- */
+
+@media (min-width: 851px) {
+
+    .profile-app-layout.sidebar-collapsed .sidebar {
+        width: 76px;
+        padding: 28px 11px 18px;
+    }
+
+    .profile-app-layout.sidebar-collapsed .main-area {
+        margin-left: 76px;
+    }
+
+    .profile-app-layout.sidebar-collapsed .sidebar-brand {
+        justify-content: center;
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .profile-app-layout.sidebar-collapsed .brand-mark {
+        width: 43px;
+        height: 43px;
+    }
+
+    .profile-app-layout.sidebar-collapsed .brand-text,
+    .profile-app-layout.sidebar-collapsed .sidebar-section-label,
+    .profile-app-layout.sidebar-collapsed .nav-label,
+    .profile-app-layout.sidebar-collapsed .sidebar-profile-details,
+    .profile-app-layout.sidebar-collapsed .shortcut-arrow,
+    .profile-app-layout.sidebar-collapsed .sidebar-reminder {
+        display: none;
+    }
+
+    .profile-app-layout.sidebar-collapsed .nav-link,
+    .profile-app-layout.sidebar-collapsed .sidebar-logout {
+        justify-content: center;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .profile-app-layout.sidebar-collapsed .nav-icon {
+        margin: 0;
+    }
+
+    .profile-app-layout.sidebar-collapsed .profile-shortcut {
+        justify-content: center;
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   8. TABLET AND MOBILE SIDEBAR
+--------------------------------------------------------- */
+
+@media (max-width: 850px) {
+
+    .profile-app-layout .sidebar {
+        width: 265px;
+        padding: 28px 18px 18px;
+        overflow-x: hidden;
+    }
+
+    .profile-app-layout .main-area {
+        margin-left: 0;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   9. TOOLTIP POSITIONING
+--------------------------------------------------------- */
+
+.profile-sidebar-tooltip {
+    z-index: 100000;
+    font-size: 14px;
+}
+
+
+/* ---------------------------------------------------------
+   10. ACCESSIBILITY
+--------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .profile-app-layout .sidebar,
+    .profile-app-layout .main-area {
+        transition-duration: 0.01ms !important;
+    }
+}

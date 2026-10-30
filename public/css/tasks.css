@@ -2319,3 +2319,403 @@ body > .studytrack-sidebar-tooltip {
         min-width: 30px;
     }
 }
+/* ==========================================================
+   STUDYTRACK V2 — MY TASKS
+   TYPOGRAPHY STANDARDISATION
+   ========================================================== */
+
+/* ----------------------------------------------------------
+   1. GLOBAL TYPOGRAPHY
+   ---------------------------------------------------------- */
+
+.tasks-document {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+    .tasks-document button,
+    .tasks-document input,
+    .tasks-document select,
+    .tasks-document textarea {
+        font-family: inherit;
+    }
+
+    /* ----------------------------------------------------------
+   2. TOP BAR
+   ---------------------------------------------------------- */
+
+    .tasks-document .breadcrumb {
+        font-size: 14px;
+    }
+
+    .tasks-document .date-display {
+        font-size: 14px;
+    }
+
+    .tasks-document .theme-button {
+        font-size: 14px;
+    }
+
+    .tasks-document .menu-button {
+        font-size: 16px;
+    }
+
+    /* ----------------------------------------------------------
+   3. PAGE HEADER
+   ---------------------------------------------------------- */
+
+    .tasks-document .page-eyebrow,
+    .tasks-document .section-eyebrow {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .page-header h1 {
+        font-size: 36px;
+        line-height: 1.2;
+    }
+
+    .tasks-document .page-subtitle {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    /* ----------------------------------------------------------
+   4. BUTTONS AND NOTIFICATIONS
+   ---------------------------------------------------------- */
+
+    .tasks-document .primary-button,
+    .tasks-document .secondary-button,
+    .tasks-document .danger-button {
+        font-size: 15px;
+        line-height: 1.4;
+    }
+
+    .tasks-document .tasks-notification {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* ----------------------------------------------------------
+   5. SUMMARY CARDS
+   ---------------------------------------------------------- */
+
+    .tasks-document .summary-card-label {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .tasks-document .summary-card-value {
+        font-size: 30px;
+        line-height: 1.2;
+    }
+
+    .tasks-document .summary-card-description {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    /* ----------------------------------------------------------
+   6. TASK WORKSPACE
+   ---------------------------------------------------------- */
+
+    .tasks-document .workspace-heading h2 {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+
+    .tasks-document .workspace-description {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .tasks-document .visible-task-count {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* ----------------------------------------------------------
+   7. SEARCH AND FILTERS
+   ---------------------------------------------------------- */
+
+    .tasks-document .task-search {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .task-filter {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .task-search::placeholder {
+        font-size: 15px;
+    }
+
+    /* ----------------------------------------------------------
+   8. TASK LIST AND EMPTY STATES
+   ---------------------------------------------------------- */
+
+    .tasks-document .tasks-loading {
+        font-size: 16px;
+    }
+
+    .tasks-document .tasks-empty-state h3 {
+        font-size: 22px;
+        line-height: 1.35;
+    }
+
+    .tasks-document .tasks-empty-state p {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    /* ----------------------------------------------------------
+   9. TASK CARDS
+   ---------------------------------------------------------- */
+
+    .tasks-document .task-title {
+        font-size: 17px;
+        line-height: 1.45;
+    }
+
+    .tasks-document .task-description {
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+    .tasks-document .task-meta {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .badge {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .tasks-document .task-due-date {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .task-action-button {
+        font-size: 15px;
+    }
+
+    /* ----------------------------------------------------------
+   10. ADD / EDIT TASK DIALOG
+   ---------------------------------------------------------- */
+
+    .tasks-document .dialog-header h2 {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+
+    .tasks-document .dialog-eyebrow {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .tasks-document #taskDialogSubtitle {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .tasks-document .form-field label {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .tasks-document .form-field input,
+    .tasks-document .form-field select,
+    .tasks-document .form-field textarea {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+        .tasks-document .form-field input::placeholder,
+        .tasks-document .form-field textarea::placeholder {
+            font-size: 15px;
+        }
+
+    .tasks-document .task-form-error {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .tasks-document .dialog-close-button {
+        font-size: 24px;
+    }
+
+    .tasks-document .dialog-actions button {
+        font-size: 15px;
+    }
+
+    /* ----------------------------------------------------------
+   11. DELETE TASK DIALOG
+   ---------------------------------------------------------- */
+
+    .tasks-document .delete-task-dialog h2 {
+        font-size: 24px;
+        line-height: 1.3;
+    }
+
+    .tasks-document .delete-task-dialog p {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    /* ----------------------------------------------------------
+   12. SIDEBAR
+   ---------------------------------------------------------- */
+
+    .tasks-document .sidebar-navigation .nav-link {
+        font-size: 15px;
+    }
+
+    .tasks-document .sidebar-section-label {
+        font-size: 12px;
+    }
+
+    .tasks-document .sidebar-tip .tip-heading {
+        font-size: 14px;
+    }
+
+    .tasks-document .sidebar-tip .tip-text {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .tasks-document .profile-shortcut-text strong {
+        font-size: 14px;
+    }
+
+    .tasks-document .profile-shortcut-text small {
+        font-size: 12px;
+    }
+
+    .tasks-document .sidebar-logout {
+        font-size: 15px;
+    }
+
+/* ----------------------------------------------------------
+   13. SHARED SIDEBAR TOOLTIP
+   ---------------------------------------------------------- */
+
+body > .studytrack-sidebar-tooltip {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* ----------------------------------------------------------
+   14. FOOTER
+   ---------------------------------------------------------- */
+
+.tasks-document .tasks-footer {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ----------------------------------------------------------
+   15. TABLET RESPONSIVENESS
+   ---------------------------------------------------------- */
+
+@media (max-width: 850px) {
+    .tasks-document .page-header h1 {
+        font-size: 32px;
+    }
+
+    .tasks-document .workspace-heading h2 {
+        font-size: 23px;
+    }
+
+    .tasks-document .breadcrumb,
+    .tasks-document .date-display {
+        font-size: 13px;
+    }
+}
+
+/* ----------------------------------------------------------
+   16. MOBILE RESPONSIVENESS
+   ---------------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .tasks-document .page-header h1 {
+        font-size: 30px;
+    }
+
+    .tasks-document .page-subtitle {
+        font-size: 15px;
+    }
+
+    .tasks-document .workspace-heading h2 {
+        font-size: 22px;
+    }
+
+    .tasks-document .workspace-description {
+        font-size: 15px;
+    }
+
+    .tasks-document .summary-card-label {
+        font-size: 13px;
+    }
+
+    .tasks-document .summary-card-description {
+        font-size: 12px;
+    }
+
+    .tasks-document .task-title {
+        font-size: 16px;
+    }
+
+    .tasks-document .task-description {
+        font-size: 14px;
+    }
+
+    .tasks-document .task-meta,
+    .tasks-document .task-due-date {
+        font-size: 12px;
+    }
+
+    .tasks-document .dialog-header h2,
+    .tasks-document .delete-task-dialog h2 {
+        font-size: 22px;
+    }
+
+    .tasks-document .form-field label {
+        font-size: 15px;
+    }
+
+    .tasks-document .breadcrumb,
+    .tasks-document .date-display {
+        font-size: 12px;
+    }
+
+    .tasks-document .theme-button {
+        font-size: 13px;
+    }
+}
+
+/* ----------------------------------------------------------
+   17. SMALL MOBILE SCREENS
+   ---------------------------------------------------------- */
+
+@media (max-width: 360px) {
+    .tasks-document .page-header h1 {
+        font-size: 28px;
+    }
+
+    .tasks-document .page-subtitle {
+        font-size: 14px;
+    }
+
+    .tasks-document .workspace-heading h2 {
+        font-size: 21px;
+    }
+
+    .tasks-document .task-search,
+    .tasks-document .task-filter {
+        font-size: 14px;
+    }
+}

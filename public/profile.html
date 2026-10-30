@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#004225">
+    <meta name="color-scheme" content="light dark">
+
+    <title>My Profile | StudyTrack</title>
+
+    <link rel="stylesheet" href="/css/profile.css">
+
+    <script>
+                        (() => {
+                            try {
+                                const theme = localStorage.getItem("studytrack-v2-theme");
+
+                                document.documentElement.dataset.theme =
+                                    theme === "night" ? "night" : "day";
+
+                            } catch {
+                                document.documentElement.dataset.theme = "day";
+                            }
+                        })();
+    </script>
+    <script src="/js/sidebar-account.js" defer></script>
+</head>
+
+<body class="profile-page">
+
+    <div class="app-layout profile-app-layout" id="profileAppLayout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+
+            <div class="sidebar-brand">
+
+                <div class="brand-mark">S</div>
+
+                <div class="brand-text">
+                    <h2>StudyTrack</h2>
+                    <span>YOUR PRODUCTIVITY SPACE</span>
+                </div>
+
+                <button class="sidebar-close"
+                        id="sidebarClose"
+                        type="button"
+                        aria-label="Close navigation">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="sidebar-section-label">WORKSPACE</div>
+
+            <nav class="sidebar-navigation">
+
+                <a href="/dashboard.html"
+                   class="nav-link"
+                   data-tooltip="Dashboard"
+                   aria-label="Dashboard">
+                    <span class="nav-icon">⌂</span>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+
+                <a href="/goals.html"
+                   class="nav-link"
+                   data-tooltip="My Goals"
+                   aria-label="My Goals">
+                    <span class="nav-icon">◎</span>
+                    <span class="nav-label">My Goals</span>
+                </a>
+
+                <a href="/habits.html"
+                   class="nav-link"
+                   data-tooltip="My Habits"
+                   aria-label="My Habits">
+                    <span class="nav-icon">↻</span>
+                    <span class="nav-label">My Habits</span>
+                </a>
+
+                <a href="/tasks.html"
+                   class="nav-link"
+                   data-tooltip="My Tasks"
+                   aria-label="My Tasks">
+                    <span class="nav-icon">☷</span>
+                    <span class="nav-label">My Tasks</span>
+                </a>
+
+                <a href="/reminders.html"
+                   class="nav-link"
+                   data-tooltip="Reminders"
+                   aria-label="Reminders">
+                    <span class="nav-icon">♧</span>
+                    <span class="nav-label">Reminders</span>
+                </a>
+
+                <a href="/focus.html"
+                   class="nav-link"
+                   data-tooltip="Focus Timer"
+                   aria-label="Focus Timer">
+                    <span class="nav-icon">◷</span>
+                    <span class="nav-label">Focus Timer</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-reminder">
+                    <span class="reminder-icon">✦</span>
+
+                    <p>
+                        A little reminder — Small, consistent steps lead to
+                        meaningful progress.
+                    </p>
+                </div>
+
+                <a href="/profile.html"
+                   class="profile-shortcut active"
+                   id="profileShortcut"
+                   data-tooltip="View your profile"
+                   aria-label="View your profile"
+                   aria-current="page">
+
+                    <div class="sidebar-avatar" id="sidebarAvatar">U</div>
+
+                    <div class="sidebar-profile-details">
+                        <strong id="sidebarUserName">Loading...</strong>
+                        <span>View your profile</span>
+                    </div>
+
+                    <span class="shortcut-arrow">›</span>
+
+                </a>
+
+                <button class="sidebar-logout"
+                        id="logoutButton"
+                        type="button"
+                        data-tooltip="Sign out"
+                        aria-label="Sign out">
+                    <span class="nav-icon">⇥</span>
+                    <span class="nav-label">Sign Out</span>
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- MOBILE OVERLAY -->
+        <div class="sidebar-overlay"
+             id="sidebarOverlay"
+             aria-hidden="true"></div>
+
+        <!-- MAIN AREA -->
+        <main class="main-area">
+
+            <!-- TOP HEADER -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <button type="button"
+                            class="menu-button"
+                            id="menuButton"
+                            aria-label="Collapse sidebar"
+                            aria-controls="sidebar"
+                            aria-expanded="true"
+                            title="Collapse sidebar">
+                        ☰
+                    </button>
+
+                    <div>
+                        <span class="topbar-eyebrow">YOUR ACCOUNT</span>
+                        <h1>My Profile</h1>
+                    </div>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <span class="current-date"
+                          id="profileCurrentDate"></span>
+
+                    <div class="theme-switch" aria-label="Appearance settings">
+
+                        <button type="button"
+                                id="dayThemeButton"
+                                class="theme-button"
+                                aria-label="Day theme"
+                                title="Day theme">
+                            ☀
+                        </button>
+
+                        <button type="button"
+                                id="nightThemeButton"
+                                class="theme-button"
+                                aria-label="Night theme"
+                                title="Night theme">
+                            ☾
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+            <!-- PAGE CONTENT -->
+            <div class="main-content">
+
+                <section class="page-introduction">
+
+                    <div>
+                        <span class="section-eyebrow">ACCOUNT SETTINGS</span>
+
+                        <h2>Manage your profile</h2>
+
+                        <p>
+                            Keep your personal information up to date and
+                            manage your StudyTrack account.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- FEEDBACK MESSAGE -->
+                <div class="feedback-message"
+                     id="profileFeedback"
+                     role="status"
+                     aria-live="polite"></div>
+
+                <!-- PROFILE OVERVIEW -->
+                <section class="profile-overview card">
+
+                    <div class="overview-picture-area">
+
+                        <div class="profile-picture-wrapper">
+
+                            <img src=""
+                                 alt="Your profile picture"
+                                 class="profile-picture"
+                                 id="profilePicture"
+                                 hidden>
+
+                            <div class="profile-picture-placeholder"
+                                 id="profilePicturePlaceholder">
+                                U
+                            </div>
+
+                        </div>
+
+                        <div class="picture-actions">
+
+                            <input type="file"
+                                   id="profilePictureInput"
+                                   accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                   hidden>
+
+                            <button type="button"
+                                    class="button button-primary"
+                                    id="choosePictureButton">
+                                <span>＋</span>
+                                Upload picture
+                            </button>
+
+                            <button type="button"
+                                    class="button button-secondary"
+                                    id="removePictureButton"
+                                    disabled>
+                                Remove picture
+                            </button>
+
+                        </div>
+
+                        <p class="picture-hint">
+                            JPG, PNG or WEBP. Maximum file size: 5 MB.
+                        </p>
+
+                    </div>
+
+                    <div class="overview-details">
+
+                        <span class="section-eyebrow">PROFILE OVERVIEW</span>
+
+                        <h2 id="overviewFullName">Loading your profile...</h2>
+
+                        <p class="overview-username"
+                           id="overviewUsername">
+                            @username
+                        </p>
+
+                        <p class="overview-email"
+                           id="overviewEmail"></p>
+
+                        <div class="profile-status">
+                            <span class="status-dot"></span>
+                            Account active
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- PERSONAL INFORMATION -->
+                <section class="card form-card">
+
+                    <div class="card-heading">
+
+                        <div>
+                            <span class="section-eyebrow">YOUR DETAILS</span>
+                            <h2>Personal information</h2>
+                            <p>
+                                Update the information associated with your account.
+                            </p>
+                        </div>
+
+                        <span class="heading-icon">♙</span>
+
+                    </div>
+
+                    <form id="personalInformationForm">
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="fullName">Full name</label>
+
+                                <input type="text"
+                                       id="fullName"
+                                       name="fullName"
+                                       maxlength="100"
+                                       placeholder="Enter your full name"
+                                       required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="email">Email address</label>
+
+                                <input type="email"
+                                       id="email"
+                                       name="email"
+                                       readonly
+                                       disabled>
+
+                                <small>Email address cannot be changed here.</small>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="username">Username</label>
+
+                                <div class="input-prefix-wrapper">
+
+                                    <span>@</span>
+
+                                    <input type="text"
+                                           id="username"
+                                           name="username"
+                                           maxlength="50"
+                                           placeholder="Choose a username">
+
+                                </div>
+
+                                <small>
+                                    3–50 characters. Letters, numbers, dots,
+                                    underscores and hyphens.
+                                </small>
+
+                            </div>
+
+                            <div class="form-group form-group-full">
+
+                                <label for="bio">Biography</label>
+
+                                <textarea id="bio"
+                                          name="bio"
+                                          rows="4"
+                                          maxlength="500"
+                                          placeholder="Tell us a little about yourself..."></textarea>
+
+                                <div class="character-count">
+                                    <span id="bioCharacterCount">0</span>/500
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-footer">
+
+                            <button type="submit"
+                                    class="button button-primary"
+                                    id="saveProfileButton">
+                                Save changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+                <!-- ACCOUNT SECURITY -->
+                <section class="card form-card">
+
+                    <div class="card-heading">
+
+                        <div>
+                            <span class="section-eyebrow">PROTECT YOUR ACCOUNT</span>
+                            <h2>Account security</h2>
+                            <p>
+                                Change your password to keep your account secure.
+                            </p>
+                        </div>
+
+                        <span class="heading-icon">♧</span>
+
+                    </div>
+
+                    <form id="passwordForm">
+
+                        <div class="form-grid">
+
+                            <div class="form-group form-group-full">
+
+                                <label for="currentPassword">
+                                    Current password
+                                </label>
+
+                                <input type="password"
+                                       id="currentPassword"
+                                       autocomplete="current-password"
+                                       placeholder="Enter your current password"
+                                       required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="newPassword">New password</label>
+
+                                <input type="password"
+                                       id="newPassword"
+                                       autocomplete="new-password"
+                                       minlength="8"
+                                       placeholder="Enter a new password"
+                                       required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="confirmPassword">
+                                    Confirm new password
+                                </label>
+
+                                <input type="password"
+                                       id="confirmPassword"
+                                       autocomplete="new-password"
+                                       minlength="8"
+                                       placeholder="Confirm your new password"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+                        <p class="password-hint">
+                            Your new password must contain at least 8 characters.
+                        </p>
+
+                        <div class="form-footer">
+
+                            <button type="submit"
+                                    class="button button-primary"
+                                    id="changePasswordButton">
+                                Update password
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+                <!-- ACCOUNT INFORMATION -->
+                <section class="card account-information-card">
+
+                    <div class="card-heading">
+
+                        <div>
+                            <span class="section-eyebrow">ACCOUNT DETAILS</span>
+                            <h2>Account information</h2>
+                            <p>
+                                Some useful information about your StudyTrack account.
+                            </p>
+                        </div>
+
+                        <span class="heading-icon">▤</span>
+
+                    </div>
+
+                    <div class="account-information-grid">
+
+                        <div class="information-item">
+                            <span>Account ID</span>
+                            <strong id="accountId">—</strong>
+                        </div>
+
+                        <div class="information-item">
+                            <span>Registration date</span>
+                            <strong id="registrationDate">—</strong>
+                        </div>
+
+                        <div class="information-item">
+                            <span>Profile last updated</span>
+                            <strong id="profileUpdatedDate">—</strong>
+                        </div>
+
+                        <div class="information-item">
+                            <span>Account status</span>
+                            <strong class="account-active">Active</strong>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <footer class="profile-footer">
+                    <span>StudyTrack</span>
+                    <span>Small steps. Meaningful progress.</span>
+                </footer>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="/js/profile.js" defer></script>
+
+</body>
+</html>

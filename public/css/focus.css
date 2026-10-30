@@ -1894,3 +1894,435 @@ Scoped to Focus Timer so the other pages remain unchanged.
         transition: none !important;
     }
 }
+
+
+/* =========================================================
+18. FOCUS TIMER — TYPOGRAPHY STANDARDISATION
+Consistent typography across StudyTrack V2.
+Preserves timer sizing, colours, themes and functionality.
+========================================================= */
+/* Global typography */
+.focus-page {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.focus-page button,
+.focus-page input {
+    font-family: inherit;
+}
+
+/* Page introduction */
+.focus-eyebrow {
+    font-size: 13px;
+}
+
+.focus-introduction h2 {
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.focus-introduction-text {
+    font-size: 16px;
+}
+
+.focus-date {
+    font-size: 14px;
+}
+
+/* Status messages */
+.focus-message {
+    font-size: 14px;
+}
+
+/* Card headings */
+.focus-card-heading h2 {
+    font-size: 22px;
+}
+
+.focus-live-indicator {
+    font-size: 13px;
+}
+
+/* Session mode selector */
+.focus-mode-button {
+    font-size: 15px;
+}
+
+/* Keep timer digits and circular progress dimensions unchanged.
+   Improve supporting text around the timer. */
+.focus-clock-mode {
+    font-size: 12px;
+}
+
+.focus-clock-caption {
+    font-size: 14px;
+}
+
+/* Timer controls */
+.focus-button {
+    font-size: 15px;
+}
+
+.focus-button-icon {
+    font-size: 15px;
+}
+
+.focus-timer-hint {
+    font-size: 13px;
+}
+
+/* Session settings */
+.focus-settings-description {
+    font-size: 15px;
+}
+
+.focus-setting-field label {
+    font-size: 16px;
+}
+
+.focus-duration-input input {
+    font-size: 16px;
+}
+
+.focus-duration-input span {
+    font-size: 13px;
+}
+
+.focus-settings-note p {
+    font-size: 13px;
+}
+
+/* Statistics */
+.focus-section-heading h2 {
+    font-size: 24px;
+}
+
+.focus-section-subtitle {
+    font-size: 13px;
+}
+
+.focus-stat-label {
+    font-size: 14px;
+}
+
+.focus-stat-description {
+    font-size: 13px;
+}
+
+/* Session history */
+.focus-history-refresh {
+    font-size: 14px;
+}
+
+.focus-history-table th {
+    font-size: 12px;
+}
+
+.focus-history-table td {
+    font-size: 14px;
+}
+
+.focus-history-status {
+    font-size: 12px;
+}
+
+.focus-history-footer {
+    font-size: 13px;
+}
+
+/* Encouragement banner */
+.focus-encouragement h2 {
+    font-size: 18px;
+}
+
+.focus-encouragement p {
+    font-size: 15px;
+}
+
+/* Shared sidebar typography */
+.focus-app-layout .sidebar .brand-name,
+.focus-app-layout .sidebar .brand-name > span {
+    font-size: 21px;
+}
+
+    .focus-app-layout .sidebar .brand-name small {
+        font-size: 12px;
+    }
+
+.focus-app-layout .sidebar-section-label {
+    font-size: 12px;
+}
+
+.focus-app-layout .sidebar .nav-link {
+    font-size: 15px;
+}
+
+.focus-app-layout .tip-heading {
+    font-size: 14px;
+}
+
+.focus-app-layout .tip-text {
+    font-size: 13px;
+}
+
+.focus-app-layout .profile-shortcut-name {
+    font-size: 14px;
+}
+
+.focus-app-layout .profile-shortcut-label {
+    font-size: 12px;
+}
+
+.focus-app-layout .sidebar-logout {
+    font-size: 15px;
+}
+
+/* Header and theme controls */
+.focus-app-layout .topbar-date {
+    font-size: 14px;
+}
+
+.focus-app-layout .page-eyebrow {
+    font-size: 12px;
+}
+
+.focus-app-layout .page-heading h1 {
+    font-size: 24px;
+}
+
+.focus-app-layout .theme-button {
+    font-size: 14px;
+}
+
+/* Focus sidebar JavaScript tooltip */
+.studytrack-focus-tooltip {
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+/* Tablet adjustments */
+@media (max-width: 1000px) {
+    .focus-introduction h2 {
+        font-size: 34px;
+    }
+
+    .focus-section-heading h2 {
+        font-size: 23px;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 650px) {
+    .focus-introduction h2 {
+        font-size: 30px;
+    }
+
+    .focus-introduction-text {
+        font-size: 15px;
+    }
+
+    .focus-card-heading h2 {
+        font-size: 20px;
+    }
+
+    .focus-live-indicator {
+        font-size: 12px;
+    }
+
+    .focus-mode-button {
+        font-size: 13px;
+    }
+
+    .focus-clock-mode {
+        font-size: 11px;
+    }
+
+    .focus-clock-caption {
+        font-size: 13px;
+    }
+
+    .focus-button {
+        font-size: 14px;
+    }
+
+    .focus-timer-hint {
+        font-size: 13px;
+    }
+
+    .focus-settings-description {
+        font-size: 14px;
+    }
+
+    .focus-setting-field label {
+        font-size: 15px;
+    }
+
+    .focus-duration-input input {
+        font-size: 16px;
+    }
+
+    .focus-section-heading h2 {
+        font-size: 22px;
+    }
+
+    .focus-section-subtitle {
+        font-size: 12px;
+    }
+
+    .focus-stat-label {
+        font-size: 13px;
+    }
+
+    .focus-stat-description {
+        font-size: 12px;
+    }
+
+    .focus-history-refresh {
+        font-size: 13px;
+    }
+
+    .focus-history-table th {
+        font-size: 11px;
+    }
+
+    .focus-history-table td {
+        font-size: 13px;
+    }
+
+    .focus-history-footer {
+        font-size: 12px;
+    }
+
+    .focus-encouragement h2 {
+        font-size: 16px;
+    }
+
+    .focus-encouragement p {
+        font-size: 14px;
+    }
+
+    .focus-app-layout .topbar-date {
+        font-size: 12px;
+    }
+
+    .focus-app-layout .page-eyebrow {
+        font-size: 11px;
+    }
+
+    .focus-app-layout .page-heading h1 {
+        font-size: 20px;
+    }
+
+    .focus-app-layout .theme-button {
+        font-size: 13px;
+    }
+}
+
+/* Very small mobile screens */
+@media (max-width: 380px) {
+    .focus-introduction h2 {
+        font-size: 28px;
+    }
+
+    .focus-card-heading h2 {
+        font-size: 18px;
+    }
+
+    .focus-mode-button {
+        font-size: 12px;
+    }
+
+    .focus-button {
+        font-size: 13px;
+    }
+
+    .focus-section-heading h2 {
+        font-size: 21px;
+    }
+
+    .focus-app-layout .topbar-date {
+        font-size: 11px;
+    }
+
+    .focus-app-layout .page-heading h1 {
+        font-size: 18px;
+    }
+
+    .focus-app-layout .theme-button {
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+END OF FOCUS TIMER TYPOGRAPHY STANDARDISATION
+========================================================= */
+
+/* =========================================================
+19. FOCUS HEADER — ALIGN DATE BEFORE DAY/NIGHT SWITCHER
+========================================================= */
+
+.focus-app-layout .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Left side: menu and page heading */
+.focus-app-layout .topbar-left {
+    order: 1;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    min-width: 0;
+}
+
+/* Right side: date and Day/Night switcher */
+.focus-app-layout .topbar-date {
+    order: 2;
+    flex: 0 0 auto;
+    margin-left: auto;
+    justify-self: auto;
+}
+
+/* Keep the theme switcher after the date */
+.focus-app-layout .topbar-right {
+    order: 3;
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    margin-left: 0;
+}
+
+.focus-app-layout .theme-switcher {
+    display: inline-flex;
+    flex: 0 0 auto;
+}
+
+/* Tablet and mobile screens */
+@media (max-width: 600px) {
+
+    .focus-app-layout .topbar {
+        gap: 8px;
+    }
+
+    .focus-app-layout .topbar-left {
+        flex: 1 1 auto;
+    }
+
+    .focus-app-layout .topbar-date {
+        order: 2;
+        flex: 0 1 auto;
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    .focus-app-layout .topbar-right {
+        order: 3;
+        flex: 0 0 auto;
+        margin-left: 0;
+    }
+
+    .focus-app-layout .theme-switcher {
+        gap: 4px;
+    }
+}

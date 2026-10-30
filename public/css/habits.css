@@ -1660,5 +1660,316 @@ When the app layout is collapsed:
         min-height: 45px;
     }
 }
+/* ==================================================
+   27. TYPOGRAPHY STANDARDISATION
+   STUDYTRACK V2 - HABITS PAGE
 
+   Aligns typography with the shared StudyTrack
+   typography standard without changing functionality.
+================================================== */
+
+/* --------------------------------------------------
+   PAGE FOUNDATION
+-------------------------------------------------- */
+
+.habits-content {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* --------------------------------------------------
+   HEADER AND NAVIGATION
+-------------------------------------------------- */
+
+.breadcrumb {
+    font-size: 14px;
+}
+
+.date-display {
+    font-size: 14px;
+}
+
+.theme-option {
+    font-size: 14px;
+}
+
+/* --------------------------------------------------
+   PAGE INTRODUCTION
+-------------------------------------------------- */
+
+.habits-content .eyebrow {
+    font-size: 13px;
+}
+
+.habits-heading h1 {
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.page-description {
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+/* --------------------------------------------------
+   BUTTONS
+-------------------------------------------------- */
+
+.habits-content .primary-button,
+.habits-content .secondary-button,
+.habits-content .danger-button {
+    font-size: 15px;
+}
+
+.habit-actions .primary-button,
+.habit-actions .secondary-button,
+.habit-actions .danger-button,
+.habit-actions .icon-button {
+    font-size: 14px;
+}
+
+/* --------------------------------------------------
+   STATUS MESSAGES
+-------------------------------------------------- */
+
+.habits-message {
+    font-size: 16px;
+}
+
+/* --------------------------------------------------
+   STATISTICS
+-------------------------------------------------- */
+
+.stat-label {
+    font-size: 15px;
+}
+
+.stat-card > p {
+    font-size: 15px;
+}
+
+/* --------------------------------------------------
+   PANELS AND SECTION HEADINGS
+-------------------------------------------------- */
+
+.panel-heading h2 {
+    font-size: 23px;
+}
+
+.panel-heading p {
+    font-size: 16px;
+}
+
+.date-badge {
+    font-size: 13px;
+}
+
+/* --------------------------------------------------
+   HABIT CARDS
+-------------------------------------------------- */
+
+.habit-loading p {
+    font-size: 16px;
+}
+
+.habit-title {
+    font-size: 20px;
+    line-height: 1.45;
+}
+
+.habit-description {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.habit-meta {
+    font-size: 13px;
+}
+
+.frequency-badge,
+.status-badge {
+    font-size: 13px;
+}
+
+/* --------------------------------------------------
+   EMPTY STATES
+-------------------------------------------------- */
+
+.empty-state h3 {
+    font-size: 22px;
+}
+
+.empty-state p {
+    font-size: 16px;
+}
+
+.archived-empty {
+    font-size: 16px;
+}
+
+/* --------------------------------------------------
+   ARCHIVED HABITS
+-------------------------------------------------- */
+
+.section-toggle strong {
+    font-size: 18px;
+}
+
+.section-toggle small {
+    font-size: 14px;
+}
+
+/* --------------------------------------------------
+   MODALS
+-------------------------------------------------- */
+
+.modal-heading h2 {
+    font-size: 24px;
+}
+
+.modal-heading p {
+    font-size: 16px;
+}
+
+/* --------------------------------------------------
+   FORM FIELDS
+-------------------------------------------------- */
+
+.form-field label {
+    font-size: 16px;
+}
+
+    .form-field label span {
+        font-size: 14px;
+    }
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    font-size: 16px;
+}
+
+.form-field small {
+    font-size: 13px;
+}
+
+.form-error {
+    font-size: 15px;
+}
+
+/* --------------------------------------------------
+   HISTORY MODAL
+-------------------------------------------------- */
+
+.history-summary {
+    font-size: 16px;
+}
+
+.history-stat strong {
+    font-size: 25px;
+}
+
+.history-stat span {
+    font-size: 13px;
+}
+
+.history-calendar > h3 {
+    font-size: 18px;
+}
+
+.history-record {
+    font-size: 15px;
+}
+
+    .history-record span:last-child {
+        font-size: 13px;
+    }
+
+/* --------------------------------------------------
+   FOOTER
+-------------------------------------------------- */
+
+.habits-footer p {
+    font-size: 13px;
+}
+
+/* --------------------------------------------------
+   SIDEBAR LOGOUT
+-------------------------------------------------- */
+
+.sidebar .sidebar-logout {
+    font-size: 15px;
+}
+
+/* --------------------------------------------------
+   RESPONSIVE TYPOGRAPHY
+-------------------------------------------------- */
+
+@media (max-width: 850px) {
+
+    .habits-heading h1 {
+        font-size: 34px;
+    }
+
+    .panel-heading h2 {
+        font-size: 23px;
+    }
+
+    .habit-title {
+        font-size: 19px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .habits-heading h1 {
+        font-size: 30px;
+    }
+
+    .page-description {
+        font-size: 16px;
+    }
+
+    .panel-heading h2 {
+        font-size: 22px;
+    }
+
+    .habit-title {
+        font-size: 19px;
+    }
+
+    .habit-description {
+        font-size: 16px;
+    }
+
+    .modal-heading h2 {
+        font-size: 22px;
+    }
+
+    .habit-actions .primary-button,
+    .habit-actions .secondary-button,
+    .habit-actions .danger-button,
+    .habit-actions .icon-button {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .habits-heading h1 {
+        font-size: 30px;
+    }
+
+    .panel-heading h2 {
+        font-size: 21px;
+    }
+
+    .habit-title {
+        font-size: 18px;
+    }
+
+    .breadcrumb {
+        font-size: 13px;
+    }
+}
 

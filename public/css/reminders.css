@@ -1350,3 +1350,418 @@ html[data-theme="night"] .reminders-document a:focus-visible {
         font-size: 11px;
     }
 }
+
+/* =========================================================
+   21. STUDYTRACK V2 — REMINDERS TYPOGRAPHY STANDARDISATION
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   GLOBAL
+   --------------------------------------------------------- */
+
+.reminders-document {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+    .reminders-document button,
+    .reminders-document input,
+    .reminders-document select,
+    .reminders-document textarea {
+        font-family: inherit;
+    }
+
+    /* ---------------------------------------------------------
+   TOP BAR
+   --------------------------------------------------------- */
+
+    .reminders-document .breadcrumb {
+        font-size: 14px;
+    }
+
+    .reminders-document .date-display {
+        font-size: 14px;
+    }
+
+    .reminders-document .theme-option {
+        font-size: 14px;
+    }
+
+/* ---------------------------------------------------------
+   PAGE HEADER
+   --------------------------------------------------------- */
+
+.reminders-content .page-eyebrow,
+.reminders-content .section-eyebrow {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.reminders-content .page-header h1 {
+    font-size: 36px;
+    line-height: 1.2;
+}
+
+.reminders-content .page-subtitle {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* ---------------------------------------------------------
+   BUTTONS AND NOTIFICATIONS
+   --------------------------------------------------------- */
+
+.reminders-document .primary-button,
+.reminders-document .secondary-button,
+.reminders-document .danger-button {
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.reminders-notification {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------------
+   SUMMARY CARDS
+   --------------------------------------------------------- */
+
+.summary-card-label {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.summary-card-value {
+    font-size: 32px;
+    line-height: 1.2;
+}
+
+.summary-card-description {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ---------------------------------------------------------
+   REMINDER WORKSPACE
+   --------------------------------------------------------- */
+
+.workspace-heading h2 {
+    font-size: 24px;
+    line-height: 1.35;
+}
+
+.workspace-description {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.visible-reminder-count {
+    font-size: 14px;
+}
+
+/* ---------------------------------------------------------
+   SEARCH AND FILTERS
+   --------------------------------------------------------- */
+
+.reminder-search {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+    .reminder-search::placeholder {
+        font-size: 15px;
+    }
+
+.reminder-filter {
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* ---------------------------------------------------------
+   REMINDER CARDS
+   --------------------------------------------------------- */
+
+.reminder-card-title {
+    font-size: 17px;
+    line-height: 1.45;
+}
+
+.reminder-card-description {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.reminder-card-meta {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.reminder-card-date {
+    font-size: 13px;
+}
+
+.reminder-action-button {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* ---------------------------------------------------------
+   STATUS BADGES
+   --------------------------------------------------------- */
+
+.reminder-status {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* ---------------------------------------------------------
+   EMPTY STATE
+   --------------------------------------------------------- */
+
+.reminders-empty-state h3 {
+    font-size: 22px;
+    line-height: 1.4;
+}
+
+.reminders-empty-state p {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* ---------------------------------------------------------
+   ADD / EDIT REMINDER DIALOG
+   --------------------------------------------------------- */
+
+.dialog-eyebrow {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.dialog-header h2 {
+    font-size: 24px;
+    line-height: 1.35;
+}
+
+#reminderDialogSubtitle {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.form-field label {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+        font-size: 15px;
+    }
+
+.form-help-text {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.reminder-form-error {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------------
+   DELETE REMINDER DIALOG
+   --------------------------------------------------------- */
+
+.delete-reminder-dialog > h2 {
+    font-size: 24px;
+    line-height: 1.4;
+}
+
+.delete-reminder-dialog > p {
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* ---------------------------------------------------------
+   SIDEBAR
+   --------------------------------------------------------- */
+
+.reminders-document .sidebar-navigation .nav-link {
+    font-size: 15px;
+}
+
+.reminders-document .sidebar-section-label {
+    font-size: 12px;
+}
+
+.reminders-document .sidebar-tip .tip-heading {
+    font-size: 14px;
+}
+
+.reminders-document .sidebar-tip .tip-text {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.reminders-document .profile-shortcut-text strong {
+    font-size: 14px;
+}
+
+.reminders-document .profile-shortcut-text small {
+    font-size: 12px;
+}
+
+.reminders-document .sidebar-logout {
+    font-size: 15px;
+}
+
+/* ---------------------------------------------------------
+   SIDEBAR TOOLTIPS
+   --------------------------------------------------------- */
+
+.reminders-sidebar-tooltip {
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+/* ---------------------------------------------------------
+   FOOTER
+   --------------------------------------------------------- */
+
+.reminders-footer {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------------
+   TABLET
+   --------------------------------------------------------- */
+
+@media (max-width: 850px) {
+    .reminders-content .page-header h1 {
+        font-size: 32px;
+    }
+
+    .workspace-heading h2 {
+        font-size: 23px;
+    }
+
+    .reminders-content .page-subtitle {
+        font-size: 15px;
+    }
+}
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 560px) {
+    .reminders-content .page-header h1 {
+        font-size: 30px;
+    }
+
+    .reminders-content .page-subtitle {
+        font-size: 15px;
+    }
+
+    .workspace-heading h2 {
+        font-size: 22px;
+    }
+
+    .workspace-description {
+        font-size: 15px;
+    }
+
+    .summary-card-label {
+        font-size: 13px;
+    }
+
+    .summary-card-value {
+        font-size: 27px;
+    }
+
+    .summary-card-description {
+        font-size: 12px;
+    }
+
+    .reminder-card-title {
+        font-size: 16px;
+    }
+
+    .reminder-card-description {
+        font-size: 14px;
+    }
+
+    .reminder-card-meta,
+    .reminder-card-date {
+        font-size: 12px;
+    }
+
+    .reminder-status {
+        font-size: 12px;
+    }
+
+    .reminder-action-button {
+        font-size: 13px;
+    }
+
+    .reminders-empty-state h3 {
+        font-size: 21px;
+    }
+
+    .reminders-empty-state p {
+        font-size: 15px;
+    }
+
+    .dialog-header h2,
+    .delete-reminder-dialog > h2 {
+        font-size: 22px;
+    }
+
+    .form-field label {
+        font-size: 15px;
+    }
+
+    .form-help-text {
+        font-size: 13px;
+    }
+
+    .reminders-document .theme-option {
+        font-size: 13px;
+    }
+
+    .reminders-document .breadcrumb,
+    .reminders-document .date-display {
+        font-size: 12px;
+    }
+}
+
+/* ---------------------------------------------------------
+   VERY SMALL SCREENS
+   --------------------------------------------------------- */
+
+@media (max-width: 380px) {
+    .reminders-content .page-header h1 {
+        font-size: 28px;
+    }
+
+    .workspace-heading h2 {
+        font-size: 21px;
+    }
+
+    .reminders-content .page-subtitle {
+        font-size: 14px;
+    }
+
+    .reminder-search,
+    .reminder-filter {
+        font-size: 14px;
+    }
+}
