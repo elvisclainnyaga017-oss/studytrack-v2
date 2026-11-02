@@ -1,0 +1,39 @@
+# Visual Studio files
+.vs/
+.vscode/
+
+# Dependencies and caches
+node_modules/
+.vercel/
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Git files
+.git/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+# Database exports and backups
+*.sql
+
+# Temporary diagnostic files
+check-session-count.js
+check-sessions.js
+
+# Backup files
+*.bak
+*.backup*
+# Local uploaded files
+public/uploads/
+uploads/
+
+# Local database import utility
+scripts/import-aiven.js

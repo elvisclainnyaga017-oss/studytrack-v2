@@ -7,9 +7,9 @@
 // - Retrieve authenticated user's profile.
 // - Update full name, username and biography.
 // - Change account password securely.
-// - Upload and replace profile pictures.
-// - Remove profile pictures.
-// - Validate uploaded image file types.
+// - Upload and replace profile pictures using Vercel Blob.
+// - Remove profile pictures from Vercel Blob or legacy local storage.
+// - Validate uploaded image file types and signatures.
 // - Keep profile information private to its owner.
 // ==================================================
 
@@ -37,8 +37,10 @@ const MAX_PASSWORD_BYTES = 72;
 const MAX_USERNAME_LENGTH = 50;
 const MAX_BIO_LENGTH = 500;
 
-const MAX_PROFILE_PICTURE_SIZE = 5 * 1024 * 1024;
+// Maximum profile picture size: 4 MB.
+const MAX_PROFILE_PICTURE_SIZE = 4 * 1024 * 1024;
 
+// Retained for safe cleanup of older locally stored pictures.
 const UPLOAD_DIRECTORY = path.join(
     __dirname,
     "..",
@@ -54,14 +56,9 @@ const ALLOWED_IMAGE_TYPES = {
     "image/webp": "webp"
 };
 
-
-// ==================================================
-// CREATE UPLOAD DIRECTORY
-// ==================================================
-
-fs.mkdirSync(UPLOAD_DIRECTORY, {
-    recursive: true
-});
+// Only URLs belonging to this StudyTrack Blob store can be deleted.
+const BLOB_PUBLIC_HOST =
+    "29edoouxz0ftqync.public.blob.vercel-storage.com";
 
 
 // ==================================================
@@ -94,19 +91,9 @@ router.use(requireAuthentication);
 // MULTER CONFIGURATION
 // ==================================================
 
-const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, UPLOAD_DIRECTORY);
-    },
-
-    filename: (req, file, callback) => {
-        callback(
-            null,
-            `${crypto.randomUUID()}.tmp`
-        );
-    }
-});
-
+// Store uploaded image data in memory.
+// Vercel Blob receives the image directly from this buffer.
+const storage = multer.memoryStorage();
 
 const upload = multer({
     storage,
@@ -180,68 +167,55 @@ function isValidPassword(value) {
 // IMAGE SIGNATURE VALIDATION
 // ==================================================
 
-async function identifyImage(filePath) {
-    const fileHandle = await fs.promises.open(filePath, "r");
-
-    try {
-        const buffer = Buffer.alloc(12);
-
-        const { bytesRead } = await fileHandle.read(
-            buffer,
-            0,
-            buffer.length,
-            0
-        );
-
-        if (bytesRead < 12) {
-            return null;
-        }
-
-        // JPEG signature
-        if (
-            buffer[0] === 0xFF &&
-            buffer[1] === 0xD8 &&
-            buffer[2] === 0xFF
-        ) {
-            return "jpg";
-        }
-
-        // PNG signature
-        if (
-            buffer.subarray(0, 8).equals(
-                Buffer.from([
-                    0x89,
-                    0x50,
-                    0x4E,
-                    0x47,
-                    0x0D,
-                    0x0A,
-                    0x1A,
-                    0x0A
-                ])
-            )
-        ) {
-            return "png";
-        }
-
-        // WEBP signature
-        if (
-            buffer.toString("ascii", 0, 4) === "RIFF" &&
-            buffer.toString("ascii", 8, 12) === "WEBP"
-        ) {
-            return "webp";
-        }
-
+function identifyImage(buffer) {
+    if (
+        !Buffer.isBuffer(buffer) ||
+        buffer.length < 12
+    ) {
         return null;
-
-    } finally {
-        await fileHandle.close();
     }
+
+    // JPEG signature
+    if (
+        buffer[0] === 0xFF &&
+        buffer[1] === 0xD8 &&
+        buffer[2] === 0xFF
+    ) {
+        return "jpg";
+    }
+
+    // PNG signature
+    if (
+        buffer.subarray(0, 8).equals(
+            Buffer.from([
+                0x89,
+                0x50,
+                0x4E,
+                0x47,
+                0x0D,
+                0x0A,
+                0x1A,
+                0x0A
+            ])
+        )
+    ) {
+        return "png";
+    }
+
+    // WEBP signature
+    if (
+        buffer.toString("ascii", 0, 4) === "RIFF" &&
+        buffer.toString("ascii", 8, 12) === "WEBP"
+    ) {
+        return "webp";
+    }
+
+    return null;
 }
 
 
 // ==================================================
-// PROFILE IMAGE PATH HELPERS
+// LEGACY LOCAL PROFILE IMAGE HELPERS
 // ==================================================
 
 function getSafeProfilePicturePath(imagePath) {
@@ -277,22 +251,101 @@ function getSafeProfilePicturePath(imagePath) {
 }
 
 
-async function deleteProfilePicture(imagePath) {
-    const safePath = getSafeProfilePicturePath(imagePath);
+// ==================================================
+// VERCEL BLOB HELPERS
+// ==================================================
 
-    if (!safePath) {
+async function uploadProfilePictureToBlob(
+    userId,
+    imageBuffer,
+    imageType,
+    contentType
+) {
+    const { put } = await import("@vercel/blob");
+
+    const filename =
+        `${crypto.randomUUID()}.${imageType}`;
+
+    const pathname =
+        `profiles/${userId}/${filename}`;
+
+    const blob = await put(
+        pathname,
+        imageBuffer,
+        {
+            access: "public",
+            contentType,
+            addRandomSuffix: false
+        }
+    );
+
+    return blob.url;
+}
+
+
+async function deleteBlobProfilePicture(imageUrl) {
+    if (typeof imageUrl !== "string") {
         return;
     }
 
+    let parsedUrl;
+
     try {
-        await fs.promises.unlink(safePath);
+        parsedUrl = new URL(imageUrl);
     } catch (error) {
-        if (error.code !== "ENOENT") {
-            console.error(
-                "StudyTrack: Unable to delete old profile picture:",
-                error.message
-            );
+        return;
+    }
+
+    // Do not delete URLs from other domains or storage providers.
+    if (
+        parsedUrl.protocol !== "https:" ||
+        parsedUrl.hostname !== BLOB_PUBLIC_HOST ||
+        !parsedUrl.pathname.startsWith("/profiles/")
+    ) {
+        return;
+    }
+
+    const { del } = await import("@vercel/blob");
+
+    await del(imageUrl);
+}
+
+
+// ==================================================
+// DELETE PROFILE PICTURE HELPER
+// ==================================================
+
+async function deleteProfilePicture(imagePath) {
+    if (typeof imagePath !== "string" || !imagePath) {
+        return;
+    }
+
+    // Support pictures uploaded before the Vercel Blob migration.
+    const safePath = getSafeProfilePicturePath(imagePath);
+
+    if (safePath) {
+        try {
+            await fs.promises.unlink(safePath);
+        } catch (error) {
+            if (error.code !== "ENOENT") {
+                console.error(
+                    "StudyTrack: Unable to delete old local profile picture:",
+                    error.message
+                );
+            }
         }
+
+        return;
+    }
+
+    // New pictures are stored as full Vercel Blob URLs.
+    try {
+        await deleteBlobProfilePicture(imagePath);
+    } catch (error) {
+        console.error(
+            "StudyTrack: Unable to delete old Blob profile picture:",
+            error.message
+        );
     }
 }
 
@@ -330,15 +383,11 @@ function handleUploadError(error, req, res, next) {
         return next();
     }
 
-    if (req.file?.path) {
-        fs.promises.unlink(req.file.path).catch(() => { });
-    }
-
     if (error instanceof multer.MulterError) {
         if (error.code === "LIMIT_FILE_SIZE") {
             return res.status(400).json({
                 success: false,
-                message: "Your profile picture cannot exceed 5 MB."
+                message: "Your profile picture cannot exceed 4 MB."
             });
         }
 
@@ -589,7 +638,8 @@ router.put("/", async (req, res) => {
 // profilePicture
 //
 // Allowed: JPG, PNG, WEBP
-// Maximum size: 5 MB
+// Maximum size: 4 MB
+// Storage: Vercel Blob
 // ==================================================
 
 router.post(
@@ -597,60 +647,39 @@ router.post(
     upload.single("profilePicture"),
     handleUploadError,
     async (req, res) => {
-        let temporaryPath = req.file?.path;
-        let finalPath = null;
+        let uploadedImageUrl = null;
+        let databaseUpdated = false;
 
         try {
-            if (!req.file) {
+            if (!req.file || !req.file.buffer) {
                 return res.status(400).json({
                     success: false,
                     message: "Please select a profile picture first."
                 });
             }
 
-            const imageType = await identifyImage(temporaryPath);
+            // Validate the actual image contents.
+            const imageType = identifyImage(req.file.buffer);
 
             if (!imageType) {
-                await fs.promises.unlink(temporaryPath).catch(() => { });
-                temporaryPath = null;
-
                 return res.status(400).json({
                     success: false,
                     message: "The selected file is not a valid JPG, PNG or WEBP image."
                 });
             }
 
+            // Confirm the file contents match the declared MIME type.
             const extensionFromMime =
                 ALLOWED_IMAGE_TYPES[req.file.mimetype];
 
             if (imageType !== extensionFromMime) {
-                await fs.promises.unlink(temporaryPath).catch(() => { });
-                temporaryPath = null;
-
                 return res.status(400).json({
                     success: false,
                     message: "The image file type does not match its contents."
                 });
             }
 
-            const filename =
-                `${crypto.randomUUID()}.${imageType}`;
-
-            finalPath = path.join(
-                UPLOAD_DIRECTORY,
-                filename
-            );
-
-            await fs.promises.rename(
-                temporaryPath,
-                finalPath
-            );
-
-            temporaryPath = null;
-
-            const imageUrl =
-                `/uploads/profile-pictures/${filename}`;
-
+            // Retrieve the user's current profile picture.
             const [existingRows] = await db.execute(
                 `
                 SELECT profile_picture
@@ -664,6 +693,21 @@ router.post(
             const oldImage =
                 existingRows[0]?.profile_picture || null;
 
+            // Upload the new image to Vercel Blob.
+            uploadedImageUrl = await uploadProfilePictureToBlob(
+                req.userId,
+                req.file.buffer,
+                imageType,
+                req.file.mimetype
+            );
+
+            if (!uploadedImageUrl) {
+                throw new Error(
+                    "Vercel Blob did not return an image URL."
+                );
+            }
+
+            // Save the permanent Blob URL in the database.
             await db.execute(
                 `
                 INSERT INTO profiles (
@@ -676,27 +720,34 @@ router.post(
                 `,
                 [
                     req.userId,
-                    imageUrl
+                    uploadedImageUrl
                 ]
             );
 
-            if (oldImage && oldImage !== imageUrl) {
+            databaseUpdated = true;
+
+            // Remove the previous image only after the new URL is saved.
+            if (
+                oldImage &&
+                oldImage !== uploadedImageUrl
+            ) {
                 await deleteProfilePicture(oldImage);
             }
 
             return res.status(200).json({
                 success: true,
                 message: "Your profile picture has been uploaded successfully.",
-                profilePicture: imageUrl
+                profilePicture: uploadedImageUrl
             });
 
         } catch (error) {
-            if (temporaryPath) {
-                await fs.promises.unlink(temporaryPath).catch(() => { });
-            }
-
-            if (finalPath) {
-                await fs.promises.unlink(finalPath).catch(() => { });
+            // If the upload succeeded but the database update failed,
+            // remove the newly uploaded Blob to avoid an orphaned file.
+            if (
+                uploadedImageUrl &&
+                !databaseUpdated
+            ) {
+                await deleteProfilePicture(uploadedImageUrl);
             }
 
             return handleProfileError(
@@ -736,6 +787,7 @@ router.delete("/picture", async (req, res) => {
 
         const oldImage = rows[0].profile_picture;
 
+        // Remove the picture reference from the database first.
         await db.execute(
             `
             UPDATE profiles
@@ -745,6 +797,7 @@ router.delete("/picture", async (req, res) => {
             [req.userId]
         );
 
+        // Remove the old Blob or legacy local image.
         await deleteProfilePicture(oldImage);
 
         return res.status(200).json({

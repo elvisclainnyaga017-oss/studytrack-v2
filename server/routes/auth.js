@@ -184,6 +184,8 @@ router.post("/login", async (req, res) => {
                 : "";
 
 
+        // Validate required fields.
+
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
@@ -219,6 +221,9 @@ router.post("/login", async (req, res) => {
 
 
         const user = users[0];
+
+
+        // Verify the password.
 
         const passwordMatches =
             await bcrypt.compare(

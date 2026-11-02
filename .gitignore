@@ -1,27 +1,46 @@
 # Node.js dependencies
-
 node_modules/
 
-# Private environment variables and secrets
-
+# Environment variables and secrets
 .env
 .env.*
+.env*
 !.env.example
 
 # Logs
-
 *.log
 npm-debug.log*
 
 # Uploaded profile images
-
 uploads/
+public/uploads/
 
 # Visual Studio configuration
-
 .vs/
+.vscode/
+
+# Vercel local configuration
+.vercel/
 
 # Operating system files
-
 .DS_Store
 Thumbs.db
+
+# Temporary diagnostic scripts
+check-session-count.js
+check-sessions.js
+
+# Database backups and exports
+studytrack_v2_aiven.sql
+studytrack_v2_aiven_mysql.sql
+studytrack_v2_backup.sql
+
+# Local database import utility
+scripts/import-aiven.js
+
+# Backup files
+*.bak
+*.backup*
+
+# Empty temporary file
+server/NewFile
