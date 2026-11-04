@@ -242,7 +242,7 @@ router.get("/", async (req, res) => {
                     "(title LIKE ? OR description LIKE ?)"
                 );
 
-                const searchPattern = `% ${ search }%`;
+                const searchPattern = `%${ search }%`;
 
                 parameters.push(
                     searchPattern,
