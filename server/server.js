@@ -151,42 +151,6 @@ app.get("/api/health", (req, res) => {
 });
 
 // ==================================================
-// DATABASE STATUS
-// ==================================================
-
-app.get("/api/database-status", async (req, res) => {
-    try {
-        const [rows] = await db.query(`
-            SELECT
-                DATABASE() AS database_name,
-                @@port AS database_port
-        `);
-
-        res.status(200).json({
-            success: true,
-
-            message: "Database connection successful.",
-
-            database: rows[0].database_name,
-
-            port: rows[0].database_port
-        });
-
-    } catch (error) {
-        console.error(
-            "Database status check failed:",
-            error.code || error.message
-        );
-
-        res.status(500).json({
-            success: false,
-
-            message: "Unable to connect to the database."
-        });
-    }
-});
-
-// ==================================================
 // APPLICATION ROUTES
 // ==================================================
 
