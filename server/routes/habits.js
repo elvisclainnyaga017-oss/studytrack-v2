@@ -77,12 +77,6 @@ function validateStatus(status) {
 // DATE VALIDATION
 // ==================================================
 
-/**
- * Validate a date in YYYY-MM-DD format.
- *
- * An omitted date is allowed because the application
- * supplies today's local date as the default.
- */
 function validateStartDate(startDate) {
     if (
         startDate === undefined ||
@@ -99,8 +93,6 @@ function validateStartDate(startDate) {
         return false;
     }
 
-    // IMPORTANT:
-    // Keep the date and time together without spaces.
     const date = new Date(`${startDate}T00:00:00.000Z`);
 
     return (
@@ -110,9 +102,6 @@ function validateStartDate(startDate) {
 }
 
 
-/**
- * Validate a habit completion date in YYYY-MM-DD format.
- */
 function validateRecordDate(dateString) {
     if (
         typeof dateString !== "string" ||
@@ -121,8 +110,6 @@ function validateRecordDate(dateString) {
         return false;
     }
 
-    // IMPORTANT:
-    // Keep the date and time together without spaces.
     const parsed = new Date(`${dateString}T00:00:00.000Z`);
 
     return (
@@ -133,14 +120,57 @@ function validateRecordDate(dateString) {
 
 
 // ==================================================
+// DATABASE DATE NORMALIZATION
+// ==================================================
+
+/**
+ * Convert a MySQL date value into YYYY-MM-DD.
+ *
+ * MySQL DATE values may be returned as:
+ * - JavaScript Date objects
+ * - ISO date strings
+ * - ISO date-time strings
+ *
+ * This function ensures consistent date comparisons.
+ */
+
+function normalizeDatabaseDate(dateValue) {
+    if (!dateValue) {
+        return null;
+    }
+
+    if (dateValue instanceof Date) {
+        if (Number.isNaN(dateValue.getTime())) {
+            return null;
+        }
+
+        return dateValue.toISOString().slice(0, 10);
+    }
+
+    const value = String(dateValue).trim();
+
+    const match = value.match(/^(\d{4}-\d{2}-\d{2})/);
+
+    if (!match) {
+        return null;
+    }
+
+    const dateString = match[1];
+
+    return validateStartDate(dateString)
+        ? dateString
+        : null;
+}
+
+
+// ==================================================
 // LOCAL DATE HELPER
 // ==================================================
 
 /**
  * Return today's local calendar date in YYYY-MM-DD format.
- *
- * Example: 2026-10-16
  */
+
 function getLocalDateString() {
     const now = new Date();
 
@@ -154,9 +184,8 @@ function getLocalDateString() {
         now.getDate()
     ).padStart(2, "0");
 
-    // IMPORTANT:
-    // Do not insert spaces into the date.
-    return `${ year } -${ month } -${ day }`;
+    // Correct format: YYYY-MM-DD
+    return `${year}-${month}-${day}`;
 }
 
 
@@ -169,28 +198,28 @@ router.get("/", async (req, res) => {
     try {
         const [habits] = await db.execute(
             `SELECT
-h.id,
-    h.user_id,
-    h.title,
-    h.description,
-    h.frequency,
-    h.start_date,
-    h.status,
-    h.created_at,
-    h.updated_at,
-    CASE
-                    WHEN EXISTS(
-        SELECT 1
+                h.id,
+                h.user_id,
+                h.title,
+                h.description,
+                h.frequency,
+                h.start_date,
+                h.status,
+                h.created_at,
+                h.updated_at,
+                CASE
+                    WHEN EXISTS (
+                        SELECT 1
                         FROM habit_records hr
                         WHERE hr.habit_id = h.id
                           AND hr.completion_date = CURDATE()
-    )
+                    )
                     THEN 1
                     ELSE 0
                 END AS completed_today
              FROM habits h
              WHERE h.user_id = ?
-    ORDER BY h.status ASC, h.created_at DESC`,
+             ORDER BY h.status ASC, h.created_at DESC`,
             [req.userId]
         );
 
@@ -272,14 +301,14 @@ router.post("/", async (req, res) => {
             startDate || getLocalDateString();
 
         const [result] = await db.execute(
-            `INSERT INTO habits(
-        user_id,
-        title,
-        description,
-        frequency,
-        start_date
-    )
-VALUES(?, ?, ?, ?, ?)`,
+            `INSERT INTO habits (
+                user_id,
+                title,
+                description,
+                frequency,
+                start_date
+            )
+            VALUES (?, ?, ?, ?, ?)`,
             [
                 req.userId,
                 title.trim(),
@@ -291,19 +320,19 @@ VALUES(?, ?, ?, ?, ?)`,
 
         const [habits] = await db.execute(
             `SELECT
-id,
-    user_id,
-    title,
-    description,
-    frequency,
-    start_date,
-    status,
-    created_at,
-    updated_at
+                id,
+                user_id,
+                title,
+                description,
+                frequency,
+                start_date,
+                status,
+                created_at,
+                updated_at
              FROM habits
              WHERE id = ?
-    AND user_id = ?
-        LIMIT 1`,
+               AND user_id = ?
+             LIMIT 1`,
             [result.insertId, req.userId]
         );
 
@@ -345,19 +374,19 @@ router.get("/:id", async (req, res) => {
 
         const [habits] = await db.execute(
             `SELECT
-id,
-    user_id,
-    title,
-    description,
-    frequency,
-    start_date,
-    status,
-    created_at,
-    updated_at
+                id,
+                user_id,
+                title,
+                description,
+                frequency,
+                start_date,
+                status,
+                created_at,
+                updated_at
              FROM habits
              WHERE id = ?
-    AND user_id = ?
-        LIMIT 1`,
+               AND user_id = ?
+             LIMIT 1`,
             [habitId, req.userId]
         );
 
@@ -435,14 +464,14 @@ router.put("/:id", async (req, res) => {
 
         const [result] = await db.execute(
             `UPDATE habits
-SET
-title = ?,
-    description = ?,
-    frequency = ?,
-    start_date = ?,
-    status = ?
-        WHERE id = ?
-            AND user_id = ?`,
+             SET
+                title = ?,
+                description = ?,
+                frequency = ?,
+                start_date = ?,
+                status = ?
+             WHERE id = ?
+               AND user_id = ?`,
             [
                 title.trim(),
                 cleanDescription,
@@ -459,8 +488,8 @@ title = ?,
                 `SELECT id
                  FROM habits
                  WHERE id = ?
-    AND user_id = ?
-        LIMIT 1`,
+                   AND user_id = ?
+                 LIMIT 1`,
                 [habitId, req.userId]
             );
 
@@ -474,19 +503,19 @@ title = ?,
 
         const [habits] = await db.execute(
             `SELECT
-id,
-    user_id,
-    title,
-    description,
-    frequency,
-    start_date,
-    status,
-    created_at,
-    updated_at
+                id,
+                user_id,
+                title,
+                description,
+                frequency,
+                start_date,
+                status,
+                created_at,
+                updated_at
              FROM habits
              WHERE id = ?
-    AND user_id = ?
-        LIMIT 1`,
+               AND user_id = ?
+             LIMIT 1`,
             [habitId, req.userId]
         );
 
@@ -539,13 +568,13 @@ router.put("/:id/records/:date", async (req, res) => {
 
         const [habits] = await db.execute(
             `SELECT
-id,
-    start_date,
-    status
+                id,
+                start_date,
+                status
              FROM habits
              WHERE id = ?
-    AND user_id = ?
-        LIMIT 1`,
+               AND user_id = ?
+             LIMIT 1`,
             [habitId, req.userId]
         );
 
@@ -566,9 +595,22 @@ id,
             });
         }
 
-        const startDate =
-            String(habit.start_date).slice(0, 10);
+        // Normalize the MySQL DATE value before comparison.
+        const startDate = normalizeDatabaseDate(habit.start_date);
 
+        if (!startDate) {
+            console.error(
+                "Invalid habit start date:",
+                habit.start_date
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: "Unable to process the habit start date."
+            });
+        }
+
+        // Both values are now YYYY-MM-DD strings.
         if (completionDate < startDate) {
             return res.status(400).json({
                 success: false,
@@ -586,13 +628,13 @@ id,
         }
 
         await db.execute(
-            `INSERT INTO habit_records(
-            habit_id,
-            completion_date
-        )
-VALUES(?, ?)
+            `INSERT INTO habit_records (
+                habit_id,
+                completion_date
+            )
+            VALUES (?, ?)
             ON DUPLICATE KEY UPDATE
-completion_date = VALUES(completion_date)`,
+                completion_date = VALUES(completion_date)`,
             [habitId, completionDate]
         );
 
@@ -649,8 +691,8 @@ router.delete("/:id/records/:date", async (req, res) => {
              INNER JOIN habits h
                 ON h.id = hr.habit_id
              WHERE hr.habit_id = ?
-    AND hr.completion_date = ?
-        AND h.user_id = ?`,
+               AND hr.completion_date = ?
+               AND h.user_id = ?`,
             [habitId, completionDate, req.userId]
         );
 
@@ -659,8 +701,8 @@ router.delete("/:id/records/:date", async (req, res) => {
                 `SELECT id
                  FROM habits
                  WHERE id = ?
-    AND user_id = ?
-        LIMIT 1`,
+                   AND user_id = ?
+                 LIMIT 1`,
                 [habitId, req.userId]
             );
 
@@ -720,8 +762,8 @@ router.get("/:id/records", async (req, res) => {
             `SELECT id
              FROM habits
              WHERE id = ?
-    AND user_id = ?
-        LIMIT 1`,
+               AND user_id = ?
+             LIMIT 1`,
             [habitId, req.userId]
         );
 
@@ -734,13 +776,13 @@ router.get("/:id/records", async (req, res) => {
 
         const [records] = await db.execute(
             `SELECT
-id,
-    habit_id,
-    completion_date,
-    created_at
+                id,
+                habit_id,
+                completion_date,
+                created_at
              FROM habit_records
              WHERE habit_id = ?
-    ORDER BY completion_date DESC`,
+             ORDER BY completion_date DESC`,
             [habitId]
         );
 
@@ -783,7 +825,7 @@ router.delete("/:id", async (req, res) => {
         const [result] = await db.execute(
             `DELETE FROM habits
              WHERE id = ?
-    AND user_id = ?`,
+               AND user_id = ?`,
             [habitId, req.userId]
         );
 
@@ -819,5 +861,3 @@ router.delete("/:id", async (req, res) => {
 // ==================================================
 
 module.exports = router;
-
-
