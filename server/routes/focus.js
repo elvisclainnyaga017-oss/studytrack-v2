@@ -24,6 +24,9 @@ const MAX_DURATION_SECONDS = 24 * 60 * 60;
 const DEFAULT_HISTORY_LIMIT = 20;
 const MAX_HISTORY_LIMIT = 100;
 
+// Allow a small difference between client and server clocks.
+const ALLOWED_CLOCK_SKEW_MS = 5000;
+
 
 // ==================================================
 // AUTHENTICATION MIDDLEWARE
@@ -305,6 +308,22 @@ router.post("/sessions", async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Please provide valid session timestamps."
+            });
+        }
+
+        // Prevent sessions from being recorded before they happen.
+        // Allow a small difference for client/server clock timing.
+        const currentTime = Date.now();
+        const latestAllowedTime =
+            currentTime + ALLOWED_CLOCK_SKEW_MS;
+
+        if (
+            startDate.getTime() > latestAllowedTime ||
+            completionDate.getTime() > latestAllowedTime
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Session timestamps cannot be in the future."
             });
         }
 
