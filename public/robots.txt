@@ -1,0 +1,12 @@
+﻿User-agent: *
+Allow: /
+
+Disallow: /dashboard.html
+Disallow: /goals.html
+Disallow: /habits.html
+Disallow: /tasks.html
+Disallow: /reminders.html
+Disallow: /profile.html
+Disallow: /focus.html
+
+Sitemap: https://studytrack-v2-rho.vercel.app/sitemap.xml
